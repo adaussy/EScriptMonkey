@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension-point id="language" name="Language" schema="schema/language.exsd"/>
+   <extension
+         point="org.eclipse.ui.services">
+      <serviceFactory
+            factoryClass="org.eclipse.escriptmonkey.scripting.service.ScriptServiceFactory">
+         <service
+               serviceClass="org.eclipse.escriptmonkey.scripting.IScriptService"></service>
+      </serviceFactory>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.adapters">
+      <factory
+            adaptableType="org.eclipse.core.resources.IFile"
+            class="org.eclipse.escriptmonkey.scripting.adapters.ScriptableAdapter">
+         <adapter
+               type="org.eclipse.escriptmonkey.scripting.IScriptable">
+         </adapter>
+      </factory>
+      <factory
+            adaptableType="java.io.File"
+            class="org.eclipse.escriptmonkey.scripting.adapters.ScriptableAdapter">
+         <adapter
+               type="org.eclipse.escriptmonkey.scripting.IScriptable">
+         </adapter>
+      </factory>
+   </extension>
+   <extension
+         point="org.eclipse.ecf.filetransfer.urlStreamHandlerService">
+      <urlStreamHandlerService
+            protocol="workspace"
+            serviceClass="org.eclipse.escriptmonkey.scripting.urlhandler.WorkspaceURLStreamHandlerService">
+      </urlStreamHandlerService>
+   </extension>
+   <extension
+         point="org.eclipse.escriptmonkey.scripting.language">
+      <module
+            class="org.eclipse.escriptmonkey.scripting.modules.EnvironmentModule"
+            documentation="false"
+            name="Environment"
+            visible="false">
+      </module>
+   </extension>
+
+</plugin>

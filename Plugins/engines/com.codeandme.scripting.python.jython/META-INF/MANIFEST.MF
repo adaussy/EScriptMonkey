@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: EScript - Jython engine
+Bundle-SymbolicName: org.eclipse.escriptmonkey.scripting.python.jython;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: Code & me
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: org.eclipse.escriptmonkey.scripting;bundle-version="1.0.0",
+ org.jython;bundle-version="2.5.3"
