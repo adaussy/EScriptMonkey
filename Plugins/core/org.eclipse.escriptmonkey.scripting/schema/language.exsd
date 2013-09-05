@@ -99,6 +99,13 @@
                </documentation>
             </annotation>
          </attribute>
+         <attribute name="extension_file" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
       </complexType>
    </element>
 

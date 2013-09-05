@@ -4,6 +4,7 @@
    <extension
          point="org.eclipse.escriptmonkey.scripting.language">
       <scriptType
+            extension_file="js"
             type="JavaScript">
       </scriptType>
       <engine

@@ -25,78 +25,79 @@ import org.osgi.framework.BundleContext;
 // FIXME get rid of this activator
 public class Activator extends AbstractUIPlugin {
 
-    public static final String PLUGIN_ID = "org.eclipse.escriptmonkey.scripting.ui";
-    private static Activator mInstance;
+	public static final String PLUGIN_ID = "org.eclipse.escriptmonkey.scripting.ui";
 
-    public static Activator getDefault() {
-        return mInstance;
-    }
+	private static Activator mInstance;
 
-    @Override
-    public void start(final BundleContext context) throws Exception {
-        super.start(context);
+	public static Activator getDefault() {
+		return mInstance;
+	}
 
-        mInstance = this;
-    }
+	@Override
+	public void start(final BundleContext context) throws Exception {
+		super.start(context);
 
-    @Override
-    public void stop(final BundleContext context) throws Exception {
-        mInstance = null;
+		mInstance = this;
+	}
 
-        super.stop(context);
-    }
+	@Override
+	public void stop(final BundleContext context) throws Exception {
+		mInstance = null;
 
-    /**
-     * Returns an image descriptor for the image file at the given plug-in relative path
-     * 
-     * @param path
-     *            the path
-     * @return the image descriptor
-     */
-    public static ImageDescriptor getImageDescriptor(final String path) {
-        return imageDescriptorFromPlugin(PLUGIN_ID, path);
-    }
+		super.stop(context);
+	}
 
-    public static ImageDescriptor getImageDescriptor(final String bundleID, final String path) {
-        assert (bundleID != null) : "No bundle defined";
-        assert (path != null) : "No path defined";
+	/**
+	 * Returns an image descriptor for the image file at the given plug-in relative path
+	 * 
+	 * @param path
+	 *        the path
+	 * @return the image descriptor
+	 */
+	public static ImageDescriptor getImageDescriptor(final String path) {
+		return imageDescriptorFromPlugin(PLUGIN_ID, path);
+	}
 
-        // if the bundle is not ready then there is no image
-        final Bundle bundle = Platform.getBundle(bundleID);
-        final int bundleState = bundle.getState();
-        if ((bundleState != Bundle.ACTIVE) && (bundleState != Bundle.STARTING) && (bundleState != Bundle.RESOLVED))
-            return null;
+	public static ImageDescriptor getImageDescriptor(final String bundleID, final String path) {
+		assert (bundleID != null) : "No bundle defined";
+		assert (path != null) : "No path defined";
 
-        // look for the image (this will check both the plugin and fragment
-        // folders
-        final URL imagePath = FileLocator.find(bundle, new Path(path), null);
+		// if the bundle is not ready then there is no image
+		final Bundle bundle = Platform.getBundle(bundleID);
+		final int bundleState = bundle.getState();
+		if((bundleState != Bundle.ACTIVE) && (bundleState != Bundle.STARTING) && (bundleState != Bundle.RESOLVED))
+			return null;
 
-        if (imagePath != null)
-            return ImageDescriptor.createFromURL(imagePath);
+		// look for the image (this will check both the plugin and fragment
+		// folders
+		final URL imagePath = FileLocator.find(bundle, new Path(path), null);
 
-        return null;
-    }
+		if(imagePath != null)
+			return ImageDescriptor.createFromURL(imagePath);
 
-    public static Image getImage(final String bundleID, final String path, final boolean storeToImageRegistry) {
-        assert (bundleID != null) : "No bundle defined";
-        assert (path != null) : "No path defined";
+		return null;
+	}
 
-        Image image = getDefault().getImageRegistry().get(bundleID + path);
-        if (image == null) {
-            ImageDescriptor descriptor = getImageDescriptor(bundleID, path);
-            if (descriptor != null) {
-                image = descriptor.createImage();
+	public static Image getImage(final String bundleID, final String path, final boolean storeToImageRegistry) {
+		assert (bundleID != null) : "No bundle defined";
+		assert (path != null) : "No path defined";
 
-                if (storeToImageRegistry)
-                    getDefault().getImageRegistry().put(bundleID + path, image);
-            }
-        }
+		Image image = getDefault().getImageRegistry().get(bundleID + path);
+		if(image == null) {
+			ImageDescriptor descriptor = getImageDescriptor(bundleID, path);
+			if(descriptor != null) {
+				image = descriptor.createImage();
 
-        return image;
-    }
+				if(storeToImageRegistry)
+					getDefault().getImageRegistry().put(bundleID + path, image);
+			}
+		}
 
-    protected final File getConfigurationFile(final String name) {
-        return getStateLocation().append(name).toFile();
-    }
+		return image;
+	}
+
+	protected final File getConfigurationFile(final String name) {
+		return getStateLocation().append(name).toFile();
+	}
 
 }

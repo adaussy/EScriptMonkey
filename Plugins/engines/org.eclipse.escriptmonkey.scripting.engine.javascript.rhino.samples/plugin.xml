@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+ <extension
+         point="org.eclipse.ui.newWizards">
+    <category
+            id="org.eclipse.eclipsemonkey.newsamplecategory"
+            name="EScript Monkey Script Examples"
+            parentCategory="org.eclipse.ui.Examples">
+      </category>
+    <wizard
+          category="org.eclipse.ui.Examples/org.eclipse.eclipsemonkey.newsamplecategory"
+          class="org.eclipse.eclipsemonkey.lang.javascript.examples.ExampleWizards"
+          icon="icons/eclipse_monkey_js.png"
+          id="org.eclipse.eclipsemonkey.examples"
+          name="EScript Monkey Javascripts Examples">
+    </wizard>
+   </extension>
+</plugin>

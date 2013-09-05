@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+ <extension
+         point="org.eclipse.ui.newWizards">
+    <wizard
+          category="org.eclipse.ui.Examples/org.eclipse.eclipsemonkey.newsamplecategory"
+          class="org.eclipse.eclipsemonkey.lang.python.examples.PythonMonkeyExamplesWizard"
+          icon="icons/escript_monkey_py.png"
+          id="org.eclipse.eclipsemonkey.lang.python.examples"
+          name="EScript Monkey Pyton Scripts Examples">
+    </wizard>
+   </extension>
+</plugin>
