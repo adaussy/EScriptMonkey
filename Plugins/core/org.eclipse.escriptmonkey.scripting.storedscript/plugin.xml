@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+  <extension
+         id="EScript_Monkey_Nature"
+         name="EScript_Monkey_Nature"
+         point="org.eclipse.core.resources.natures">
+      <runtime>
+         <run
+               class="org.eclipse.escriptmonkey.scripting.storedscript.EScriptMonkeyMonkeyProjectNature">
+         </run>
+      </runtime>
+   </extension>
+</plugin>

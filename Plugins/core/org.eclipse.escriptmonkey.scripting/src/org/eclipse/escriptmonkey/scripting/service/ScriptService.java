@@ -15,9 +15,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -28,6 +30,7 @@ import org.eclipse.escriptmonkey.scripting.EngineDescription;
 import org.eclipse.escriptmonkey.scripting.IScriptEngine;
 import org.eclipse.escriptmonkey.scripting.IScriptEngineLaunchExtension;
 import org.eclipse.escriptmonkey.scripting.IScriptService;
+import org.eclipse.escriptmonkey.scripting.ScriptType;
 import org.eclipse.escriptmonkey.scripting.modules.IModuleWrapper;
 import org.eclipse.escriptmonkey.scripting.modules.ModuleDefinition;
 
@@ -104,7 +107,7 @@ public class ScriptService implements IScriptService {
 		// return first engine where ID matches or (in case no ID is provided)
 		// scriptType matches
 		for(EngineDescription description : engines) {
-			if(description.getSupportedScriptTypes().contains(scriptType)) {
+			if(description.getSupportedScriptTypesNames().contains(scriptType)) {
 				// engine found, launch
 				IScriptEngine engine = createEngine(description);
 				if(engine != null)
@@ -139,6 +142,36 @@ public class ScriptService implements IScriptService {
 		return extensions;
 	}
 
+	private static final String EXTENSION_FILE = "extension_file";
+
+	private static final String TYPE = "type";
+
+
+	protected Map<String, ScriptType> scriptType = null;
+
+	public Map<String, ScriptType> getKownSwriptType() {
+		if(scriptType == null) {
+			scriptType = new HashMap<String, ScriptType>();
+			final IConfigurationElement[] config = Platform.getExtensionRegistry().getConfigurationElementsFor(EXTENSION_MODULE_ID);
+
+			for(final IConfigurationElement e : config) {
+				if("scriptType".equals(e.getName())) {
+					String typeAttr = e.getAttribute(TYPE);
+					if(typeAttr != null) {
+						ScriptType type = new ScriptType();
+						type.setScritpType(typeAttr);
+						String extension = e.getAttribute(EXTENSION_FILE);
+						if(extension != null) {
+							type.setExtension(extension);
+						}
+						scriptType.put(type.getScritpType(), type);
+					}
+				}
+			}
+		}
+		return scriptType;
+	}
+
 	private Map<String, EngineDescription> enginesDescription = null;
 
 	protected Map<String, EngineDescription> getEnginesDescription() {
@@ -155,6 +188,17 @@ public class ScriptService implements IScriptService {
 		}
 		return enginesDescription;
 	}
+
+	public Set<ScriptType> getHandleScriptType() {
+		Set<ScriptType> result = new HashSet<ScriptType>();
+		for(EngineDescription desc : getEnginesDescription().values()) {
+			for(ScriptType scriptType : desc.getSupportedScriptTypes()) {
+				result.add(scriptType);
+			}
+		}
+		return result;
+	}
+
 
 	@Override
 	public Collection<EngineDescription> getEngines() {

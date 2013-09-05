@@ -256,14 +256,4 @@
          </enablement>
       </consolePageParticipant>
    </extension>
-    <extension
-         id="EScript_Monkey_Nature"
-         name="EScript_Monkey_Nature"
-         point="org.eclipse.core.resources.natures">
-      <runtime>
-         <run
-               class="org.eclipse.escriptmonkey.scripting.ui.EScriptMonkeyMonkeyProjectNature">
-         </run>
-      </runtime>
-   </extension>
   </plugin>

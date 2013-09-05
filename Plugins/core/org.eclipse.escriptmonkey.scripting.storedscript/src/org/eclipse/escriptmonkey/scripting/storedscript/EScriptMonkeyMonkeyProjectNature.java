@@ -8,7 +8,7 @@
  * Contributors:
  *     Arthur Daussy - initial implementation
  *******************************************************************************/
-package org.eclipse.escriptmonkey.scripting.ui;
+package org.eclipse.escriptmonkey.scripting.storedscript;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectNature;

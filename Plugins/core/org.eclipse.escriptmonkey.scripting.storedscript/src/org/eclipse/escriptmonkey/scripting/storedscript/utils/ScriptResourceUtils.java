@@ -8,13 +8,16 @@
  * Contributors:
  *     Arthur Daussy - initial implementation
  *******************************************************************************/
-package org.eclipse.escriptmonkey.scripting.ui.utils;
+package org.eclipse.escriptmonkey.scripting.storedscript.utils;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.escriptmonkey.scripting.EngineDescription;
+import org.eclipse.escriptmonkey.scripting.ScriptType;
+import org.eclipse.escriptmonkey.scripting.service.ScriptService;
 import org.eclipse.escriptmonkey.scripting.storedscript.EScriptMonkeyMonkeyProjectNature;
 
 /**
@@ -28,7 +31,7 @@ public class ScriptResourceUtils {
 	protected ScriptResourceUtils() {
 	}
 
-	public static boolean isScriptMonkeyProject(IProject project) {
+	public static boolean isEclipseMonkeyProject(IProject project) {
 		if(project != null && project.exists()) {
 			try {
 				return project.hasNature(EScriptMonkeyMonkeyProjectNature.ESCRIPT_MONKEY_NATURE);
@@ -43,7 +46,7 @@ public class ScriptResourceUtils {
 		if(resource != null) {
 			IProject project = resource.getProject();
 			if(project.exists()) {
-				return isScriptMonkeyProject(project) && isCorrectFileExtension(resource);
+				return isEclipseMonkeyProject(project) && isCorrectFileExtension(resource);
 			} else {
 				//Handle case when file is outside eclipse or the IProject has been deleted
 				return isCorrectFileExtension(resource);
@@ -53,16 +56,22 @@ public class ScriptResourceUtils {
 	}
 
 	public static boolean isCorrectFileExtension(IResource resource) {
-		return true;
-		/*
-		 * TODO
-		 */
-		//		return ScriptService.getInstance().getLanguageStore().keySet().contains(resource.getFileExtension());
+		String fileExtension = resource.getFileExtension();
+		if(fileExtension != null) {
+			for(EngineDescription desc : ScriptService.getInstance().getEngines()) {
+				for(ScriptType type : desc.getSupportedScriptTypes()) {
+					if(fileExtension.equals(type.getExtension())) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
 	}
 
-	public static void addEScriptMoneyNature(IProject project) throws CoreException {
+	public static void addEclipseMoneyNature(IProject project) throws CoreException {
 		if(project != null) {
-			if(!isScriptMonkeyProject(project)) {
+			if(!isEclipseMonkeyProject(project)) {
 				IProjectDescription description = project.getDescription();
 				String[] natures = description.getNatureIds();
 				String[] newNatures = new String[natures.length + 1];
