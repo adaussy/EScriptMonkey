@@ -56,13 +56,12 @@ public class StoredScriptService {
 	private UpdateMonkeyActionsResourceChangeListener workspaceListener = new UpdateMonkeyActionsResourceChangeListener();
 
 	StoredScriptService() {
+		init();
 	}
 
-	private boolean init = false;
 
 	public void init() {
 		try {
-			init = true;
 			rescanAllFiles();
 			ResourcesPlugin.getWorkspace().addResourceChangeListener(workspaceListener);
 		} catch (CoreException e) {
@@ -74,15 +73,11 @@ public class StoredScriptService {
 
 	private static class SingletonHolder {
 
-		private static StoredScriptService INSTANCE = new StoredScriptService();
+		public static final StoredScriptService INSTANCE = new StoredScriptService();
 	}
 
 	public static StoredScriptService getInstance() {
-		StoredScriptService instance = SingletonHolder.INSTANCE;
-		if(!instance.init) {
-			instance.init();
-		}
-		return instance;
+		return SingletonHolder.INSTANCE;
 	}
 
 	private Map<IPath, StoredScript> storedScript = null;
@@ -119,7 +114,7 @@ public class StoredScriptService {
 
 	public void processNewOrChangedScript(IPath path, boolean notify) {
 		if(path != null) {
-			IStoredScript storedScript = StoredScriptService.getInstance().getStoreScript(path);
+			IStoredScript storedScript = getStoreScript(path);
 			if(storedScript == null) {
 				StoredScript store = new StoredScript();
 				store.setScriptPath(path);
