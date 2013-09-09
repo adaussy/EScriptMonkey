@@ -14,52 +14,20 @@
 
 package org.eclipse.escriptmonkey.scripting.storedscript.metada;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Map.Entry;
+
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 
 /**
- * Implementation of metadataScriptMetadata
+ * Implementation of metadata
  */
-public class ScriptMetadata implements IMenuMedata, IModuleMetadata, IDescriptionMetada {
+public class ScriptMetadata implements IScriptMetadata {
 
-	private Map<String, Object> metadataStore = new HashMap<String, Object>();
+	private Multimap<String, String> metadataStore = ArrayListMultimap.create();
 
-	@Override
-	public String getDescription() {
-		return (String)metadataStore.get(DESCRIPTION_KEY);
-	}
-
-	@Override
-	public List<String> getModules() {
-		return (List<String>)metadataStore.get(MODULE_KEY);
-	}
-
-	@Override
-	public String getMenu() {
-		return (String)metadataStore.get(MENU_KEY);
-	}
-
-	@Override
-	public Map<String, Object> getMetadataMap() {
-		return metadataStore;
-	}
-
-	@Override
-	public void setDescription(String description) {
-		metadataStore.put(DESCRIPTION_KEY, description);
-	}
-
-	@Override
-	public void addModule(String module) {
-		metadataStore.put(MODULE_KEY, module);
-
-	}
-
-	@Override
-	public void setMenu(String menu) {
-		metadataStore.put(MENU_KEY, menu);
-	}
 
 	/*
 	 * (non-Javadoc)
@@ -68,12 +36,22 @@ public class ScriptMetadata implements IMenuMedata, IModuleMetadata, IDescriptio
 	 */
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder("ScriptMetadata metadataStore= \n");
-		for(java.util.Map.Entry<String, Object> entry : metadataStore.entrySet()) {
-			builder.append("[").append(entry.getKey()).append(" ; ").append(entry.getValue().toString()).append("]\n");
+		StringBuilder builder = new StringBuilder("ScriptMetadata {\n");
+		for(Entry<String, Collection<String>> entry : metadataStore.asMap().entrySet()) {
+			builder.append("  ").append(entry.getKey()).append(" : \n");
+			Iterator<String> ite = entry.getValue().iterator();
+			while(ite.hasNext()) {
+				String text = (String)ite.next();
+				builder.append("    ").append(text).append("\n");
+
+			}
 		}
-		builder.append("}\n");
 		return builder.toString();
+	}
+
+	@Override
+	public Multimap<String, String> getMetadataMap() {
+		return metadataStore;
 	}
 
 

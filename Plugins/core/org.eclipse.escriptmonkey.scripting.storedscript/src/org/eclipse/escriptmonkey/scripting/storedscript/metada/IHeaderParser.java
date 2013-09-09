@@ -10,18 +10,18 @@
  *******************************************************************************/
 package org.eclipse.escriptmonkey.scripting.storedscript.metada;
 
-import com.google.common.collect.Multimap;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.escriptmonkey.scripting.storedscript.IStoredScript;
+import org.eclipse.escriptmonkey.scripting.storedscript.impl.StoredScript;
 
 
 /**
- * Representation of metadata
- * 
+ * A Header parser is a class which is able to extract the header from a {@link StoredScript}
  * @author adaussy
- * 
+ *
  */
-public interface IScriptMetadata {
+public interface IHeaderParser {
 
-	public Multimap<String, String> getMetadataMap();
-
+	public String getHeader(IStoredScript storeScript) throws CoreException;
 
 }

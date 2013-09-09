@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
+ <extension-point id="metadata" name="metadata" schema="schema/metadata_parser.exsd"/>
   <extension
          id="EScript_Monkey_Nature"
          name="EScript_Monkey_Nature"
@@ -11,4 +12,27 @@
          </run>
       </runtime>
    </extension>
+  <extension
+        point="org.eclipse.escriptmonkey.scripting.storedscript.metadata">
+     <metadata
+           name="Description"
+           regex="Description:\s*(.*)$">
+     </metadata>
+     <metadata
+           name="Scope"
+           regex="Scope:\s*(.*)$">
+     </metadata>
+     <metadata
+           name="Key"
+           regex="Key:\\s*(.*)$">
+     </metadata>
+     <metadata
+           name="Menu"
+           regex="Menu:\s*(.*)$">
+     </metadata>
+     <metadata
+           name="Listener"
+           regex="Listener:\s*(.*)$">
+     </metadata>
+  </extension>
 </plugin>

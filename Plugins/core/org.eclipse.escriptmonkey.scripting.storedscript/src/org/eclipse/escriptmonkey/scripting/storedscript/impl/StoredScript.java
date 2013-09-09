@@ -13,8 +13,9 @@
 package org.eclipse.escriptmonkey.scripting.storedscript.impl;
 
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.escriptmonkey.scripting.ScriptType;
 import org.eclipse.escriptmonkey.scripting.storedscript.IStoredScript;
-import org.eclipse.escriptmonkey.scripting.storedscript.metada.ScriptMetadata;
+import org.eclipse.escriptmonkey.scripting.storedscript.metada.IScriptMetadata;
 
 /**
  * StoredScript
@@ -30,7 +31,9 @@ public class StoredScript implements IStoredScript {
 	/**
 	 * 
 	 */
-	protected ScriptMetadata metadata;
+	protected IScriptMetadata metadata;
+
+	private ScriptType scriptType;
 
 
 	@Override
@@ -39,7 +42,7 @@ public class StoredScript implements IStoredScript {
 	}
 
 	@Override
-	public ScriptMetadata getMetadata() {
+	public IScriptMetadata getMetadata() {
 		return metadata;
 	}
 
@@ -59,7 +62,7 @@ public class StoredScript implements IStoredScript {
 	 *        the metadata to set
 	 */
 	@Override
-	public void setMetadata(ScriptMetadata metadata) {
+	public void setMetadata(IScriptMetadata metadata) {
 		this.metadata = metadata;
 	}
 
@@ -71,6 +74,17 @@ public class StoredScript implements IStoredScript {
 	@Override
 	public String toString() {
 		return "StoredScript {scriptPath=" + scriptPath + "\n, metadata=" + metadata + "}";
+	}
+
+	@Override
+	public ScriptType getScriptType() {
+		return scriptType;
+	}
+
+	@Override
+	public void setScriptType(ScriptType type) {
+		scriptType = type;
+
 	}
 
 

@@ -13,13 +13,14 @@ package org.eclipse.escriptmonkey.scripting.storedscript;
 import java.net.URL;
 
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.escriptmonkey.scripting.storedscript.metada.ScriptMetadata;
+import org.eclipse.escriptmonkey.scripting.ScriptType;
+import org.eclipse.escriptmonkey.scripting.storedscript.metada.IScriptMetadata;
 
 
 /**
  * A stored script is script stored a file
  * It identify with its path.
- * Note maybe {@link URL} should be use instead to be able to run online scrip
+ * Note maybe {@link URL} should be use instead to be able to run online script
  * 
  * @author adaussy
  * 
@@ -28,11 +29,15 @@ public interface IStoredScript {
 
 	public IPath getPath();
 
-	public ScriptMetadata getMetadata();
+	public IScriptMetadata getMetadata();
 
-	public abstract void setMetadata(ScriptMetadata metadata);
+	public void setMetadata(IScriptMetadata metadata);
 
-	public abstract void setScriptPath(IPath scriptPath);
+	public void setScriptPath(IPath scriptPath);
+
+	public ScriptType getScriptType();
+
+	public void setScriptType(ScriptType type);
 
 
 

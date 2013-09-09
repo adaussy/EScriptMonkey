@@ -31,6 +31,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.escriptmonkey.scripting.ScriptType;
+import org.eclipse.escriptmonkey.scripting.debug.Logger;
 import org.eclipse.escriptmonkey.scripting.service.ScriptService;
 import org.eclipse.escriptmonkey.scripting.storedscript.Activator;
 import org.eclipse.escriptmonkey.scripting.storedscript.IStoredScript;
@@ -51,9 +52,20 @@ import com.google.common.collect.Collections2;
  */
 public class StoredScriptService {
 
+	private static class SingletonHolder {
+
+		public static final StoredScriptService INSTANCE = new StoredScriptService();
+	}
+
+	public static StoredScriptService getInstance() {
+		return SingletonHolder.INSTANCE;
+	}
+
 	private List<IStoredScriptListener> listeners = new ArrayList<IStoredScriptListener>();
 
 	private UpdateMonkeyActionsResourceChangeListener workspaceListener = new UpdateMonkeyActionsResourceChangeListener();
+
+	private Map<IPath, StoredScript> storedScript = null;
 
 	StoredScriptService() {
 		init();
@@ -69,19 +81,6 @@ public class StoredScriptService {
 			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.PLUGIN_ID, e.getMessage()));
 		}
 	}
-
-
-	private static class SingletonHolder {
-
-		public static final StoredScriptService INSTANCE = new StoredScriptService();
-	}
-
-	public static StoredScriptService getInstance() {
-		return SingletonHolder.INSTANCE;
-	}
-
-	private Map<IPath, StoredScript> storedScript = null;
-
 
 	public Set<IStoredScript> getStoredScript() {
 		if(storedScript != null) {
@@ -102,7 +101,7 @@ public class StoredScriptService {
 
 	public void removeStoreScript(IPath path) {
 		if(path != null) {
-			// TODO Auto-generated method stub
+			storedScript.remove(path);
 			notifyChange(new ScriptNotification(NotificationType.DELETE, null, path));
 		}
 	}
@@ -116,18 +115,42 @@ public class StoredScriptService {
 		if(path != null) {
 			IStoredScript storedScript = getStoreScript(path);
 			if(storedScript == null) {
-				StoredScript store = new StoredScript();
-				store.setScriptPath(path);
-				this.storedScript.put(path, store);
-				if(notify) {
-					StoredScriptService.getInstance().notifyChange(new ScriptNotification(NotificationType.ADD, path, null));
+				storedScript = new StoredScript();
+				storedScript.setScriptPath(path);
+				ScriptType type = getMatchingScriptType((StoredScript)storedScript);
+				storedScript.setScriptType(type);
+				if(type == null) {
+					Logger.logError("Unable to find a matching script type for the stored script " + path.toOSString());
+				} else {
+					try {
+						storedScript.setMetadata(MetadaParserService.getInstance().parseMetadata(storedScript));
+					} catch (CoreException e) {
+						e.printStackTrace();
+						Logger.logError("Unable to pase metadata for script " + storedScript.getPath());
+						return;
+					}
+					this.storedScript.put(path, (StoredScript)storedScript);
+					if(notify) {
+						StoredScriptService.getInstance().notifyChange(new ScriptNotification(NotificationType.ADD, path, null));
+					}
 				}
+
 			} else {
 				if(notify) {
 					StoredScriptService.getInstance().notifyChange(new ScriptNotification(NotificationType.CHANGE, path, path));
 				}
 			}
 		}
+	}
+
+	public ScriptType getMatchingScriptType(StoredScript script) {
+		String fileExtension = script.getPath().getFileExtension();
+		for(ScriptType type : ScriptService.getInstance().getKownSwriptType().values()) {
+			if(type.getExtension().equals(fileExtension)) {
+				return type;
+			}
+		}
+		return null;
 	}
 
 	/**

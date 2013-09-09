@@ -16,4 +16,5 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.escriptmonkey.scripting.storedscript,
  org.eclipse.escriptmonkey.scripting.storedscript.metada,
- org.eclipse.escriptmonkey.scripting.storedscript.service
+ org.eclipse.escriptmonkey.scripting.storedscript.service,
+ org.eclipse.escriptmonkey.scripting.storedscript.utils

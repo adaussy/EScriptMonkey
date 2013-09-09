@@ -1,0 +1,170 @@
+/*******************************************************************************
+ * Copyright (c) 2013 Atos
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     Arthur Daussy - initial implementation
+ *******************************************************************************/
+package org.eclipse.escriptmonkey.scripting.storedscript.service;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.regex.Matcher;
+
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.escriptmonkey.scripting.ScriptType;
+import org.eclipse.escriptmonkey.scripting.debug.Logger;
+import org.eclipse.escriptmonkey.scripting.service.ScriptService;
+import org.eclipse.escriptmonkey.scripting.storedscript.IStoredScript;
+import org.eclipse.escriptmonkey.scripting.storedscript.metada.IHeaderParser;
+import org.eclipse.escriptmonkey.scripting.storedscript.metada.IScriptMetadata;
+import org.eclipse.escriptmonkey.scripting.storedscript.metada.Metadata;
+import org.eclipse.escriptmonkey.scripting.storedscript.metada.ScriptMetadata;
+
+
+/**
+ * Service use to parse metadata of a stored script
+ * 
+ * @author adaussy
+ * 
+ */
+public class MetadaParserService {
+
+	private static final String ID_ATTR_EXT_POINT = "id";
+
+	private static final String TYPE_ATTR_EXT_POINT = "type";
+
+	private static final String SCRIPT_TYPE_ATTR_EXT_POINT = "script_type";
+
+	private static final String PARSER_CLASS_ATTR_EXT_POINT = "parser_class";
+
+	private static final String METADATA_PARSER_EXT_POINT = "org.eclipse.escriptmonkey.scripting.storedscript.metadata";
+
+	private static final String PARSER_ATTR_EXT_POINT = "parser";
+
+
+	MetadaParserService() {
+	}
+
+
+	private static class SingletonHolder {
+
+		public static final MetadaParserService INSTANCE = new MetadaParserService();
+	}
+
+	public static MetadaParserService getInstance() {
+		return SingletonHolder.INSTANCE;
+	}
+
+	public IScriptMetadata parseMetadata(IStoredScript storedScript) throws CoreException {
+		IHeaderParser parser = getParserFor(storedScript.getScriptType());
+		if(parser == null) {
+			Logger.logError("Unable to find a metadata parser for the script " + storedScript.getPath().toOSString());
+			return null;
+		}
+		ScriptMetadata meta = new ScriptMetadata();
+		String header = parser.getHeader(storedScript);
+		if(header != null) {
+			for(Metadata metaDef : getMetadatas()) {
+				Matcher matcher = metaDef.getRegex().matcher(header);
+				while(matcher.find()) {
+					String data = matcher.group(1);
+					meta.getMetadataMap().put(metaDef.getName(), data);
+				}
+			}
+		}
+		return meta;
+	}
+
+	private Map<String, IHeaderParser> parsers = null;
+
+	private Map<ScriptType, IHeaderParser> parsersFromType = null;
+
+	private Set<Metadata> metadatas = null;
+
+
+
+
+
+	/**
+	 * @return the metadata
+	 */
+	public Set<Metadata> getMetadatas() {
+		if(metadatas == null) {
+			metadatas = new HashSet<Metadata>();
+			final IConfigurationElement[] config = Platform.getExtensionRegistry().getConfigurationElementsFor(METADATA_PARSER_EXT_POINT);
+
+			for(final IConfigurationElement e : config) {
+				if("metadata".equals(e.getName())) {
+					String name = e.getAttribute("name");
+					String regex = e.getAttribute("regex");
+					metadatas.add(new Metadata(name, regex));
+				}
+			}
+
+		}
+		return metadatas;
+	}
+
+	protected void init() {
+		if(parsers == null) {
+			parsers = new HashMap<String, IHeaderParser>();
+			parsersFromType = new HashMap<ScriptType, IHeaderParser>();
+			final IConfigurationElement[] config = Platform.getExtensionRegistry().getConfigurationElementsFor(METADATA_PARSER_EXT_POINT);
+
+			for(final IConfigurationElement e : config) {
+				if(PARSER_ATTR_EXT_POINT.equals(e.getName())) {
+					String id = e.getAttribute(ID_ATTR_EXT_POINT);
+					Object extension;
+					try {
+						extension = e.createExecutableExtension(PARSER_CLASS_ATTR_EXT_POINT);
+						if(extension instanceof IHeaderParser) {
+							IHeaderParser parser = (IHeaderParser)extension;
+							parsers.put(id, parser);
+							for(IConfigurationElement child : e.getChildren(SCRIPT_TYPE_ATTR_EXT_POINT)) {
+								String type = child.getAttribute(TYPE_ATTR_EXT_POINT);
+								ScriptType scriptType = ScriptService.getInstance().getKownSwriptType().get(type);
+								if(scriptType == null) {
+									Logger.logError("[Metadata parser] The reference script type with the id " + type + " is uncorrect");
+								} else {
+									/*
+									 * TODO Should be improve to use priority
+									 */
+									parsersFromType.put(scriptType, parser);
+								}
+							}
+						}
+					} catch (CoreException e1) {
+						e1.printStackTrace();
+					}
+				}
+			}
+		}
+	}
+
+
+	public IHeaderParser getParserFor(ScriptType type) {
+		if(type != null) {
+			if(parsersFromType == null) {
+				init();
+			}
+			return parsersFromType.get(type);
+		}
+		return null;
+	}
+
+	public Set<IHeaderParser> getParsers() {
+		if(parsers == null) {
+			init();
+		}
+		return Collections.unmodifiableSet(new HashSet<IHeaderParser>(parsers.values()));
+	}
+}

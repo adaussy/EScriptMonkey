@@ -42,5 +42,15 @@
             engineID="org.eclipse.escriptmonkey.scripting.javascript.rhino.debug">
       </launchExtension>
    </extension>
+   <extension
+         point="org.eclipse.escriptmonkey.scripting.storedscript.metadata">
+      <parser
+            id="JavaScriptMetadaHeaderParser"
+            parser_class="org.eclipse.escriptmonkey.scripting.engine.javascript.rhino.JavascriptHeaderParser">
+         <script_type
+               type="JavaScript">
+         </script_type>
+      </parser>
+   </extension>
 
 </plugin>
