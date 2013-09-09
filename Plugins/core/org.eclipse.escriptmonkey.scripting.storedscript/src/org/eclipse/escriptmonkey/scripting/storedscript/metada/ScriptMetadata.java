@@ -36,14 +36,13 @@ public class ScriptMetadata implements IScriptMetadata {
 	 */
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder("ScriptMetadata {\n");
+		StringBuilder builder = new StringBuilder("ScriptMetadata :\n");
 		for(Entry<String, Collection<String>> entry : metadataStore.asMap().entrySet()) {
-			builder.append("  ").append(entry.getKey()).append(" : \n");
+			builder.append("    ").append(entry.getKey()).append(" : \n");
 			Iterator<String> ite = entry.getValue().iterator();
 			while(ite.hasNext()) {
 				String text = (String)ite.next();
-				builder.append("    ").append(text).append("\n");
-
+				builder.append("      ").append(text).append("\n");
 			}
 		}
 		return builder.toString();

@@ -15,5 +15,15 @@
          </supportedScriptType>
       </engine>
    </extension>
+   <extension
+         point="org.eclipse.escriptmonkey.scripting.storedscript.metadata">
+      <parser
+            id="org.eclipse.escriptmonkey.scripting.engine.python.jython.parser"
+            parser_class="org.eclipse.escriptmonkey.scripting.engine.python.jython.PythonHeaderParser">
+         <script_type
+               type="Python">
+         </script_type>
+      </parser>
+   </extension>
 
 </plugin>

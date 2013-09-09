@@ -19,6 +19,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.escriptmonkey.scripting.debug.Logger;
 import org.eclipse.escriptmonkey.scripting.storedscript.IStoredScript;
+import org.eclipse.escriptmonkey.scripting.storedscript.metada.IScriptMetadata;
 import org.eclipse.escriptmonkey.scripting.storedscript.service.StoredScriptService;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
@@ -47,8 +48,6 @@ public class DisplaySelectedScriptMedataHandler extends AbstractHandler {
 	 */
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
-		//		MessageDialog.openInformation(window.getShell(), "Language", StoredScriptService.getInstance().getHandleFileExtension().toString());
-		//		MessageDialog.openInformation(window.getShell(), "Language", StoredScriptService.getInstance().getStoredScript().toString());
 		ISelection selection = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getSelectionService().getSelection();
 		if(selection instanceof IStructuredSelection) {
 			IStructuredSelection strucSelect = (IStructuredSelection)selection;
@@ -58,7 +57,12 @@ public class DisplaySelectedScriptMedataHandler extends AbstractHandler {
 				IPath location = file.getLocation();
 				IStoredScript script = StoredScriptService.getInstance().getStoreScript(location);
 				if(script != null) {
-					MessageDialog.openInformation(window.getShell(), "Metadata", script.getMetadata().toString());
+					IScriptMetadata metadata = script.getMetadata();
+					if(metadata != null) {
+						MessageDialog.openInformation(window.getShell(), "Metadata", metadata.toString());
+					} else {
+						Logger.logError("The file " + location + " can not be parse to get metadata");
+					}
 				} else {
 					Logger.logError("The file " + location + " is not a in the stored script registry");
 				}
