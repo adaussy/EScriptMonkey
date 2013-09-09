@@ -29,9 +29,12 @@ public interface IStoredScript {
 
 	public IPath getPath();
 
+
 	public IScriptMetadata getMetadata();
 
+
 	public void setMetadata(IScriptMetadata metadata);
+
 
 	public void setScriptPath(IPath scriptPath);
 
