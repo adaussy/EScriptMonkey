@@ -14,14 +14,15 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.escriptmonkey.scripting.storedscript.IStoredScript;
 import org.eclipse.escriptmonkey.scripting.storedscript.metada.AbstractFileHeaderParser;
+import org.eclipse.escriptmonkey.scripting.storedscript.storedscript.IStoredScript;
 
 
 /**
  * Header parser for python language
+ * 
  * @author adaussy
- *
+ * 
  */
 public class PythonHeaderParser extends AbstractFileHeaderParser {
 
@@ -33,7 +34,7 @@ public class PythonHeaderParser extends AbstractFileHeaderParser {
 
 	@Override
 	public String getHeader(IStoredScript storeScript) throws CoreException {
-		String content = getStoredScriptContent(storeScript);
+		String content = storeScript.getContent();
 		if(content != null) {
 			StringBuilder headerBuilder = new StringBuilder();
 			Matcher matcher = getPattern().matcher(content);

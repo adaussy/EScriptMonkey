@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.escriptmonkey.scripting.storedscript.notification;
 
+import org.eclipse.emf.common.notify.Notification;
+
 
 /**
  * Listener of store script changes
@@ -19,6 +21,6 @@ package org.eclipse.escriptmonkey.scripting.storedscript.notification;
  */
 public interface IStoredScriptListener {
 
-	public void scriptChange(IScriptNotification scriptNotif);
+	public void scriptChange(Notification scriptNotif);
 
 }

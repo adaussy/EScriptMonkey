@@ -13,11 +13,8 @@ package org.eclipse.escriptmonkey.scripting.storedscript.service;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.resources.IContainer;
@@ -30,16 +27,20 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.escriptmonkey.scripting.ScriptType;
-import org.eclipse.escriptmonkey.scripting.debug.Logger;
 import org.eclipse.escriptmonkey.scripting.service.ScriptService;
 import org.eclipse.escriptmonkey.scripting.storedscript.Activator;
-import org.eclipse.escriptmonkey.scripting.storedscript.IStoredScript;
-import org.eclipse.escriptmonkey.scripting.storedscript.impl.StoredScript;
-import org.eclipse.escriptmonkey.scripting.storedscript.notification.IScriptNotification;
-import org.eclipse.escriptmonkey.scripting.storedscript.notification.IScriptNotification.NotificationType;
 import org.eclipse.escriptmonkey.scripting.storedscript.notification.IStoredScriptListener;
-import org.eclipse.escriptmonkey.scripting.storedscript.notification.ScriptNotification;
+import org.eclipse.escriptmonkey.scripting.storedscript.storedscript.IStoredScript;
+import org.eclipse.escriptmonkey.scripting.storedscript.storedscript.StoredScriptRegistry;
+import org.eclipse.escriptmonkey.scripting.storedscript.storedscript.StoredscriptFactory;
+import org.eclipse.escriptmonkey.scripting.storedscript.storedscript.impl.StoredScriptRegistryImpl;
+import org.eclipse.escriptmonkey.scripting.storedscript.utils.URIScriptUtils;
 
 import com.google.common.collect.Collections2;
 
@@ -57,7 +58,14 @@ public class StoredScriptService {
 		public static final StoredScriptService INSTANCE = new StoredScriptService();
 	}
 
+	private boolean init = false;;
+
+
+
 	public static StoredScriptService getInstance() {
+		if(!SingletonHolder.INSTANCE.init) {
+			SingletonHolder.INSTANCE.init();
+		}
 		return SingletonHolder.INSTANCE;
 	}
 
@@ -65,15 +73,28 @@ public class StoredScriptService {
 
 	private UpdateMonkeyActionsResourceChangeListener workspaceListener = new UpdateMonkeyActionsResourceChangeListener();
 
-	private Map<IPath, StoredScript> storedScript = null;
 
 	StoredScriptService() {
-		init();
+
 	}
 
+	private ResourceSet resourceSet = null;
 
 	public void init() {
 		try {
+			init = true;
+			resourceSet = new ResourceSetImpl();
+			ResourceImpl resource = new ResourceImpl();
+			resourceSet.getResources().add(resource);
+			registry = StoredscriptFactory.eINSTANCE.createStoredScriptRegistry();
+			resource.getContents().add(registry);
+			//Init type for extension point
+			for(ScriptType type : ScriptService.getInstance().getKownSwriptType().values()) {
+				org.eclipse.escriptmonkey.scripting.storedscript.storedscript.ScriptType scriptType = StoredscriptFactory.eINSTANCE.createScriptType();
+				scriptType.setType(type.getScritpType());
+				scriptType.setExtension(type.getExtension());
+				registry.getScriptTypes().add(scriptType);
+			}
 			rescanAllFiles();
 			ResourcesPlugin.getWorkspace().addResourceChangeListener(workspaceListener);
 		} catch (CoreException e) {
@@ -83,74 +104,54 @@ public class StoredScriptService {
 	}
 
 	public Set<IStoredScript> getStoredScript() {
-		if(storedScript != null) {
-			return Collections.unmodifiableSet(new HashSet<IStoredScript>(storedScript.values()));
+		if(registry != null) {
+			return Collections.unmodifiableSet(new HashSet<IStoredScript>(registry.getScripts()));
 		}
 		return Collections.emptySet();
 	}
 
-	public IStoredScript getStoreScript(IPath path) {
-		return storedScript.get(path);
+	public IStoredScript getStoreScript(String uri) {
+		return registry.getStoredScript(uri);
 	}
 
-	public void notifyChange(IScriptNotification notification) {
+	public IStoredScript getFileStoredScript(URI uri) {
+		return getStoreScript(URIScriptUtils.getStringFromURI(uri));
+	}
+
+	public void notifyChange(Notification notification) {
 		for(IStoredScriptListener l : listeners) {
 			l.scriptChange(notification);
 		}
 	}
 
-	public void removeStoreScript(IPath path) {
-		if(path != null) {
-			storedScript.remove(path);
-			notifyChange(new ScriptNotification(NotificationType.DELETE, null, path));
+	public void addListener(IStoredScriptListener listener) {
+		listeners.add(listener);
+	}
+
+	public void removeListener(IStoredScriptListener listener) {
+		listeners.remove(listener);
+	}
+
+	public void removeStoreScript(IStoredScript storeScript) {
+		if(registry != null) {
+			registry.getScripts().remove(storeScript);
 		}
 	}
 
-	public void processNewOrChangedScript(IPath path) {
-		processNewOrChangedScript(path, true);
+
+	private StoredScriptRegistry registry = null;
+
+
+	public void processNewOrChangedScript(String uri) {
+		registry.processNewOrChangedScript(uri);
 	}
 
-
-	public void processNewOrChangedScript(IPath path, boolean notify) {
-		if(path != null) {
-			IStoredScript storedScript = getStoreScript(path);
-			if(storedScript == null) {
-				storedScript = new StoredScript();
-				storedScript.setScriptPath(path);
-				ScriptType type = getMatchingScriptType((StoredScript)storedScript);
-				storedScript.setScriptType(type);
-				if(type == null) {
-					Logger.logError("Unable to find a matching script type for the stored script " + path.toOSString());
-				} else {
-					try {
-						storedScript.setMetadata(MetadaParserService.getInstance().parseMetadata(storedScript));
-					} catch (CoreException e) {
-						e.printStackTrace();
-						Logger.logError("Unable to pase metadata for script " + storedScript.getPath());
-						return;
-					}
-					this.storedScript.put(path, (StoredScript)storedScript);
-					if(notify) {
-						StoredScriptService.getInstance().notifyChange(new ScriptNotification(NotificationType.ADD, path, null));
-					}
-				}
-
-			} else {
-				if(notify) {
-					StoredScriptService.getInstance().notifyChange(new ScriptNotification(NotificationType.CHANGE, path, path));
-				}
-			}
-		}
+	public org.eclipse.escriptmonkey.scripting.storedscript.storedscript.ScriptType getScriptType(String type) {
+		return registry.getScriptType(type);
 	}
 
-	public ScriptType getMatchingScriptType(StoredScript script) {
-		String fileExtension = script.getPath().getFileExtension();
-		for(ScriptType type : ScriptService.getInstance().getKownSwriptType().values()) {
-			if(type.getExtension().equals(fileExtension)) {
-				return type;
-			}
-		}
-		return null;
+	public org.eclipse.escriptmonkey.scripting.storedscript.storedscript.ScriptType getMatchingScriptType(IStoredScript script) {
+		return ((StoredScriptRegistryImpl)registry).getMatchingScriptType(script);
 	}
 
 	/**
@@ -159,14 +160,10 @@ public class StoredScriptService {
 	 * @throws CoreException
 	 */
 	public void rescanAllFiles() throws CoreException {
-		if(storedScript == null) {
-			storedScript = new HashMap<IPath, StoredScript>();
+		if(registry == null) {
+			registry = StoredscriptFactory.eINSTANCE.createStoredScriptRegistry();
 		} else {
-			ArrayList<StoredScript> scriptToRemove = new ArrayList<StoredScript>(storedScript.values());
-			for(Iterator iterator = scriptToRemove.iterator(); iterator.hasNext();) {
-				StoredScript storedScript = (StoredScript)iterator.next();
-				removeStoreScript(storedScript.getPath());
-			}
+			registry.getScripts().clear();
 		}
 
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
@@ -200,7 +197,7 @@ public class StoredScriptService {
 					IFile file = (IFile)resource;
 					if(extensions.contains(file.getFileExtension())) {
 						IPath location = file.getLocation();
-						processNewOrChangedScript(location, notify);
+						processNewOrChangedScript(URIScriptUtils.createStringURI(location));
 						scripts.add(file);
 					}
 				}

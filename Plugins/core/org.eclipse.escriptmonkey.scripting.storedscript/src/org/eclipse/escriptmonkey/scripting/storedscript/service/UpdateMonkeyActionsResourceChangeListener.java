@@ -14,6 +14,7 @@ package org.eclipse.escriptmonkey.scripting.storedscript.service;
 
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
+import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.escriptmonkey.scripting.storedscript.notification.ScriptDeltaResourceVisitor;
@@ -34,17 +35,22 @@ public class UpdateMonkeyActionsResourceChangeListener implements IResourceChang
 	 * @see org.eclipse.core.resources.IResourceChangeListener#resourceChanged(org.eclipse.core.resources.IResourceChangeEvent)
 	 */
 	public void resourceChanged(IResourceChangeEvent event) {
-		boolean changed = false;
+		if(event != null) {
+			boolean changed = false;
 
-		IResourceDeltaVisitor visitor = new ScriptDeltaResourceVisitor();
+			IResourceDeltaVisitor visitor = new ScriptDeltaResourceVisitor();
 
-		try {
-			event.getDelta().accept(visitor);
-			if(changed) {
-				createTheMonkeyMenu();
+			try {
+				IResourceDelta delta = event.getDelta();
+				if(delta != null) {
+					delta.accept(visitor);
+				}
+				if(changed) {
+					createTheMonkeyMenu();
+				}
+			} catch (CoreException e) {
+				e.printStackTrace();
 			}
-		} catch (CoreException e) {
-			e.printStackTrace();
 		}
 	}
 

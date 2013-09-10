@@ -67,4 +67,29 @@ public class Utilities {
 				in.close();
 		}
 	}
+
+	public static String getFileContents(InputStream in) throws CoreException, IOException {
+		final int BUF_SIZE = 100000;
+		try {
+			if(in != null) {
+				StringBuffer result = new StringBuffer();
+				while(true) {
+					byte[] buf = new byte[BUF_SIZE];
+					int count = in.read(buf);
+					if(count <= 0)
+						return result.toString();
+					byte[] buf2 = new byte[count];
+					for(int k = 0; k < count; k++) {
+						buf2[k] = buf[k];
+					}
+					result.append(new String(buf2));
+				}
+			} else {
+				return "";
+			}
+		} finally {
+			if(in != null)
+				in.close();
+		}
+	}
 }

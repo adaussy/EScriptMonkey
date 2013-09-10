@@ -17,10 +17,12 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.escriptmonkey.scripting.debug.Logger;
-import org.eclipse.escriptmonkey.scripting.storedscript.IStoredScript;
-import org.eclipse.escriptmonkey.scripting.storedscript.metada.IScriptMetadata;
 import org.eclipse.escriptmonkey.scripting.storedscript.service.StoredScriptService;
+import org.eclipse.escriptmonkey.scripting.storedscript.storedscript.IStoredScript;
+import org.eclipse.escriptmonkey.scripting.storedscript.storedscript.ScriptMetadata;
+import org.eclipse.escriptmonkey.scripting.storedscript.utils.URIScriptUtils;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -55,14 +57,14 @@ public class DisplaySelectedScriptMedataHandler extends AbstractHandler {
 			if(first instanceof IFile) {
 				IFile file = (IFile)first;
 				IPath location = file.getLocation();
-				IStoredScript script = StoredScriptService.getInstance().getStoreScript(location);
+				IStoredScript script = StoredScriptService.getInstance().getStoreScript(URIScriptUtils.createStringURI(location));
 				if(script != null) {
-					IScriptMetadata metadata = script.getMetadata();
-					if(metadata != null) {
-						MessageDialog.openInformation(window.getShell(), "Metadata", metadata.toString());
-					} else {
-						Logger.logError("The file " + location + " can not be parse to get metadata");
+					EList<ScriptMetadata> metadatas = script.getMetadatas();
+					StringBuilder builder = new StringBuilder();
+					for(ScriptMetadata m : metadatas) {
+						builder.append(metadatas.toString()).append("\n");
 					}
+					MessageDialog.openInformation(window.getShell(), "Metadata", builder.toString());
 				} else {
 					Logger.logError("The file " + location + " is not a in the stored script registry");
 				}

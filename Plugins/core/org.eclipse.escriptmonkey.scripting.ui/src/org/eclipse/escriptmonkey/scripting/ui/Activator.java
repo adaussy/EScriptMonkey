@@ -17,6 +17,7 @@ import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.Bundle;
@@ -98,6 +99,31 @@ public class Activator extends AbstractUIPlugin {
 
 	protected final File getConfigurationFile(final String name) {
 		return getStateLocation().append(name).toFile();
+	}
+
+	/**
+	 * 
+	 * This method returns an <code>org.eclipse.swt.graphics.Image</code> identified by its pluginId and iconPath.<BR>
+	 */
+	public static Image getPluginIconImage(String pluginId, String iconPath) {
+		String key = pluginId + iconPath;
+		ImageRegistry registry = getDefault().getImageRegistry();
+		Image image = registry.get(key);
+		if(image == null) {
+			ImageDescriptor desc = getImageDescriptor(pluginId, iconPath);
+			registry.put(key, desc);
+			image = registry.get(key);
+		}
+		return image;
+	}
+
+	public static Image getLocalPluginIconImage(String iconPath) {
+		return getPluginIconImage(PLUGIN_ID, iconPath);
+	}
+
+
+	public static ImageDescriptor getLocalImageDescriptor(String iconPath) {
+		return getImageDescriptor(PLUGIN_ID, iconPath);
 	}
 
 }

@@ -10,12 +10,10 @@
  *******************************************************************************/
 package org.eclipse.escriptmonkey.scripting.storedscript.utils;
 
-import java.net.URI;
-import java.net.URISyntaxException;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.emf.common.util.URI;
 
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IResourceDelta;
-import org.eclipse.core.runtime.URIUtil;
 
 /**
  * Utils class to handle URI
@@ -25,27 +23,43 @@ import org.eclipse.core.runtime.URIUtil;
  */
 public class URIScriptUtils {
 
-	public static URI getAbsoluteURI(IResourceDelta delta) {
-		IResource resource = delta.getResource();
-		URI worspaceURI = resource.getWorkspace().getRoot().getLocationURI();
+	//	public static URI getAbsoluteURI(IResourceDelta delta) {
+	//		IResource resource = delta.getResource();
+	//		URI worspaceURI = resource.getWorkspace().getRoot().getLocationURI();
+	//
+	//		try {
+	//			return URIUtil.makeAbsolute(new URI(delta.getFullPath().toString()), worspaceURI);
+	//		} catch (URISyntaxException e) {
+	//			e.printStackTrace();
+	//		}
+	//		return null;
+	//	}
+	//
+	//	public static URI getAbsoluteURI(IResource resource) {
+	//
+	//		URI worspaceURI = resource.getWorkspace().getRoot().getLocationURI();
+	//
+	//		try {
+	//			return URIUtil.makeAbsolute(new URI(resource.getFullPath().toString()), worspaceURI);
+	//		} catch (URISyntaxException e) {
+	//			e.printStackTrace();
+	//		}
+	//		return null;
+	//	}
 
-		try {
-			return URIUtil.makeAbsolute(new URI(delta.getFullPath().toString()), worspaceURI);
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-		}
-		return null;
+	public static URI createFileURI(String uri) {
+		return URI.createFileURI(uri);
 	}
 
-	public static URI getAbsoluteURI(IResource resource) {
+	public static String createStringURI(IPath path) {
+		return URI.createFileURI(path.toOSString()).toString();
+	}
 
-		URI worspaceURI = resource.getWorkspace().getRoot().getLocationURI();
+	public static IPath createIPathFromURI(URI uri) {
+		return new Path(uri.toFileString());
+	}
 
-		try {
-			return URIUtil.makeAbsolute(new URI(resource.getFullPath().toString()), worspaceURI);
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-		}
-		return null;
+	public static String getStringFromURI(URI uri) {
+		return uri.toFileString();
 	}
 }
