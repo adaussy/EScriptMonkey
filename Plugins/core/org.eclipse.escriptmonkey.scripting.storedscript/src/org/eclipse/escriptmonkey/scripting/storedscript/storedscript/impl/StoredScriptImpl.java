@@ -11,6 +11,7 @@
 package org.eclipse.escriptmonkey.scripting.storedscript.storedscript.impl;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 
@@ -250,24 +251,7 @@ public class StoredScriptImpl extends MinimalEObjectImpl.Container implements St
 	}
 
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * 
-	 * @generated not
-	 */
-	public String getContent() {
-		URIConverter uriConveter = this.eResource().getResourceSet().getURIConverter();
 
-		try {
-			return Utilities.getFileContents(uriConveter.createInputStream(URI.createURI(uri)));
-		} catch (CoreException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -443,8 +427,6 @@ public class StoredScriptImpl extends MinimalEObjectImpl.Container implements St
 	@Override
 	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
 		switch(operationID) {
-		case StoredscriptPackage.STORED_SCRIPT___GET_CONTENT:
-			return getContent();
 		case StoredscriptPackage.STORED_SCRIPT___GET_METADATA__STRING:
 			return getMetadata((String)arguments.get(0));
 		}
@@ -472,5 +454,19 @@ public class StoredScriptImpl extends MinimalEObjectImpl.Container implements St
 	@Override
 	public URI createURI() {
 		return URIScriptUtils.createFileURI(getUri());
+	}
+
+	@Override
+	public InputStream getInputStream() throws IOException {
+		URIConverter uriConveter = this.eResource().getResourceSet().getURIConverter();
+
+		return uriConveter.createInputStream(URI.createURI(uri));
+	}
+
+	public String getContent() throws CoreException, IOException {
+
+
+		return Utilities.getFileContents(getInputStream());
+
 	}
 } //StoredScriptImpl

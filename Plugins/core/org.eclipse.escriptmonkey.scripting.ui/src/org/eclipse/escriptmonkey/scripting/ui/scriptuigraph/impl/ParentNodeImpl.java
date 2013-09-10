@@ -36,10 +36,10 @@ import org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.SubNode;
  * <p>
  * The following features are implemented:
  * <ul>
- * <li>{@link org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.impl.ParentNodeImpl#getChildren <em>Children</em>}</li>
+ *   <li>{@link org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.impl.ParentNodeImpl#getChildren <em>Children</em>}</li>
  * </ul>
  * </p>
- * 
+ *
  * @generated
  */
 public abstract class ParentNodeImpl extends NodeImpl implements ParentNode {
@@ -47,7 +47,6 @@ public abstract class ParentNodeImpl extends NodeImpl implements ParentNode {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public static final String copyright = "  Copyright (c) 2013 Atos\r\n  All rights reserved. This program and the accompanying materials\r\n  are made available under the terms of the Eclipse Public License v1.0\r\n  which accompanies this distribution, and is available at\r\n  http://www.eclipse.org/legal/epl-v10.html\r\n \r\n  Contributors:\r\n      Arthur Daussy - initial implementation";
@@ -56,7 +55,6 @@ public abstract class ParentNodeImpl extends NodeImpl implements ParentNode {
 	 * The cached value of the '{@link #getChildren() <em>Children</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getChildren()
 	 * @generated
 	 * @ordered
@@ -66,7 +64,6 @@ public abstract class ParentNodeImpl extends NodeImpl implements ParentNode {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	protected ParentNodeImpl() {
@@ -76,7 +73,6 @@ public abstract class ParentNodeImpl extends NodeImpl implements ParentNode {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -87,11 +83,10 @@ public abstract class ParentNodeImpl extends NodeImpl implements ParentNode {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public EList<SubNode> getChildren() {
-		if(children == null) {
+		if (children == null) {
 			children = new EObjectContainmentWithInverseEList<SubNode>(SubNode.class, this, ScriptuigraphPackage.PARENT_NODE__CHILDREN, ScriptuigraphPackage.SUB_NODE__PARENT);
 		}
 		return children;
@@ -178,15 +173,14 @@ public abstract class ParentNodeImpl extends NodeImpl implements ParentNode {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-		switch(featureID) {
-		case ScriptuigraphPackage.PARENT_NODE__CHILDREN:
-			return ((InternalEList<InternalEObject>)(InternalEList<?>)getChildren()).basicAdd(otherEnd, msgs);
+		switch (featureID) {
+			case ScriptuigraphPackage.PARENT_NODE__CHILDREN:
+				return ((InternalEList<InternalEObject>)(InternalEList<?>)getChildren()).basicAdd(otherEnd, msgs);
 		}
 		return super.eInverseAdd(otherEnd, featureID, msgs);
 	}
@@ -194,14 +188,13 @@ public abstract class ParentNodeImpl extends NodeImpl implements ParentNode {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-		switch(featureID) {
-		case ScriptuigraphPackage.PARENT_NODE__CHILDREN:
-			return ((InternalEList<?>)getChildren()).basicRemove(otherEnd, msgs);
+		switch (featureID) {
+			case ScriptuigraphPackage.PARENT_NODE__CHILDREN:
+				return ((InternalEList<?>)getChildren()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -209,14 +202,13 @@ public abstract class ParentNodeImpl extends NodeImpl implements ParentNode {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
-		switch(featureID) {
-		case ScriptuigraphPackage.PARENT_NODE__CHILDREN:
-			return getChildren();
+		switch (featureID) {
+			case ScriptuigraphPackage.PARENT_NODE__CHILDREN:
+				return getChildren();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -224,17 +216,16 @@ public abstract class ParentNodeImpl extends NodeImpl implements ParentNode {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
-		switch(featureID) {
-		case ScriptuigraphPackage.PARENT_NODE__CHILDREN:
-			getChildren().clear();
-			getChildren().addAll((Collection<? extends SubNode>)newValue);
-			return;
+		switch (featureID) {
+			case ScriptuigraphPackage.PARENT_NODE__CHILDREN:
+				getChildren().clear();
+				getChildren().addAll((Collection<? extends SubNode>)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -242,15 +233,14 @@ public abstract class ParentNodeImpl extends NodeImpl implements ParentNode {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
 	public void eUnset(int featureID) {
-		switch(featureID) {
-		case ScriptuigraphPackage.PARENT_NODE__CHILDREN:
-			getChildren().clear();
-			return;
+		switch (featureID) {
+			case ScriptuigraphPackage.PARENT_NODE__CHILDREN:
+				getChildren().clear();
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -258,14 +248,13 @@ public abstract class ParentNodeImpl extends NodeImpl implements ParentNode {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
 	public boolean eIsSet(int featureID) {
-		switch(featureID) {
-		case ScriptuigraphPackage.PARENT_NODE__CHILDREN:
-			return children != null && !children.isEmpty();
+		switch (featureID) {
+			case ScriptuigraphPackage.PARENT_NODE__CHILDREN:
+				return children != null && !children.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -273,20 +262,19 @@ public abstract class ParentNodeImpl extends NodeImpl implements ParentNode {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
 	@SuppressWarnings("unchecked")
 	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
-		switch(operationID) {
-		case ScriptuigraphPackage.PARENT_NODE___ADD_SCRIPT__ELIST:
-			return addScript((EList<String>)arguments.get(0));
-		case ScriptuigraphPackage.PARENT_NODE___GET_CHILDREN__ELIST:
-			return getChildren((EList<String>)arguments.get(0));
-		case ScriptuigraphPackage.PARENT_NODE___REMOVE_SCRIPT__STOREDSCRIPTUI:
-			removeScript((StoredScriptUI)arguments.get(0));
-			return null;
+		switch (operationID) {
+			case ScriptuigraphPackage.PARENT_NODE___ADD_SCRIPT__ELIST:
+				return addScript((EList<String>)arguments.get(0));
+			case ScriptuigraphPackage.PARENT_NODE___GET_CHILDREN__ELIST:
+				return getChildren((EList<String>)arguments.get(0));
+			case ScriptuigraphPackage.PARENT_NODE___REMOVE_SCRIPT__STOREDSCRIPTUI:
+				removeScript((StoredScriptUI)arguments.get(0));
+				return null;
 		}
 		return super.eInvoke(operationID, arguments);
 	}

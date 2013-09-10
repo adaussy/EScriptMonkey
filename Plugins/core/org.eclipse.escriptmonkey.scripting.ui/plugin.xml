@@ -287,17 +287,6 @@
                org.eclipse.emf.edit.provider.IItemPropertySource"/>
    </extension>
 
-   <extension point="org.eclipse.ui.editors">
-      <!-- @generated ScriptUIGraph -->
-      <editor
-            id="org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.presentation.ScriptuigraphEditorID"
-            name="%_UI_ScriptuigraphEditor_label"
-            icon="icons/full/obj16/ScriptuigraphModelFile.gif"
-            extensions="scriptuigraph"
-            class="org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.presentation.ScriptuigraphEditor"
-            contributorClass="org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.presentation.ScriptuigraphActionBarContributor">
-      </editor>
-   </extension>
    
    <extension
         point="org.eclipse.escriptmonkey.scripting.storedscript.metadata">

@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.EReference;
 
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
+import org.eclipse.escriptmonkey.scripting.storedscript.storedscript.StoredscriptPackage;
 import org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.Node;
 import org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.ParentNode;
 import org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.Root;
@@ -136,6 +137,9 @@ public class ScriptuigraphPackageImpl extends EPackageImpl implements Scriptuigr
 		ScriptuigraphPackageImpl theScriptuigraphPackage = (ScriptuigraphPackageImpl)(EPackage.Registry.INSTANCE.get(eNS_URI) instanceof ScriptuigraphPackageImpl ? EPackage.Registry.INSTANCE.get(eNS_URI) : new ScriptuigraphPackageImpl());
 
 		isInited = true;
+
+		// Initialize simple dependencies
+		StoredscriptPackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects
 		theScriptuigraphPackage.createPackageContents();
@@ -274,7 +278,7 @@ public class ScriptuigraphPackageImpl extends EPackageImpl implements Scriptuigr
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getStoredScriptUI_Path() {
+	public EAttribute getStoredScriptUI_Description() {
 		return (EAttribute)storedScriptUIEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -283,8 +287,8 @@ public class ScriptuigraphPackageImpl extends EPackageImpl implements Scriptuigr
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getStoredScriptUI_Description() {
-		return (EAttribute)storedScriptUIEClass.getEStructuralFeatures().get(1);
+	public EReference getStoredScriptUI_Script() {
+		return (EReference)storedScriptUIEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -342,8 +346,8 @@ public class ScriptuigraphPackageImpl extends EPackageImpl implements Scriptuigr
 		scriptSetUIEClass = createEClass(SCRIPT_SET_UI);
 
 		storedScriptUIEClass = createEClass(STORED_SCRIPT_UI);
-		createEAttribute(storedScriptUIEClass, STORED_SCRIPT_UI__PATH);
 		createEAttribute(storedScriptUIEClass, STORED_SCRIPT_UI__DESCRIPTION);
+		createEReference(storedScriptUIEClass, STORED_SCRIPT_UI__SCRIPT);
 
 		rootEClass = createEClass(ROOT);
 	}
@@ -370,6 +374,9 @@ public class ScriptuigraphPackageImpl extends EPackageImpl implements Scriptuigr
 		setName(eNAME);
 		setNsPrefix(eNS_PREFIX);
 		setNsURI(eNS_URI);
+
+		// Obtain other dependent packages
+		StoredscriptPackage theStoredscriptPackage = (StoredscriptPackage)EPackage.Registry.INSTANCE.getEPackage(StoredscriptPackage.eNS_URI);
 
 		// Create type parameters
 
@@ -408,8 +415,8 @@ public class ScriptuigraphPackageImpl extends EPackageImpl implements Scriptuigr
 		initEClass(scriptSetUIEClass, ScriptSetUI.class, "ScriptSetUI", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(storedScriptUIEClass, StoredScriptUI.class, "StoredScriptUI", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getStoredScriptUI_Path(), ecorePackage.getEString(), "path", null, 1, 1, StoredScriptUI.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getStoredScriptUI_Description(), ecorePackage.getEString(), "description", null, 0, 1, StoredScriptUI.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getStoredScriptUI_Script(), theStoredscriptPackage.getIStoredScript(), null, "script", null, 1, 1, StoredScriptUI.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(rootEClass, Root.class, "Root", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

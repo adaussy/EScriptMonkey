@@ -1,0 +1,81 @@
+/**
+ *   Copyright (c) 2013 Atos
+ *   All rights reserved. This program and the accompanying materials
+ *   are made available under the terms of the Eclipse Public License v1.0
+ *   which accompanies this distribution, and is available at
+ *   http://www.eclipse.org/legal/epl-v10.html
+ *  
+ *   Contributors:
+ *       Arthur Daussy - initial implementation
+ */
+package org.eclipse.escriptmonkey.scripting.ui.actions;
+
+import java.io.IOException;
+
+import org.eclipse.escriptmonkey.scripting.IScriptEngine;
+import org.eclipse.escriptmonkey.scripting.debug.Logger;
+import org.eclipse.escriptmonkey.scripting.service.ScriptService;
+import org.eclipse.escriptmonkey.scripting.storedscript.storedscript.IStoredScript;
+import org.eclipse.escriptmonkey.scripting.storedscript.storedscript.ScriptType;
+import org.eclipse.escriptmonkey.scripting.ui.console.ScriptConsole;
+import org.eclipse.jface.action.Action;
+
+
+/**
+ * Action that run a {@link IStoredScript} 
+ * @author adaussy
+ *
+ */
+public class RunScriptAction extends Action {
+
+	private IStoredScript script;
+
+	public RunScriptAction(String text) {
+		super(text);
+	}
+
+
+
+
+	/**
+	 * @return the script
+	 */
+	public IStoredScript getScript() {
+		return script;
+	}
+
+
+
+
+	/**
+	 * @param script
+	 *        the script to set
+	 */
+	public void setScript(IStoredScript script) {
+		this.script = script;
+	}
+
+
+
+	@Override
+	public void run() {
+		super.run();
+		ScriptType scriptType = script.getScriptType();
+		IScriptEngine engine = ScriptService.getInstance().createEngine(scriptType.getType());
+		ScriptConsole console = ScriptConsole.create(engine.getName() + ": " + script.getUri(), engine);
+		engine.setOutputStream(console.getOutputStream());
+		engine.setErrorStream(console.getErrorStream());
+		engine.setTerminateOnIdle(true);
+		try {
+			engine.executeAsync(script.getInputStream());
+		} catch (IOException e) {
+			e.printStackTrace();
+			Logger.logError(e.getMessage());
+		}
+		engine.schedule();
+	}
+
+
+
+
+}

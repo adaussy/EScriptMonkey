@@ -27,6 +27,7 @@ import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
+import org.eclipse.escriptmonkey.scripting.ui.Activator;
 import org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.Node;
 import org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.ScriptuigraphPackage;
 
@@ -137,11 +138,11 @@ public class NodeItemProvider extends ItemProviderAdapter implements IEditingDom
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
-	 * @generated
+	 * @generated not
 	 */
 	@Override
 	public ResourceLocator getResourceLocator() {
-		return ScriptUIGraphEditPlugin.INSTANCE;
+		return Activator.getDefault();
 	}
 
 }

@@ -21,9 +21,8 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="IStoredScript" abstract="true" interface="true">
     <eAnnotations source=" http://www.eclipse.org/emf/2002/GenModel">
-      <details key="documentation" value="@implements org.eclipse.escriptmonkey.scripting.storedscript.IURICreator"/>
+      <details key="documentation" value="@implements org.eclipse.escriptmonkey.scripting.storedscript.IContentProvider"/>
     </eAnnotations>
-    <eOperations name="getContent" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eOperations name="getMetadata" eType="#//ScriptMetadata">
       <eParameters name="metadataName" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eOperations>

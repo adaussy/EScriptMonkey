@@ -17,6 +17,7 @@ import org.eclipse.escriptmonkey.scripting.storedscript.storedscript.IStoredScri
 import org.eclipse.escriptmonkey.scripting.storedscript.storedscript.ScriptMetadata;
 import org.eclipse.escriptmonkey.scripting.storedscript.storedscript.StoredScriptRegistry;
 import org.eclipse.escriptmonkey.scripting.storedscript.storedscript.StoredscriptPackage;
+import org.eclipse.escriptmonkey.scripting.ui.metadata.IUIMetadata;
 import org.eclipse.escriptmonkey.scripting.ui.metadata.UIMetadataUtils;
 import org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.Root;
 import org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.ScriptuigraphFactory;
@@ -80,23 +81,25 @@ public class ScriptGraphService implements IStoredScriptListener {
 
 	@Override
 	public void scriptChange(Notification scriptNotif) {
-		System.out.println("toto");
 		Object notifier = scriptNotif.getNotifier();
 		if(notifier instanceof StoredScriptRegistry) {
-			StoredScriptRegistry registry = (StoredScriptRegistry)notifier;
 			if(StoredscriptPackage.Literals.STORED_SCRIPT_REGISTRY__SCRIPTS.equals(scriptNotif.getFeature())) {
 				if(Notification.ADD == scriptNotif.getEventType()) {
 					addUIScript((IStoredScript)scriptNotif.getNewValue());
 				} else if(Notification.REMOVE == scriptNotif.getEventType()) {
-					addUIScript((IStoredScript)scriptNotif.getOldValue());
+					removeUIScript((IStoredScript)scriptNotif.getOldValue());
 				}
 			}
 		} else if(notifier instanceof ScriptMetadata) {
 			ScriptMetadata notif = (ScriptMetadata)notifier;
 			if(StoredscriptPackage.Literals.SCRIPT_METADATA__VALUE.equals(scriptNotif.getFeature())) {
-				IStoredScript script = notif.getScript();
-				removeUIScript(script);
-				addUIScript(script);
+				if(Notification.ADD == scriptNotif.getEventType()) {
+					IStoredScript script = notif.getScript();
+					if(IUIMetadata.MENU_METADATA.equals(notif.getKey())) {
+						removeUIScript(script);
+						addUIScript(script);
+					}
+				}
 			}
 		}
 
@@ -119,6 +122,7 @@ public class ScriptGraphService implements IStoredScriptListener {
 		}
 		List<String> menus = UIMetadataUtils.getMenu(script);
 		StoredScriptUI node = getScriptGraph().addScript(new BasicEList<String>(menus));
+		node.setScript(script);
 		map.put(script, node);
 	}
 

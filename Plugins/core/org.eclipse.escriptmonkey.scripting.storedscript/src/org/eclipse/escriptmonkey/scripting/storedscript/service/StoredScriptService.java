@@ -32,6 +32,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.eclipse.escriptmonkey.scripting.ScriptType;
 import org.eclipse.escriptmonkey.scripting.service.ScriptService;
 import org.eclipse.escriptmonkey.scripting.storedscript.Activator;
@@ -80,6 +81,8 @@ public class StoredScriptService {
 
 	private ResourceSet resourceSet = null;
 
+	private EContentAdapter modelAdapter;
+
 	public void init() {
 		try {
 			init = true;
@@ -87,6 +90,16 @@ public class StoredScriptService {
 			ResourceImpl resource = new ResourceImpl();
 			resourceSet.getResources().add(resource);
 			registry = StoredscriptFactory.eINSTANCE.createStoredScriptRegistry();
+			modelAdapter = new EContentAdapter() {
+
+				public void notifyChanged(Notification notification) {
+					super.notifyChanged(notification);
+					notifyScriptChanged(notification);
+				};
+			};
+
+
+			registry.eAdapters().add(modelAdapter);
 			resource.getContents().add(registry);
 			//Init type for extension point
 			for(ScriptType type : ScriptService.getInstance().getKownSwriptType().values()) {
@@ -118,9 +131,9 @@ public class StoredScriptService {
 		return getStoreScript(URIScriptUtils.getStringFromURI(uri));
 	}
 
-	public void notifyChange(Notification notification) {
+	public void notifyScriptChanged(Notification msg) {
 		for(IStoredScriptListener l : listeners) {
-			l.scriptChange(notification);
+			l.scriptChange(msg);
 		}
 	}
 

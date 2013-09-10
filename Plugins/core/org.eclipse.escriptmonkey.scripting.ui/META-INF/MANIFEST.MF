@@ -35,6 +35,5 @@ Export-Package: org.eclipse.escriptmonkey.scripting.ui.console,
  org.eclipse.escriptmonkey.scripting.ui.wizard,
  org.eclipse.escriptmonkey.scripting.ui.scriptuigraph,
  org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.impl,
- org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.presentation,
  org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.provider,
  org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.util

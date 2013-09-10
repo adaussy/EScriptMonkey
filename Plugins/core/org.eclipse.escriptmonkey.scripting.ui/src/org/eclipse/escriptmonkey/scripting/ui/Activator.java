@@ -16,15 +16,14 @@ import java.net.URL;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.emf.common.ui.EclipseUIPlugin;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
-// FIXME get rid of this activator
-public class Activator extends AbstractUIPlugin {
+public class Activator extends EclipseUIPlugin {
 
 	public static final String PLUGIN_ID = "org.eclipse.escriptmonkey.scripting.ui";
 

@@ -10,10 +10,12 @@
  *******************************************************************************/
 package org.eclipse.escriptmonkey.scripting.engine.python.jython;
 
+import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.escriptmonkey.scripting.debug.Logger;
 import org.eclipse.escriptmonkey.scripting.storedscript.metada.AbstractFileHeaderParser;
 import org.eclipse.escriptmonkey.scripting.storedscript.storedscript.IStoredScript;
 
@@ -34,18 +36,23 @@ public class PythonHeaderParser extends AbstractFileHeaderParser {
 
 	@Override
 	public String getHeader(IStoredScript storeScript) throws CoreException {
-		String content = storeScript.getContent();
-		if(content != null) {
-			StringBuilder headerBuilder = new StringBuilder();
-			Matcher matcher = getPattern().matcher(content);
-			while(matcher.find()) {
-				headerBuilder.append(matcher.group(1)).append("\n");
+		String content;
+		try {
+			content = storeScript.getContent();
+			if(content != null) {
+				StringBuilder headerBuilder = new StringBuilder();
+				Matcher matcher = getPattern().matcher(content);
+				while(matcher.find()) {
+					headerBuilder.append(matcher.group(1)).append("\n");
+				}
+				return headerBuilder.toString();
 			}
-			return headerBuilder.toString();
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new CoreException(Logger.createErrorStatus(e.getMessage(), "org.eclipse.escriptmonkey.scripting.engine.python.jython"));
 		}
 		return null;
 	}
-
 
 
 

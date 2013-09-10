@@ -376,22 +376,22 @@ public interface ScriptuigraphPackage extends EPackage {
 	int STORED_SCRIPT_UI__PARENT = SUB_NODE__PARENT;
 
 	/**
-	 * The feature id for the '<em><b>Path</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int STORED_SCRIPT_UI__PATH = SUB_NODE_FEATURE_COUNT + 0;
-
-	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int STORED_SCRIPT_UI__DESCRIPTION = SUB_NODE_FEATURE_COUNT + 1;
+	int STORED_SCRIPT_UI__DESCRIPTION = SUB_NODE_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Script</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int STORED_SCRIPT_UI__SCRIPT = SUB_NODE_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of structural features of the '<em>Stored Script UI</em>' class.
@@ -620,17 +620,6 @@ public interface ScriptuigraphPackage extends EPackage {
 	EClass getStoredScriptUI();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.StoredScriptUI#getPath <em>Path</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Path</em>'.
-	 * @see org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.StoredScriptUI#getPath()
-	 * @see #getStoredScriptUI()
-	 * @generated
-	 */
-	EAttribute getStoredScriptUI_Path();
-
-	/**
 	 * Returns the meta object for the attribute '{@link org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.StoredScriptUI#getDescription <em>Description</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -640,6 +629,17 @@ public interface ScriptuigraphPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getStoredScriptUI_Description();
+
+	/**
+	 * Returns the meta object for the reference '{@link org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.StoredScriptUI#getScript <em>Script</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Script</em>'.
+	 * @see org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.StoredScriptUI#getScript()
+	 * @see #getStoredScriptUI()
+	 * @generated
+	 */
+	EReference getStoredScriptUI_Script();
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.Root <em>Root</em>}'.
@@ -791,20 +791,20 @@ public interface ScriptuigraphPackage extends EPackage {
 		EClass STORED_SCRIPT_UI = eINSTANCE.getStoredScriptUI();
 
 		/**
-		 * The meta object literal for the '<em><b>Path</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute STORED_SCRIPT_UI__PATH = eINSTANCE.getStoredScriptUI_Path();
-
-		/**
 		 * The meta object literal for the '<em><b>Description</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
 		EAttribute STORED_SCRIPT_UI__DESCRIPTION = eINSTANCE.getStoredScriptUI_Description();
+
+		/**
+		 * The meta object literal for the '<em><b>Script</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference STORED_SCRIPT_UI__SCRIPT = eINSTANCE.getStoredScriptUI_Script();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.impl.RootImpl <em>Root</em>}' class.

@@ -247,17 +247,8 @@ public class StoredscriptPackageImpl extends EPackageImpl implements Storedscrip
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getIStoredScript__GetContent() {
-		return iStoredScriptEClass.getEOperations().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EOperation getIStoredScript__GetMetadata__String() {
-		return iStoredScriptEClass.getEOperations().get(1);
+		return iStoredScriptEClass.getEOperations().get(0);
 	}
 
 	/**
@@ -382,7 +373,6 @@ public class StoredscriptPackageImpl extends EPackageImpl implements Storedscrip
 		createEReference(iStoredScriptEClass, ISTORED_SCRIPT__METADATAS);
 		createEReference(iStoredScriptEClass, ISTORED_SCRIPT__SCRIPT_TYPE);
 		createEReference(iStoredScriptEClass, ISTORED_SCRIPT__REGISTRY);
-		createEOperation(iStoredScriptEClass, ISTORED_SCRIPT___GET_CONTENT);
 		createEOperation(iStoredScriptEClass, ISTORED_SCRIPT___GET_METADATA__STRING);
 
 		storedScriptEClass = createEClass(STORED_SCRIPT);
@@ -451,8 +441,6 @@ public class StoredscriptPackageImpl extends EPackageImpl implements Storedscrip
 		initEReference(getIStoredScript_ScriptType(), this.getScriptType(), null, "scriptType", null, 1, 1, IStoredScript.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getIStoredScript_Registry(), this.getStoredScriptRegistry(), this.getStoredScriptRegistry_Scripts(), "registry", null, 1, 1, IStoredScript.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEOperation(getIStoredScript__GetContent(), ecorePackage.getEString(), "getContent", 1, 1, IS_UNIQUE, IS_ORDERED);
-
 		op = initEOperation(getIStoredScript__GetMetadata__String(), this.getScriptMetadata(), "getMetadata", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEString(), "metadataName", 1, 1, IS_UNIQUE, IS_ORDERED);
 
@@ -488,7 +476,7 @@ public class StoredscriptPackageImpl extends EPackageImpl implements Storedscrip
 		  (iStoredScriptEClass, 
 		   source, 
 		   new String[] {
-			 "documentation", "@implements org.eclipse.escriptmonkey.scripting.storedscript.IURICreator"
+			 "documentation", "@implements org.eclipse.escriptmonkey.scripting.storedscript.IContentProvider"
 		   });
 	}
 

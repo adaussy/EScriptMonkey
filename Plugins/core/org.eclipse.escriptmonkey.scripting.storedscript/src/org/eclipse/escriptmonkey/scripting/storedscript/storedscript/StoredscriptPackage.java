@@ -210,22 +210,13 @@ public interface StoredscriptPackage extends EPackage {
 	int ISTORED_SCRIPT_FEATURE_COUNT = 4;
 
 	/**
-	 * The operation id for the '<em>Get Content</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ISTORED_SCRIPT___GET_CONTENT = 0;
-
-	/**
 	 * The operation id for the '<em>Get Metadata</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ISTORED_SCRIPT___GET_METADATA__STRING = 1;
+	int ISTORED_SCRIPT___GET_METADATA__STRING = 0;
 
 	/**
 	 * The number of operations of the '<em>IStored Script</em>' class.
@@ -234,7 +225,7 @@ public interface StoredscriptPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ISTORED_SCRIPT_OPERATION_COUNT = 2;
+	int ISTORED_SCRIPT_OPERATION_COUNT = 1;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.escriptmonkey.scripting.storedscript.storedscript.impl.StoredScriptImpl <em>Stored Script</em>}' class.
@@ -290,15 +281,6 @@ public interface StoredscriptPackage extends EPackage {
 	 * @ordered
 	 */
 	int STORED_SCRIPT_FEATURE_COUNT = ISTORED_SCRIPT_FEATURE_COUNT + 0;
-
-	/**
-	 * The operation id for the '<em>Get Content</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int STORED_SCRIPT___GET_CONTENT = ISTORED_SCRIPT___GET_CONTENT;
 
 	/**
 	 * The operation id for the '<em>Get Metadata</em>' operation.
@@ -556,16 +538,6 @@ public interface StoredscriptPackage extends EPackage {
 	EReference getIStoredScript_Registry();
 
 	/**
-	 * Returns the meta object for the '{@link org.eclipse.escriptmonkey.scripting.storedscript.storedscript.IStoredScript#getContent() <em>Get Content</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Get Content</em>' operation.
-	 * @see org.eclipse.escriptmonkey.scripting.storedscript.storedscript.IStoredScript#getContent()
-	 * @generated
-	 */
-	EOperation getIStoredScript__GetContent();
-
-	/**
 	 * Returns the meta object for the '{@link org.eclipse.escriptmonkey.scripting.storedscript.storedscript.IStoredScript#getMetadata(java.lang.String) <em>Get Metadata</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -793,14 +765,6 @@ public interface StoredscriptPackage extends EPackage {
 		 * @generated
 		 */
 		EReference ISTORED_SCRIPT__REGISTRY = eINSTANCE.getIStoredScript_Registry();
-
-		/**
-		 * The meta object literal for the '<em><b>Get Content</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation ISTORED_SCRIPT___GET_CONTENT = eINSTANCE.getIStoredScript__GetContent();
 
 		/**
 		 * The meta object literal for the '<em><b>Get Metadata</b></em>' operation.

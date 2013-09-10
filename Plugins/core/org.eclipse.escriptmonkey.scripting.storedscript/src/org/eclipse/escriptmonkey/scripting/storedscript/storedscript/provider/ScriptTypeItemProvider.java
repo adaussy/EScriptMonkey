@@ -6,9 +6,9 @@
  *   http://www.eclipse.org/legal/epl-v10.html
  *  
  *   Contributors:
- *       Arthur Daussy - initial implementation
+ *      Arthur Daussy - initial implementation
  */
-package org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.provider;
+package org.eclipse.escriptmonkey.scripting.storedscript.storedscript.provider;
 
 
 import java.util.Collection;
@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.util.ResourceLocator;
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
@@ -24,18 +25,20 @@ import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
+import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
-import org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.ScriptuigraphPackage;
-import org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.StoredScriptUI;
+import org.eclipse.escriptmonkey.scripting.storedscript.Activator;
+import org.eclipse.escriptmonkey.scripting.storedscript.storedscript.ScriptType;
+import org.eclipse.escriptmonkey.scripting.storedscript.storedscript.StoredscriptPackage;
 
 /**
- * This is the item provider adapter for a {@link org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.StoredScriptUI} object.
+ * This is the item provider adapter for a {@link org.eclipse.escriptmonkey.scripting.storedscript.storedscript.ScriptType} object.
  * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
  * 
  * @generated
  */
-public class StoredScriptUIItemProvider extends SubNodeItemProvider implements IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource {
+public class ScriptTypeItemProvider extends ItemProviderAdapter implements IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource {
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -43,7 +46,7 @@ public class StoredScriptUIItemProvider extends SubNodeItemProvider implements I
 	 * 
 	 * @generated
 	 */
-	public static final String copyright = "  Copyright (c) 2013 Atos\r\n  All rights reserved. This program and the accompanying materials\r\n  are made available under the terms of the Eclipse Public License v1.0\r\n  which accompanies this distribution, and is available at\r\n  http://www.eclipse.org/legal/epl-v10.html\r\n \r\n  Contributors:\r\n      Arthur Daussy - initial implementation";
+	public static final String copyright = "  Copyright (c) 2013 Atos\r\n  All rights reserved. This program and the accompanying materials\r\n  are made available under the terms of the Eclipse Public License v1.0\r\n  which accompanies this distribution, and is available at\r\n  http://www.eclipse.org/legal/epl-v10.html\r\n \r\n  Contributors:\r\n     Arthur Daussy - initial implementation";
 
 	/**
 	 * This constructs an instance from a factory and a notifier.
@@ -52,7 +55,7 @@ public class StoredScriptUIItemProvider extends SubNodeItemProvider implements I
 	 * 
 	 * @generated
 	 */
-	public StoredScriptUIItemProvider(AdapterFactory adapterFactory) {
+	public ScriptTypeItemProvider(AdapterFactory adapterFactory) {
 		super(adapterFactory);
 	}
 
@@ -68,36 +71,36 @@ public class StoredScriptUIItemProvider extends SubNodeItemProvider implements I
 		if(itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
-			addDescriptionPropertyDescriptor(object);
-			addScriptPropertyDescriptor(object);
+			addTypePropertyDescriptor(object);
+			addExtensionPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
 
 	/**
-	 * This adds a property descriptor for the Description feature.
+	 * This adds a property descriptor for the Type feature.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 */
-	protected void addDescriptionPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(), getResourceLocator(), getString("_UI_StoredScriptUI_description_feature"), getString("_UI_PropertyDescriptor_description", "_UI_StoredScriptUI_description_feature", "_UI_StoredScriptUI_type"), ScriptuigraphPackage.Literals.STORED_SCRIPT_UI__DESCRIPTION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+	protected void addTypePropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(), getResourceLocator(), getString("_UI_ScriptType_type_feature"), getString("_UI_PropertyDescriptor_description", "_UI_ScriptType_type_feature", "_UI_ScriptType_type"), StoredscriptPackage.Literals.SCRIPT_TYPE__TYPE, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
-	 * This adds a property descriptor for the Script feature.
+	 * This adds a property descriptor for the Extension feature.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 */
-	protected void addScriptPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(), getResourceLocator(), getString("_UI_StoredScriptUI_script_feature"), getString("_UI_PropertyDescriptor_description", "_UI_StoredScriptUI_script_feature", "_UI_StoredScriptUI_type"), ScriptuigraphPackage.Literals.STORED_SCRIPT_UI__SCRIPT, true, false, true, null, null, null));
+	protected void addExtensionPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(), getResourceLocator(), getString("_UI_ScriptType_extension_feature"), getString("_UI_PropertyDescriptor_description", "_UI_ScriptType_extension_feature", "_UI_ScriptType_type"), StoredscriptPackage.Literals.SCRIPT_TYPE__EXTENSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
-	 * This returns StoredScriptUI.gif.
+	 * This returns ScriptType.gif.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -105,7 +108,7 @@ public class StoredScriptUIItemProvider extends SubNodeItemProvider implements I
 	 */
 	@Override
 	public Object getImage(Object object) {
-		return overlayImage(object, getResourceLocator().getImage("full/obj16/StoredScriptUI"));
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/ScriptType"));
 	}
 
 	/**
@@ -113,11 +116,12 @@ public class StoredScriptUIItemProvider extends SubNodeItemProvider implements I
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
-	 * @generated not
+	 * @generated
 	 */
 	@Override
 	public String getText(Object object) {
-		return super.getText(object);
+		String label = ((ScriptType)object).getType();
+		return label == null || label.length() == 0 ? getString("_UI_ScriptType_type") : getString("_UI_ScriptType_type") + " " + label;
 	}
 
 	/**
@@ -132,8 +136,9 @@ public class StoredScriptUIItemProvider extends SubNodeItemProvider implements I
 	public void notifyChanged(Notification notification) {
 		updateChildren(notification);
 
-		switch(notification.getFeatureID(StoredScriptUI.class)) {
-		case ScriptuigraphPackage.STORED_SCRIPT_UI__DESCRIPTION:
+		switch(notification.getFeatureID(ScriptType.class)) {
+		case StoredscriptPackage.SCRIPT_TYPE__TYPE:
+		case StoredscriptPackage.SCRIPT_TYPE__EXTENSION:
 			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 			return;
 		}
@@ -151,6 +156,18 @@ public class StoredScriptUIItemProvider extends SubNodeItemProvider implements I
 	@Override
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
 		super.collectNewChildDescriptors(newChildDescriptors, object);
+	}
+
+	/**
+	 * Return the resource locator for this item provider's resources.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated not
+	 */
+	@Override
+	public ResourceLocator getResourceLocator() {
+		return Activator.getDefault();
 	}
 
 }

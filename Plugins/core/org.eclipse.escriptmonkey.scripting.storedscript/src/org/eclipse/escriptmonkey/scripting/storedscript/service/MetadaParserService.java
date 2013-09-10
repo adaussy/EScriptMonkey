@@ -71,18 +71,16 @@ public class MetadaParserService {
 			return null;
 		}
 		EList<ScriptMetadata> metadata = storedScript.getMetadatas();
+		metadata.clear();
 		String header = parser.getHeader(storedScript);
 		if(header != null) {
 			for(Metadata metaDef : getMetadatas()) {
 				Matcher matcher = metaDef.getRegex().matcher(header);
 				while(matcher.find()) {
 					String data = matcher.group(1);
-					ScriptMetadata meta = storedScript.getMetadata(metaDef.getName());
-					if(meta == null) {
-						meta = StoredscriptFactory.eINSTANCE.createScriptMetadata();
-						meta.setKey(metaDef.getName());
-						metadata.add(meta);
-					}
+					ScriptMetadata meta = StoredscriptFactory.eINSTANCE.createScriptMetadata();
+					metadata.add(meta);
+					meta.setKey(metaDef.getName());
 					meta.getValue().add(data);
 
 				}

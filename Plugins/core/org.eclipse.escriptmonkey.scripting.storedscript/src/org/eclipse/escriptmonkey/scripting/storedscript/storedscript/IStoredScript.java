@@ -31,10 +31,10 @@ import org.eclipse.emf.ecore.EObject;
  * @see org.eclipse.escriptmonkey.scripting.storedscript.storedscript.StoredscriptPackage#getIStoredScript()
  * @model interface="true" abstract="true"
  *        annotation=
- *        "\040http://www.eclipse.org/emf/2002/GenModel documentation='@implements org.eclipse.escriptmonkey.scripting.storedscript.IURICreator'"
+ *        "\040http://www.eclipse.org/emf/2002/GenModel documentation='@implements org.eclipse.escriptmonkey.scripting.storedscript.IContentProvider'"
  * @generated
  */
-public interface IStoredScript extends EObject, org.eclipse.escriptmonkey.scripting.storedscript.IURICreator {
+public interface IStoredScript extends EObject, org.eclipse.escriptmonkey.scripting.storedscript.IContentProvider {
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -151,15 +151,6 @@ public interface IStoredScript extends EObject, org.eclipse.escriptmonkey.script
 	 * @generated
 	 */
 	void setRegistry(StoredScriptRegistry value);
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * 
-	 * @model kind="operation" required="true"
-	 * @generated
-	 */
-	String getContent();
 
 	/**
 	 * <!-- begin-user-doc -->

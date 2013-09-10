@@ -3,9 +3,16 @@ package org.eclipse.escriptmonkey.scripting.ui.view;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
+import org.eclipse.escriptmonkey.scripting.storedscript.storedscript.IStoredScript;
 import org.eclipse.escriptmonkey.scripting.ui.ScriptGraphService;
+import org.eclipse.escriptmonkey.scripting.ui.actions.RunScriptAction;
+import org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.StoredScriptUI;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
@@ -14,6 +21,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.part.ViewPart;
+import org.eclipse.wb.swt.ResourceManager;
 
 
 public class ScriptEplorerView extends ViewPart {
@@ -23,6 +31,8 @@ public class ScriptEplorerView extends ViewPart {
 	private final FormToolkit toolkit = new FormToolkit(Display.getCurrent());
 
 	private TreeViewer treeViewer;
+
+	private RunScriptAction playScriptAction;
 
 	public ScriptEplorerView() {
 	}
@@ -46,12 +56,45 @@ public class ScriptEplorerView extends ViewPart {
 			treeViewer.setContentProvider(new AdapterFactoryContentProvider(adapterFactory));
 			treeViewer.setLabelProvider(new AdapterFactoryLabelProvider(adapterFactory));
 			treeViewer.setInput(ScriptGraphService.getInstance().getScriptGraph());
+			treeViewer.addSelectionChangedListener(new ISelectionChangedListener() {
+
+				@Override
+				public void selectionChanged(SelectionChangedEvent event) {
+					IStoredScript storedScript = getStoredScriptFromSelection(event);
+					if(storedScript != null) {
+						playScriptAction.setScript(storedScript);
+						playScriptAction.setEnabled(true);
+					} else {
+						playScriptAction.setScript(null);
+						playScriptAction.setEnabled(false);
+					}
+
+				}
+			});
 		}
 
 		createActions();
 		initializeToolBar();
 		initializeMenu();
 	}
+
+	private IStoredScript getStoredScriptFromSelection(SelectionChangedEvent event) {
+		ISelection selection = event.getSelection();
+		if(selection instanceof IStructuredSelection) {
+			IStructuredSelection select = (IStructuredSelection)selection;
+			Object first = select.getFirstElement();
+			if(first instanceof StoredScriptUI) {
+				StoredScriptUI storeScriptUI = (StoredScriptUI)first;
+				IStoredScript storedScrip = storeScriptUI.getScript();
+				if(storedScrip != null) {
+					return storedScrip;
+				}
+			}
+		}
+		return null;
+	}
+
+
 
 	public void dispose() {
 		toolkit.dispose();
@@ -63,6 +106,12 @@ public class ScriptEplorerView extends ViewPart {
 	 */
 	private void createActions() {
 		// Create the actions
+		{
+			playScriptAction = new RunScriptAction("PlayScript");
+			playScriptAction.setEnabled(false);
+			playScriptAction.setDisabledImageDescriptor(ResourceManager.getPluginImageDescriptor("org.eclipse.escriptmonkey.scripting.ui", "images/start_script_disable.gif"));
+			playScriptAction.setImageDescriptor(ResourceManager.getPluginImageDescriptor("org.eclipse.escriptmonkey.scripting.ui", "images/start_script.gif"));
+		}
 	}
 
 	/**
@@ -70,6 +119,7 @@ public class ScriptEplorerView extends ViewPart {
 	 */
 	private void initializeToolBar() {
 		IToolBarManager tbm = getViewSite().getActionBars().getToolBarManager();
+		tbm.add(playScriptAction);
 	}
 
 	/**
