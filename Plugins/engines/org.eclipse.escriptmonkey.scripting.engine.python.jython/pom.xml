@@ -3,9 +3,9 @@
   <artifactId>org.eclipse.escriptmonkey.scripting.python.jython</artifactId>
   <packaging>eclipse-plugin</packaging>
   <parent>
-  	<groupId>EScript</groupId>
+  	<groupId>escriptmonkey</groupId>
   	<artifactId>org.eclipse.escriptmonkey.scripting.releng</artifactId>
   	<version>1.0.0-SNAPSHOT</version>
-  	<relativePath>../../releng/org.eclipse.escriptmonkey.scripting.releng</relativePath>
+  	<relativePath>../../../Releng/org.eclipse.escriptmonkey.scripting.releng</relativePath>
   </parent>
 </project>
