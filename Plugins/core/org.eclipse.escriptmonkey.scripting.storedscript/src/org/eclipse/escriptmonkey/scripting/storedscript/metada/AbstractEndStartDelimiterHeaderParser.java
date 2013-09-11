@@ -12,11 +12,14 @@ package org.eclipse.escriptmonkey.scripting.storedscript.metada;
 
 
 
+import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.escriptmonkey.scripting.storedscript.IStoredScript;
+import org.eclipse.escriptmonkey.scripting.debug.Logger;
+import org.eclipse.escriptmonkey.scripting.storedscript.Activator;
+import org.eclipse.escriptmonkey.scripting.storedscript.storedscript.IStoredScript;
 
 /**
  * Abstract class for parser used for header which can be match with a single pattern
@@ -32,12 +35,18 @@ public abstract class AbstractEndStartDelimiterHeaderParser extends AbstractFile
 
 	@Override
 	public String getHeader(IStoredScript storeScript) throws CoreException {
-		String contents = getStoredScriptContent(storeScript);
-		if(contents != null) {
-			Matcher matcher = getPattern().matcher(contents);
-			if(matcher.find()) {
-				return matcher.group();
+		String contents;
+		try {
+			contents = storeScript.getContent();
+			if(contents != null) {
+				Matcher matcher = getPattern().matcher(contents);
+				if(matcher.find()) {
+					return matcher.group();
+				}
 			}
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new CoreException(Logger.createErrorStatus(e.getMessage(), Activator.PLUGIN_ID));
 		}
 		return null;
 	}

@@ -11,14 +11,15 @@
 package org.eclipse.escriptmonkey.scripting.storedscript.metada;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.escriptmonkey.scripting.storedscript.IStoredScript;
-import org.eclipse.escriptmonkey.scripting.storedscript.impl.StoredScript;
+import org.eclipse.escriptmonkey.scripting.storedscript.storedscript.IStoredScript;
+import org.eclipse.escriptmonkey.scripting.storedscript.storedscript.StoredScript;
 
 
 /**
  * A Header parser is a class which is able to extract the header from a {@link StoredScript}
+ * 
  * @author adaussy
- *
+ * 
  */
 public interface IHeaderParser {
 

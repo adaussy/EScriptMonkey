@@ -15,24 +15,33 @@
   <extension
         point="org.eclipse.escriptmonkey.scripting.storedscript.metadata">
      <metadata
-           name="Description"
-           regex="Description:\s*(.*)$">
-     </metadata>
-     <metadata
            name="Scope"
            regex="Scope:\s*(.*)$">
-     </metadata>
-     <metadata
-           name="Key"
-           regex="Key:\\s*(.*)$">
-     </metadata>
-     <metadata
-           name="Menu"
-           regex="Menu:\s*(.*)$">
      </metadata>
      <metadata
            name="Listener"
            regex="Listener:\s*(.*)$">
      </metadata>
   </extension>
+  
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated ScriptUIGraph -->
+      <package
+            uri="http://storedscript/1.0"
+            class="org.eclipse.escriptmonkey.scripting.storedscript.storedscript.StoredscriptPackage"
+            genModel="models/StoredScript.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.edit.itemProviderAdapterFactories">
+      <!-- @generated ScriptUIGraph -->
+      <factory
+            uri="http://storedscript/1.0"
+            class="org.eclipse.escriptmonkey.scripting.storedscript.storedscript.provider.StoredscriptItemProviderAdapterFactory"
+            supportedTypes=
+              "org.eclipse.emf.edit.provider.IEditingDomainItemProvider
+               org.eclipse.emf.edit.provider.IStructuredItemContentProvider
+               org.eclipse.emf.edit.provider.ITreeItemContentProvider
+               org.eclipse.emf.edit.provider.IItemLabelProvider
+               org.eclipse.emf.edit.provider.IItemPropertySource"/>
+   </extension>
 </plugin>

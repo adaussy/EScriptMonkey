@@ -10,14 +10,13 @@
  *******************************************************************************/
 package org.eclipse.escriptmonkey.scripting.storedscript.notification;
 
-import java.net.URI;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.escriptmonkey.scripting.storedscript.service.StoredScriptService;
+import org.eclipse.escriptmonkey.scripting.storedscript.service.impl.StoredScriptService;
+import org.eclipse.escriptmonkey.scripting.storedscript.utils.URIScriptUtils;
 
 
 /**
@@ -56,28 +55,31 @@ public class ScriptDeltaResourceVisitor implements IResourceDeltaVisitor {
 	}
 
 	protected void handleScriptResourceChange(IResourceDelta delta, IFile file) {
-		URI fileURI = org.eclipse.escriptmonkey.scripting.storedscript.utils.URIScriptUtils.getAbsoluteURI(delta);
+		//		URI fileURI = org.eclipse.escriptmonkey.scripting.storedscript.utils.URIScriptUtils.getAbsoluteURI(delta);
 		switch(delta.getKind()) {
 		case IResourceDelta.ADDED:
-			StoredScriptService.getInstance().processNewOrChangedScript(file.getLocation(), true);
+			StoredScriptService.getInstance().processNewOrChangedScript(URIScriptUtils.createStringURI(file.getLocation()));
 			break;
 		case IResourceDelta.REMOVED:
-			StoredScriptService.getInstance().removeStoreScript(file.getLocation());
+			StoredScriptService.getInstance().removeStoreScript(StoredScriptService.getInstance().getStoreScript(URIScriptUtils.createStringURI(file.getLocation())));
 			break;
 		case IResourceDelta.CHANGED:
 			if((delta.getFlags() & IResourceDelta.MOVED_FROM) != 0) {
-				StoredScriptService.getInstance().removeStoreScript(delta.getMovedFromPath());
+				StoredScriptService.getInstance().removeStoreScript(StoredScriptService.getInstance().getStoreScript(URIScriptUtils.createStringURI(delta.getMovedFromPath())));
 				//						StoredScriptService.getInstance().processNewOrChangedScript(delta.getMovedToPath(), true);
 			}
 			if((delta.getFlags() & IResourceDelta.MOVED_TO) != 0) {
 				//						StoredScriptService.getInstance().removeStoreScript(delta.getMovedFromPath());
-				StoredScriptService.getInstance().processNewOrChangedScript(delta.getMovedToPath(), true);
+				StoredScriptService.getInstance().processNewOrChangedScript(URIScriptUtils.createStringURI(delta.getMovedToPath()));
 			}
 			if((delta.getFlags() & IResourceDelta.REPLACED) != 0) {
-				StoredScriptService.getInstance().processNewOrChangedScript(file.getLocation(), true);
+				StoredScriptService.getInstance().processNewOrChangedScript(URIScriptUtils.createStringURI(file.getLocation()));
 			}
 			if((delta.getFlags() & IResourceDelta.CONTENT) != 0) {
-				StoredScriptService.getInstance().processNewOrChangedScript(file.getLocation(), true);
+				//TODO Notify change only if metadata has changed
+				//				IScriptMetadata newMetadata = MetadaParserService.getInstance().parseMetadata(StoredScriptService.getInstance().getStoreScript(delta.getFullPath()));
+				//				delta.getResource()
+				StoredScriptService.getInstance().processNewOrChangedScript(URIScriptUtils.createStringURI(file.getLocation()));
 			}
 			break;
 		}

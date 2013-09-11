@@ -10,12 +10,6 @@
  *******************************************************************************/
 package org.eclipse.escriptmonkey.scripting.storedscript.metada;
 
-import java.io.IOException;
-
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.escriptmonkey.scripting.debug.Logger;
-import org.eclipse.escriptmonkey.scripting.storedscript.IStoredScript;
-import org.eclipse.escriptmonkey.scripting.storedscript.utils.Utilities;
 
 
 
@@ -29,20 +23,6 @@ public abstract class AbstractFileHeaderParser implements IHeaderParser {
 
 	public AbstractFileHeaderParser() {
 		super();
-	}
-
-	protected String getStoredScriptContent(IStoredScript storeScript) {
-		String content = null;
-		try {
-			content = Utilities.getFileContents(storeScript.getPath());
-		} catch (CoreException e) {
-			e.printStackTrace();
-			Logger.logError("Unable to get the header from " + storeScript.getPath());
-		} catch (IOException e) {
-			e.printStackTrace();
-			Logger.logError("Unable to get the header from " + storeScript.getPath());
-		}
-		return content;
 	}
 
 }

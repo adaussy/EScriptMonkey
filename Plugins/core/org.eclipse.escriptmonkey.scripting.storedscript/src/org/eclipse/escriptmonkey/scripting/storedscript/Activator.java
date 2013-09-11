@@ -10,13 +10,13 @@
  *******************************************************************************/
 package org.eclipse.escriptmonkey.scripting.storedscript;
 
-import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.eclipse.emf.common.ui.EclipseUIPlugin;
 import org.osgi.framework.BundleContext;
 
 /**
  * The activator class controls the plug-in life cycle
  */
-public class Activator extends AbstractUIPlugin {
+public class Activator extends EclipseUIPlugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.eclipse.escriptmonkey.scripting.storedscript"; //$NON-NLS-1$

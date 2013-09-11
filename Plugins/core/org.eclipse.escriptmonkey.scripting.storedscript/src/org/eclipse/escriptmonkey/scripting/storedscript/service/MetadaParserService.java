@@ -20,14 +20,15 @@ import java.util.regex.Matcher;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.escriptmonkey.scripting.ScriptType;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.escriptmonkey.scripting.debug.Logger;
-import org.eclipse.escriptmonkey.scripting.service.ScriptService;
-import org.eclipse.escriptmonkey.scripting.storedscript.IStoredScript;
 import org.eclipse.escriptmonkey.scripting.storedscript.metada.IHeaderParser;
-import org.eclipse.escriptmonkey.scripting.storedscript.metada.IScriptMetadata;
 import org.eclipse.escriptmonkey.scripting.storedscript.metada.Metadata;
-import org.eclipse.escriptmonkey.scripting.storedscript.metada.ScriptMetadata;
+import org.eclipse.escriptmonkey.scripting.storedscript.service.impl.StoredScriptService;
+import org.eclipse.escriptmonkey.scripting.storedscript.storedscript.IStoredScript;
+import org.eclipse.escriptmonkey.scripting.storedscript.storedscript.ScriptMetadata;
+import org.eclipse.escriptmonkey.scripting.storedscript.storedscript.ScriptType;
+import org.eclipse.escriptmonkey.scripting.storedscript.storedscript.StoredscriptFactory;
 
 
 /**
@@ -64,24 +65,29 @@ public class MetadaParserService {
 		return SingletonHolder.INSTANCE;
 	}
 
-	public IScriptMetadata parseMetadata(IStoredScript storedScript) throws CoreException {
+	public EList<ScriptMetadata> parseMetadata(IStoredScript storedScript) throws CoreException {
 		IHeaderParser parser = getParserFor(storedScript.getScriptType());
 		if(parser == null) {
-			Logger.logError("Unable to find a metadata parser for the script " + storedScript.getPath().toOSString());
+			Logger.logError("Unable to find a metadata parser for the script " + storedScript.getUri());
 			return null;
 		}
-		ScriptMetadata meta = new ScriptMetadata();
+		EList<ScriptMetadata> metadata = storedScript.getMetadatas();
+		metadata.clear();
 		String header = parser.getHeader(storedScript);
 		if(header != null) {
 			for(Metadata metaDef : getMetadatas()) {
 				Matcher matcher = metaDef.getRegex().matcher(header);
 				while(matcher.find()) {
 					String data = matcher.group(1);
-					meta.getMetadataMap().put(metaDef.getName(), data);
+					ScriptMetadata meta = StoredscriptFactory.eINSTANCE.createScriptMetadata();
+					metadata.add(meta);
+					meta.setKey(metaDef.getName());
+					meta.getValue().add(data);
+
 				}
 			}
 		}
-		return meta;
+		return metadata;
 	}
 
 	private Map<String, IHeaderParser> parsers = null;
@@ -131,7 +137,7 @@ public class MetadaParserService {
 							parsers.put(id, parser);
 							for(IConfigurationElement child : e.getChildren(SCRIPT_TYPE_ATTR_EXT_POINT)) {
 								String type = child.getAttribute(TYPE_ATTR_EXT_POINT);
-								ScriptType scriptType = ScriptService.getInstance().getKownSwriptType().get(type);
+								ScriptType scriptType = StoredScriptService.getInstance().getScriptType(type);
 								if(scriptType == null) {
 									Logger.logError("[Metadata parser] The reference script type with the id " + type + " is uncorrect");
 								} else {

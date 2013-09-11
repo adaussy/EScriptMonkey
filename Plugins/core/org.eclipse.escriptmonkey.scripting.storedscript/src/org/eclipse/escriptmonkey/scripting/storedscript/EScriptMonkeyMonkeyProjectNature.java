@@ -22,7 +22,7 @@ import org.eclipse.core.runtime.CoreException;
  */
 public class EScriptMonkeyMonkeyProjectNature implements IProjectNature {
 
-	public static String ESCRIPT_MONKEY_NATURE = "org.eclipse.escriptmonkey.scripting.ui.EScript_Monkey_Nature";
+	public static String ESCRIPT_MONKEY_NATURE = "org.eclipse.escriptmonkey.scripting.storedscript.EScript_Monkey_Nature";
 
 	private IProject project;
 

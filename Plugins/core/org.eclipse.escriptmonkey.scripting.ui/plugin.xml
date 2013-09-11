@@ -12,6 +12,16 @@
             name="Script Shell"
             restorable="true">
       </view>
+      <category
+            id="org.eclipse.escriptmonkey.scripting.ui.scriptviewCategory"
+            name="Script Views">
+      </category>
+      <view
+            category="org.eclipse.escriptmonkey.scripting.ui.scriptviewCategory"
+            class="org.eclipse.escriptmonkey.scripting.ui.view.ScriptEplorerView"
+            id="org.eclipse.escriptmonkey.scripting.ui.view.ScriptEplorerView"
+            name="Script view explorer">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -256,4 +266,41 @@
          </enablement>
       </consolePageParticipant>
    </extension>
-  </plugin>
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated ScriptUIGraph -->
+      <package
+            uri="http://scriptuigraph/1.0"
+            class="org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.ScriptuigraphPackage"
+            genModel="model/ScriptUIGraph.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.edit.itemProviderAdapterFactories">
+      <!-- @generated ScriptUIGraph -->
+      <factory
+            uri="http://scriptuigraph/1.0"
+            class="org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.provider.ScriptuigraphItemProviderAdapterFactory"
+            supportedTypes=
+              "org.eclipse.emf.edit.provider.IEditingDomainItemProvider
+               org.eclipse.emf.edit.provider.IStructuredItemContentProvider
+               org.eclipse.emf.edit.provider.ITreeItemContentProvider
+               org.eclipse.emf.edit.provider.IItemLabelProvider
+               org.eclipse.emf.edit.provider.IItemPropertySource"/>
+   </extension>
+
+   
+   <extension
+        point="org.eclipse.escriptmonkey.scripting.storedscript.metadata">
+     <metadata
+           name="Description"
+           regex="Description:\s*(.*)$">
+     </metadata>
+     <metadata
+           name="Key"
+           regex="Key:\\s*(.*)$">
+     </metadata>
+     <metadata
+           name="Menu"
+           regex="Menu:\s*(.*)$">
+     </metadata>
+  </extension>
+</plugin>

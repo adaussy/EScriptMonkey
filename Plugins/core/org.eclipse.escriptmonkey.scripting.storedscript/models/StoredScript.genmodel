@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" copyrightText="  Copyright (c) 2013 Atos&#xD;&#xA;  All rights reserved. This program and the accompanying materials&#xD;&#xA;  are made available under the terms of the Eclipse Public License v1.0&#xD;&#xA;  which accompanies this distribution, and is available at&#xD;&#xA;  http://www.eclipse.org/legal/epl-v10.html&#xD;&#xA; &#xD;&#xA;  Contributors:&#xD;&#xA;     Arthur Daussy - initial implementation"
+    modelDirectory="/org.eclipse.escriptmonkey.scripting.storedscript/src" editDirectory="/org.eclipse.escriptmonkey.scripting.storedscript/src"
+    editorDirectory="/org.eclipse.escriptmonkey.scripting.storedscript/src" modelPluginID="org.eclipse.escriptmonkey.scripting.storedscript"
+    modelName="StoredScript" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    importerID="org.eclipse.emf.importer.ecore" complianceLevel="6.0" operationReflection="true"
+    importOrganizing="true">
+  <foreignModel>StoredScript.ecore</foreignModel>
+  <genPackages prefix="Storedscript" basePackage="org.eclipse.escriptmonkey.scripting.storedscript"
+      disposableProviderFactory="true" ecorePackage="StoredScript.ecore#/">
+    <genClasses ecoreClass="StoredScript.ecore#//StoredScriptRegistry">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference StoredScript.ecore#//StoredScriptRegistry/scripts"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference StoredScript.ecore#//StoredScriptRegistry/scriptTypes"/>
+      <genOperations ecoreOperation="StoredScript.ecore#//StoredScriptRegistry/processNewOrChangedScript">
+        <genParameters ecoreParameter="StoredScript.ecore#//StoredScriptRegistry/processNewOrChangedScript/uri"/>
+      </genOperations>
+      <genOperations ecoreOperation="StoredScript.ecore#//StoredScriptRegistry/removeStoreScript">
+        <genParameters ecoreParameter="StoredScript.ecore#//StoredScriptRegistry/removeStoreScript/uri"/>
+      </genOperations>
+      <genOperations ecoreOperation="StoredScript.ecore#//StoredScriptRegistry/getStoredScript">
+        <genParameters ecoreParameter="StoredScript.ecore#//StoredScriptRegistry/getStoredScript/uri"/>
+      </genOperations>
+      <genOperations ecoreOperation="StoredScript.ecore#//StoredScriptRegistry/getScriptType">
+        <genParameters ecoreParameter="StoredScript.ecore#//StoredScriptRegistry/getScriptType/type"/>
+      </genOperations>
+    </genClasses>
+    <genClasses image="false" ecoreClass="StoredScript.ecore#//IStoredScript">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute StoredScript.ecore#//IStoredScript/uri"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference StoredScript.ecore#//IStoredScript/metadatas"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference StoredScript.ecore#//IStoredScript/scriptType"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference StoredScript.ecore#//IStoredScript/registry"/>
+      <genOperations ecoreOperation="StoredScript.ecore#//IStoredScript/getMetadata">
+        <genParameters ecoreParameter="StoredScript.ecore#//IStoredScript/getMetadata/metadataName"/>
+      </genOperations>
+    </genClasses>
+    <genClasses ecoreClass="StoredScript.ecore#//StoredScript"/>
+    <genClasses ecoreClass="StoredScript.ecore#//ScriptMetadata">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute StoredScript.ecore#//ScriptMetadata/key"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute StoredScript.ecore#//ScriptMetadata/value"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference StoredScript.ecore#//ScriptMetadata/script"/>
+    </genClasses>
+    <genClasses ecoreClass="StoredScript.ecore#//ScriptType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute StoredScript.ecore#//ScriptType/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute StoredScript.ecore#//ScriptType/extension"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference StoredScript.ecore#//ScriptType/registry"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>
