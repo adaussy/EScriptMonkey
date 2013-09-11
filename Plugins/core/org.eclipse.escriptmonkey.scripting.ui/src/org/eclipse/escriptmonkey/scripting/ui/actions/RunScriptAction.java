@@ -18,44 +18,19 @@ import org.eclipse.escriptmonkey.scripting.service.ScriptService;
 import org.eclipse.escriptmonkey.scripting.storedscript.storedscript.IStoredScript;
 import org.eclipse.escriptmonkey.scripting.storedscript.storedscript.ScriptType;
 import org.eclipse.escriptmonkey.scripting.ui.console.ScriptConsole;
-import org.eclipse.jface.action.Action;
 
 
 /**
- * Action that run a {@link IStoredScript} 
+ * Action that run a {@link IStoredScript}
+ * 
  * @author adaussy
- *
+ * 
  */
-public class RunScriptAction extends Action {
-
-	private IStoredScript script;
+public class RunScriptAction extends AbstractStoredScriptAction {
 
 	public RunScriptAction(String text) {
 		super(text);
 	}
-
-
-
-
-	/**
-	 * @return the script
-	 */
-	public IStoredScript getScript() {
-		return script;
-	}
-
-
-
-
-	/**
-	 * @param script
-	 *        the script to set
-	 */
-	public void setScript(IStoredScript script) {
-		this.script = script;
-	}
-
-
 
 	@Override
 	public void run() {
@@ -74,8 +49,5 @@ public class RunScriptAction extends Action {
 		}
 		engine.schedule();
 	}
-
-
-
 
 }

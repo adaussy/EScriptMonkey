@@ -5,6 +5,8 @@ import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 import org.eclipse.escriptmonkey.scripting.storedscript.storedscript.IStoredScript;
 import org.eclipse.escriptmonkey.scripting.ui.ScriptGraphService;
+import org.eclipse.escriptmonkey.scripting.ui.actions.AbstractStoredScriptAction;
+import org.eclipse.escriptmonkey.scripting.ui.actions.EditScriptAction;
 import org.eclipse.escriptmonkey.scripting.ui.actions.RunScriptAction;
 import org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.StoredScriptUI;
 import org.eclipse.jface.action.IMenuManager;
@@ -32,7 +34,9 @@ public class ScriptEplorerView extends ViewPart {
 
 	private TreeViewer treeViewer;
 
-	private RunScriptAction playScriptAction;
+	private AbstractStoredScriptAction playScriptAction;
+
+	private EditScriptAction editScriptAction;
 
 	public ScriptEplorerView() {
 	}
@@ -64,9 +68,13 @@ public class ScriptEplorerView extends ViewPart {
 					if(storedScript != null) {
 						playScriptAction.setScript(storedScript);
 						playScriptAction.setEnabled(true);
+						editScriptAction.setEnabled(true);
+						editScriptAction.setScript(storedScript);
 					} else {
 						playScriptAction.setScript(null);
 						playScriptAction.setEnabled(false);
+						editScriptAction.setEnabled(false);
+						editScriptAction.setScript(null);
 					}
 
 				}
@@ -112,6 +120,11 @@ public class ScriptEplorerView extends ViewPart {
 			playScriptAction.setDisabledImageDescriptor(ResourceManager.getPluginImageDescriptor("org.eclipse.escriptmonkey.scripting.ui", "images/start_script_disable.gif"));
 			playScriptAction.setImageDescriptor(ResourceManager.getPluginImageDescriptor("org.eclipse.escriptmonkey.scripting.ui", "images/start_script.gif"));
 		}
+		{
+			editScriptAction = new EditScriptAction("Edit Script");
+			editScriptAction.setImageDescriptor(ResourceManager.getPluginImageDescriptor("org.eclipse.escriptmonkey.scripting.ui", "images/editor.gif"));
+			editScriptAction.setEnabled(false);
+		}
 	}
 
 	/**
@@ -120,6 +133,7 @@ public class ScriptEplorerView extends ViewPart {
 	private void initializeToolBar() {
 		IToolBarManager tbm = getViewSite().getActionBars().getToolBarManager();
 		tbm.add(playScriptAction);
+		tbm.add(editScriptAction);
 	}
 
 	/**

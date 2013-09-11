@@ -459,7 +459,6 @@ public class StoredScriptImpl extends MinimalEObjectImpl.Container implements St
 	@Override
 	public InputStream getInputStream() throws IOException {
 		URIConverter uriConveter = this.eResource().getResourceSet().getURIConverter();
-
 		return uriConveter.createInputStream(URI.createURI(uri));
 	}
 
