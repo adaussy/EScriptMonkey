@@ -8,7 +8,7 @@
  * Contributors:
  *     Arthur Daussy - initial implementation
  *******************************************************************************/
-package org.eclipse.escriptmonkey.scripting.storedscript.service;
+package org.eclipse.escriptmonkey.scripting.storedscript.service.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -52,7 +52,7 @@ import com.google.common.collect.Collections2;
  * @author adaussy
  * 
  */
-public class StoredScriptService {
+public class StoredScriptService implements IStoredScriptServiceInternal {
 
 	private static class SingletonHolder {
 
@@ -116,6 +116,12 @@ public class StoredScriptService {
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.escriptmonkey.scripting.storedscript.service.IStoredScriptService#getStoredScript()
+	 */
+	@Override
 	public Set<IStoredScript> getStoredScript() {
 		if(registry != null) {
 			return Collections.unmodifiableSet(new HashSet<IStoredScript>(registry.getScripts()));
@@ -123,10 +129,22 @@ public class StoredScriptService {
 		return Collections.emptySet();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.escriptmonkey.scripting.storedscript.service.IStoredScriptService#getStoreScript(java.lang.String)
+	 */
+	@Override
 	public IStoredScript getStoreScript(String uri) {
 		return registry.getStoredScript(uri);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.escriptmonkey.scripting.storedscript.service.IStoredScriptService#getFileStoredScript(org.eclipse.emf.common.util.URI)
+	 */
+	@Override
 	public IStoredScript getFileStoredScript(URI uri) {
 		return getStoreScript(URIScriptUtils.getStringFromURI(uri));
 	}
@@ -137,14 +155,38 @@ public class StoredScriptService {
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.escriptmonkey.scripting.storedscript.service.IStoredScriptService#addListener(org.eclipse.escriptmonkey.scripting.storedscript.
+	 * notification.IStoredScriptListener)
+	 */
+	@Override
 	public void addListener(IStoredScriptListener listener) {
 		listeners.add(listener);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.escriptmonkey.scripting.storedscript.service.IStoredScriptService#removeListener(org.eclipse.escriptmonkey.scripting.storedscript
+	 * .notification.IStoredScriptListener)
+	 */
+	@Override
 	public void removeListener(IStoredScriptListener listener) {
 		listeners.remove(listener);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.escriptmonkey.scripting.storedscript.service.IStoredScriptService#removeStoreScript(org.eclipse.escriptmonkey.scripting.storedscript
+	 * .storedscript.IStoredScript)
+	 */
+	@Override
 	public void removeStoreScript(IStoredScript storeScript) {
 		if(registry != null) {
 			registry.getScripts().remove(storeScript);
@@ -155,23 +197,43 @@ public class StoredScriptService {
 	private StoredScriptRegistry registry = null;
 
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.escriptmonkey.scripting.storedscript.service.IStoredScriptService#processNewOrChangedScript(java.lang.String)
+	 */
+	@Override
 	public void processNewOrChangedScript(String uri) {
 		registry.processNewOrChangedScript(uri);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.escriptmonkey.scripting.storedscript.service.IStoredScriptService#getScriptType(java.lang.String)
+	 */
+	@Override
 	public org.eclipse.escriptmonkey.scripting.storedscript.storedscript.ScriptType getScriptType(String type) {
 		return registry.getScriptType(type);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.escriptmonkey.scripting.storedscript.service.IStoredScriptService#getMatchingScriptType(org.eclipse.escriptmonkey.scripting.
+	 * storedscript.storedscript.IStoredScript)
+	 */
+	@Override
 	public org.eclipse.escriptmonkey.scripting.storedscript.storedscript.ScriptType getMatchingScriptType(IStoredScript script) {
 		return ((StoredScriptRegistryImpl)registry).getMatchingScriptType(script);
 	}
 
-	/**
-	 * Remove all script found into the workspace. (So keep the one from alternative file)
+	/*
+	 * (non-Javadoc)
 	 * 
-	 * @throws CoreException
+	 * @see org.eclipse.escriptmonkey.scripting.storedscript.service.IStoredScriptService#rescanAllFiles()
 	 */
+	@Override
 	public void rescanAllFiles() throws CoreException {
 		if(registry == null) {
 			registry = StoredscriptFactory.eINSTANCE.createStoredScriptRegistry();
@@ -192,6 +254,12 @@ public class StoredScriptService {
 		return findScriptsInContainer(handleScriptType, container, notify);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.escriptmonkey.scripting.storedscript.service.IStoredScriptService#getHandleFileExtension()
+	 */
+	@Override
 	public Collection<String> getHandleFileExtension() {
 		return Collections2.transform(ScriptService.getInstance().getHandleScriptType(), new ScriptType.ToExtensionFile());
 	}
@@ -219,9 +287,16 @@ public class StoredScriptService {
 		});
 		return scripts;
 	}
+
+	@Override
+	public StoredScriptRegistry getRegistry() {
+		return registry;
+	}
 	/*
 	 * TODO add extension point to add alternative path
 	 */
+
+
 
 	//	protected void findScriptsInalternatePath(Collection<String> extensions, Collection<URI> alternatePaths, boolean notify) {
 	//		for(Iterator<URI> iterator = alternatePaths.iterator(); iterator.hasNext();) {

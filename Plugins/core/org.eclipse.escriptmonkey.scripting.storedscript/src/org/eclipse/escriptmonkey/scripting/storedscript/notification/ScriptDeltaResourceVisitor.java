@@ -15,7 +15,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.escriptmonkey.scripting.storedscript.service.StoredScriptService;
+import org.eclipse.escriptmonkey.scripting.storedscript.service.impl.StoredScriptService;
 import org.eclipse.escriptmonkey.scripting.storedscript.utils.URIScriptUtils;
 
 

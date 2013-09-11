@@ -31,10 +31,13 @@ Require-Bundle: org.eclipse.escriptmonkey.scripting;bundle-version="[1.0.0,2.0.0
  org.eclipse.core.filesystem
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.eclipse.escriptmonkey.scripting.ui.Activator
-Export-Package: org.eclipse.escriptmonkey.scripting.ui.console,
+Export-Package: org.eclipse.escriptmonkey.scripting.ui,
+ org.eclipse.escriptmonkey.scripting.ui.actions,
+ org.eclipse.escriptmonkey.scripting.ui.console,
  org.eclipse.escriptmonkey.scripting.ui.launching,
- org.eclipse.escriptmonkey.scripting.ui.wizard,
  org.eclipse.escriptmonkey.scripting.ui.scriptuigraph,
  org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.impl,
  org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.provider,
- org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.util
+ org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.util,
+ org.eclipse.escriptmonkey.scripting.ui.wizard,
+ org.eclipse.wb.swt

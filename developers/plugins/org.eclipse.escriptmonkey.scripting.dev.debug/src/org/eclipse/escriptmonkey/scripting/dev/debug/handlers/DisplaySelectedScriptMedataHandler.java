@@ -19,7 +19,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.escriptmonkey.scripting.debug.Logger;
-import org.eclipse.escriptmonkey.scripting.storedscript.service.StoredScriptService;
+import org.eclipse.escriptmonkey.scripting.storedscript.service.IStoredScriptService;
 import org.eclipse.escriptmonkey.scripting.storedscript.storedscript.IStoredScript;
 import org.eclipse.escriptmonkey.scripting.storedscript.storedscript.ScriptMetadata;
 import org.eclipse.escriptmonkey.scripting.storedscript.utils.URIScriptUtils;
@@ -57,7 +57,7 @@ public class DisplaySelectedScriptMedataHandler extends AbstractHandler {
 			if(first instanceof IFile) {
 				IFile file = (IFile)first;
 				IPath location = file.getLocation();
-				IStoredScript script = StoredScriptService.getInstance().getStoreScript(URIScriptUtils.createStringURI(location));
+				IStoredScript script = IStoredScriptService.INSTANCE.getStoreScript(URIScriptUtils.createStringURI(location));
 				if(script != null) {
 					EList<ScriptMetadata> metadatas = script.getMetadatas();
 					StringBuilder builder = new StringBuilder();

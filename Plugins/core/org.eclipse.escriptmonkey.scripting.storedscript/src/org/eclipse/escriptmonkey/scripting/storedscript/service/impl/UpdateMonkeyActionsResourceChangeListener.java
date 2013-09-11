@@ -10,7 +10,7 @@
  *     Ward Cunningham - initial implementation
  *******************************************************************************/
 
-package org.eclipse.escriptmonkey.scripting.storedscript.service;
+package org.eclipse.escriptmonkey.scripting.storedscript.service.impl;
 
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;

@@ -121,7 +121,7 @@ public class ScriptTypeItemProvider extends ItemProviderAdapter implements IEdit
 	@Override
 	public String getText(Object object) {
 		String label = ((ScriptType)object).getType();
-		return label == null || label.length() == 0 ? getString("_UI_ScriptType_type") : getString("_UI_ScriptType_type") + " " + label;
+		return label;
 	}
 
 	/**

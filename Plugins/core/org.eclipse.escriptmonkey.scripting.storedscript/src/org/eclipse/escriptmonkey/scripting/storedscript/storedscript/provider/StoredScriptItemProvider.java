@@ -150,12 +150,12 @@ public class StoredScriptItemProvider extends ItemProviderAdapter implements IEd
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
-	 * @generated
+	 * @generated not
 	 */
 	@Override
 	public String getText(Object object) {
 		String label = ((StoredScript)object).getUri();
-		return label == null || label.length() == 0 ? getString("_UI_StoredScript_type") : getString("_UI_StoredScript_type") + " " + label;
+		return label;
 	}
 
 	/**

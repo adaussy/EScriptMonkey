@@ -35,7 +35,6 @@ import org.eclipse.escriptmonkey.scripting.storedscript.storedscript.Storedscrip
  * This is the item provider adapter for a {@link org.eclipse.escriptmonkey.scripting.storedscript.storedscript.StoredScriptRegistry} object.
  * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
- * 
  * @generated
  */
 public class StoredScriptRegistryItemProvider extends ItemProviderAdapter implements IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource {
@@ -43,7 +42,6 @@ public class StoredScriptRegistryItemProvider extends ItemProviderAdapter implem
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public static final String copyright = "  Copyright (c) 2013 Atos\r\n  All rights reserved. This program and the accompanying materials\r\n  are made available under the terms of the Eclipse Public License v1.0\r\n  which accompanies this distribution, and is available at\r\n  http://www.eclipse.org/legal/epl-v10.html\r\n \r\n  Contributors:\r\n     Arthur Daussy - initial implementation";
@@ -52,7 +50,6 @@ public class StoredScriptRegistryItemProvider extends ItemProviderAdapter implem
 	 * This constructs an instance from a factory and a notifier.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public StoredScriptRegistryItemProvider(AdapterFactory adapterFactory) {
@@ -63,12 +60,11 @@ public class StoredScriptRegistryItemProvider extends ItemProviderAdapter implem
 	 * This returns the property descriptors for the adapted class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
 	public List<IItemPropertyDescriptor> getPropertyDescriptors(Object object) {
-		if(itemPropertyDescriptors == null) {
+		if (itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
 		}
@@ -81,12 +77,11 @@ public class StoredScriptRegistryItemProvider extends ItemProviderAdapter implem
 	 * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
 	public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
-		if(childrenFeatures == null) {
+		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
 			childrenFeatures.add(StoredscriptPackage.Literals.STORED_SCRIPT_REGISTRY__SCRIPTS);
 			childrenFeatures.add(StoredscriptPackage.Literals.STORED_SCRIPT_REGISTRY__SCRIPT_TYPES);
@@ -97,7 +92,6 @@ public class StoredScriptRegistryItemProvider extends ItemProviderAdapter implem
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -112,7 +106,6 @@ public class StoredScriptRegistryItemProvider extends ItemProviderAdapter implem
 	 * This returns StoredScriptRegistry.gif.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -124,7 +117,6 @@ public class StoredScriptRegistryItemProvider extends ItemProviderAdapter implem
 	 * This returns the label text for the adapted class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -137,18 +129,17 @@ public class StoredScriptRegistryItemProvider extends ItemProviderAdapter implem
 	 * children and by creating a viewer notification, which it passes to {@link #fireNotifyChanged}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
 	public void notifyChanged(Notification notification) {
 		updateChildren(notification);
 
-		switch(notification.getFeatureID(StoredScriptRegistry.class)) {
-		case StoredscriptPackage.STORED_SCRIPT_REGISTRY__SCRIPTS:
-		case StoredscriptPackage.STORED_SCRIPT_REGISTRY__SCRIPT_TYPES:
-			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
-			return;
+		switch (notification.getFeatureID(StoredScriptRegistry.class)) {
+			case StoredscriptPackage.STORED_SCRIPT_REGISTRY__SCRIPTS:
+			case StoredscriptPackage.STORED_SCRIPT_REGISTRY__SCRIPT_TYPES:
+				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+				return;
 		}
 		super.notifyChanged(notification);
 	}
@@ -158,16 +149,21 @@ public class StoredScriptRegistryItemProvider extends ItemProviderAdapter implem
 	 * that can be created under this object.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
 		super.collectNewChildDescriptors(newChildDescriptors, object);
 
-		newChildDescriptors.add(createChildParameter(StoredscriptPackage.Literals.STORED_SCRIPT_REGISTRY__SCRIPTS, StoredscriptFactory.eINSTANCE.createStoredScript()));
+		newChildDescriptors.add
+			(createChildParameter
+				(StoredscriptPackage.Literals.STORED_SCRIPT_REGISTRY__SCRIPTS,
+				 StoredscriptFactory.eINSTANCE.createStoredScript()));
 
-		newChildDescriptors.add(createChildParameter(StoredscriptPackage.Literals.STORED_SCRIPT_REGISTRY__SCRIPT_TYPES, StoredscriptFactory.eINSTANCE.createScriptType()));
+		newChildDescriptors.add
+			(createChildParameter
+				(StoredscriptPackage.Literals.STORED_SCRIPT_REGISTRY__SCRIPT_TYPES,
+				 StoredscriptFactory.eINSTANCE.createScriptType()));
 	}
 
 	/**

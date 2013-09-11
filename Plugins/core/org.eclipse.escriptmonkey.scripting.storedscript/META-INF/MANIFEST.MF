@@ -3,6 +3,8 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Storedscript
 Bundle-SymbolicName: org.eclipse.escriptmonkey.scripting.storedscript;singleton:=true
 Bundle-Version: 1.0.0.qualifier
+Bundle-ClassPath: .
+Bundle-Localization: plugin
 Bundle-Activator: org.eclipse.escriptmonkey.scripting.storedscript.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
@@ -21,5 +23,6 @@ Export-Package: org.eclipse.escriptmonkey.scripting.storedscript,
  org.eclipse.escriptmonkey.scripting.storedscript.metada,
  org.eclipse.escriptmonkey.scripting.storedscript.notification,
  org.eclipse.escriptmonkey.scripting.storedscript.service,
+ org.eclipse.escriptmonkey.scripting.storedscript.service.impl;x-internal:=true,
  org.eclipse.escriptmonkey.scripting.storedscript.storedscript,
  org.eclipse.escriptmonkey.scripting.storedscript.utils

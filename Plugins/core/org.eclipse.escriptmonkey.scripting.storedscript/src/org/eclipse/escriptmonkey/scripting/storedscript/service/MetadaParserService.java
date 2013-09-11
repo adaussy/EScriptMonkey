@@ -24,6 +24,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.escriptmonkey.scripting.debug.Logger;
 import org.eclipse.escriptmonkey.scripting.storedscript.metada.IHeaderParser;
 import org.eclipse.escriptmonkey.scripting.storedscript.metada.Metadata;
+import org.eclipse.escriptmonkey.scripting.storedscript.service.impl.StoredScriptService;
 import org.eclipse.escriptmonkey.scripting.storedscript.storedscript.IStoredScript;
 import org.eclipse.escriptmonkey.scripting.storedscript.storedscript.ScriptMetadata;
 import org.eclipse.escriptmonkey.scripting.storedscript.storedscript.ScriptType;

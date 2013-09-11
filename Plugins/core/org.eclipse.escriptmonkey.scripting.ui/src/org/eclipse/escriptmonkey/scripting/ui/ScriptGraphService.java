@@ -12,7 +12,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.escriptmonkey.scripting.debug.Logger;
 import org.eclipse.escriptmonkey.scripting.storedscript.notification.IStoredScriptListener;
-import org.eclipse.escriptmonkey.scripting.storedscript.service.StoredScriptService;
+import org.eclipse.escriptmonkey.scripting.storedscript.service.IStoredScriptService;
 import org.eclipse.escriptmonkey.scripting.storedscript.storedscript.IStoredScript;
 import org.eclipse.escriptmonkey.scripting.storedscript.storedscript.ScriptMetadata;
 import org.eclipse.escriptmonkey.scripting.storedscript.storedscript.StoredScriptRegistry;
@@ -64,13 +64,14 @@ public class ScriptGraphService implements IStoredScriptListener {
 
 
 	protected void init() {
-		StoredScriptService.getInstance().addListener(this);
+
+		IStoredScriptService.INSTANCE.addListener(this);
 		resourceSet = new ResourceSetImpl();
 		ResourceImpl r = new ResourceImpl();
 		resourceSet.getResources().add(r);
 		root = ScriptuigraphFactory.eINSTANCE.createRoot();
 		r.getContents().add(root);
-		Set<IStoredScript> storeScripts = StoredScriptService.getInstance().getStoredScript();
+		Set<IStoredScript> storeScripts = IStoredScriptService.INSTANCE.getStoredScript();
 		for(IStoredScript s : storeScripts) {
 			addUIScript(s);
 		}

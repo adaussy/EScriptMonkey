@@ -1,13 +1,23 @@
-package org.eclipse.escriptmonkey.scripting.ui.view;
+/*******************************************************************************
+ * Copyright (c) 2013 Atos
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     Arthur Daussy - initial implementation
+ *******************************************************************************/
+package org.eclipse.escriptmonkey.scripting.dev.debug;
 
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
+import org.eclipse.escriptmonkey.scripting.storedscript.service.IStoredScriptService;
+import org.eclipse.escriptmonkey.scripting.storedscript.service.impl.IStoredScriptServiceInternal;
 import org.eclipse.escriptmonkey.scripting.storedscript.storedscript.IStoredScript;
-import org.eclipse.escriptmonkey.scripting.ui.ScriptGraphService;
 import org.eclipse.escriptmonkey.scripting.ui.actions.EditScriptAction;
 import org.eclipse.escriptmonkey.scripting.ui.actions.RunScriptAction;
-import org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.StoredScriptUI;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -27,7 +37,7 @@ import org.eclipse.ui.part.ViewPart;
 import org.eclipse.wb.swt.ResourceManager;
 
 
-public class ScriptEplorerView extends ViewPart {
+public class StoredScriptEplorerView extends ViewPart {
 
 	public static final String ID = "org.eclipse.escriptmonkey.scripting.ui.view.ScriptEplorerView"; //$NON-NLS-1$
 
@@ -39,7 +49,7 @@ public class ScriptEplorerView extends ViewPart {
 
 	private EditScriptAction editScriptAction;
 
-	public ScriptEplorerView() {
+	public StoredScriptEplorerView() {
 	}
 
 	/**
@@ -60,7 +70,7 @@ public class ScriptEplorerView extends ViewPart {
 
 			treeViewer.setContentProvider(new AdapterFactoryContentProvider(adapterFactory));
 			treeViewer.setLabelProvider(new AdapterFactoryLabelProvider(adapterFactory));
-			treeViewer.setInput(ScriptGraphService.getInstance().getScriptGraph());
+			treeViewer.setInput(((IStoredScriptServiceInternal)IStoredScriptService.INSTANCE).getRegistry());
 			treeViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 
 				@Override
@@ -106,12 +116,9 @@ public class ScriptEplorerView extends ViewPart {
 		if(selection instanceof IStructuredSelection) {
 			IStructuredSelection select = (IStructuredSelection)selection;
 			Object first = select.getFirstElement();
-			if(first instanceof StoredScriptUI) {
-				StoredScriptUI storeScriptUI = (StoredScriptUI)first;
-				IStoredScript storedScrip = storeScriptUI.getScript();
-				if(storedScrip != null) {
-					return storedScrip;
-				}
+			if(first instanceof IStoredScript) {
+				IStoredScript storeScript = (IStoredScript)first;
+				return storeScript;
 			}
 		}
 		return null;
@@ -122,12 +129,9 @@ public class ScriptEplorerView extends ViewPart {
 		if(selection instanceof IStructuredSelection) {
 			IStructuredSelection select = (IStructuredSelection)selection;
 			Object first = select.getFirstElement();
-			if(first instanceof StoredScriptUI) {
-				StoredScriptUI storeScriptUI = (StoredScriptUI)first;
-				IStoredScript storedScrip = storeScriptUI.getScript();
-				if(storedScrip != null) {
-					return storedScrip;
-				}
+			if(first instanceof IStoredScript) {
+				IStoredScript storeScript = (IStoredScript)first;
+				return storeScript;
 			}
 		}
 		return null;
