@@ -55,5 +55,8 @@
 			../../Plugins/core/org.eclipse.escriptmonkey.scripting.ui
 		</module>
 		<module>../../Plugins/engines/org.jython</module>
+		<module>
+			../org.eclipse.escriptmonkey.scripting.releng.target
+		</module>
 	</modules>
 </project>  
