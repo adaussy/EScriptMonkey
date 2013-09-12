@@ -58,5 +58,14 @@
 		<module>
 			../org.eclipse.escriptmonkey.scripting.releng.target
 		</module>
+		<module>
+			../../developers/plugins/org.eclipse.escriptmonkey.scripting.dev.debug
+		</module>
+		<module>
+			../../Plugins/core/org.eclipse.escriptmonkey.scripting.log
+		</module>
+		<module>
+			../../Plugins/core/org.eclipse.escriptmonkey.scripting.storedscript
+		</module>
 	</modules>
 </project>  
