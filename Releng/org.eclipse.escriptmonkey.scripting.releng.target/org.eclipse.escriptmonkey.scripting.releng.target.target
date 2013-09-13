@@ -2,6 +2,7 @@
 <?pde version="3.8"?><target includeMode="feature" name="SysBox" sequenceNumber="35">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.emf.workspace.feature.group" version="1.7.0.201306111400"/>
 <unit id="org.eclipse.equinox.p2.extras.feature.feature.group" version="1.2.0.v20130604-2046"/>
 <unit id="org.eclipse.e4.rcp.feature.group" version="1.2.0.v20130605-1738"/>
 <unit id="org.eclipse.e4.rcp.source.feature.group" version="1.2.0.v20130605-1738"/>
