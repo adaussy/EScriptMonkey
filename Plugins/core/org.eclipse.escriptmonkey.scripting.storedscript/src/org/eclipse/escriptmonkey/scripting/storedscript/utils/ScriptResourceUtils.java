@@ -72,15 +72,19 @@ public class ScriptResourceUtils {
 	public static void addEclipseMoneyNature(IProject project) throws CoreException {
 		if(project != null) {
 			if(!isEclipseMonkeyProject(project)) {
-				IProjectDescription description = project.getDescription();
-				String[] natures = description.getNatureIds();
-				String[] newNatures = new String[natures.length + 1];
-				System.arraycopy(natures, 0, newNatures, 0, natures.length);
-				newNatures[natures.length] = EScriptMonkeyMonkeyProjectNature.ESCRIPT_MONKEY_NATURE;
-				description.setNatureIds(newNatures);
-				project.setDescription(description, new NullProgressMonitor());
+				addNature(project, EScriptMonkeyMonkeyProjectNature.ESCRIPT_MONKEY_NATURE);
 			}
 		}
+	}
+
+	public static void addNature(IProject project, String nature) throws CoreException {
+		IProjectDescription description = project.getDescription();
+		String[] natures = description.getNatureIds();
+		String[] newNatures = new String[natures.length + 1];
+		System.arraycopy(natures, 0, newNatures, 0, natures.length);
+		newNatures[natures.length] = nature;
+		description.setNatureIds(newNatures);
+		project.setDescription(description, new NullProgressMonitor());
 	}
 
 }

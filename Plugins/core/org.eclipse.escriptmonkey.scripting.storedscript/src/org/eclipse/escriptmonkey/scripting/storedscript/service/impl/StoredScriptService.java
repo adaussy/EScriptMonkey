@@ -277,8 +277,8 @@ public class StoredScriptService implements IStoredScriptServiceInternal {
 				} else if(resource instanceof IFile) {
 					IFile file = (IFile)resource;
 					if(extensions.contains(file.getFileExtension())) {
-						IPath location = file.getLocation();
-						processNewOrChangedScript(URIScriptUtils.createStringURI(location));
+						IPath location = file.getFullPath();
+						processNewOrChangedScript(URIScriptUtils.createPlatformString(location));
 						scripts.add(file);
 					}
 				}

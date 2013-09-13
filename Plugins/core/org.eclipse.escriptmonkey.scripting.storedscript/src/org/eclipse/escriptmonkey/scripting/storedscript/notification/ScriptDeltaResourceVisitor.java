@@ -58,10 +58,10 @@ public class ScriptDeltaResourceVisitor implements IResourceDeltaVisitor {
 		//		URI fileURI = org.eclipse.escriptmonkey.scripting.storedscript.utils.URIScriptUtils.getAbsoluteURI(delta);
 		switch(delta.getKind()) {
 		case IResourceDelta.ADDED:
-			StoredScriptService.getInstance().processNewOrChangedScript(URIScriptUtils.createStringURI(file.getLocation()));
+			StoredScriptService.getInstance().processNewOrChangedScript(URIScriptUtils.createPlatformString(delta.getFullPath()));
 			break;
 		case IResourceDelta.REMOVED:
-			StoredScriptService.getInstance().removeStoreScript(StoredScriptService.getInstance().getStoreScript(URIScriptUtils.createStringURI(file.getLocation())));
+			StoredScriptService.getInstance().removeStoreScript(StoredScriptService.getInstance().getStoreScript(URIScriptUtils.createPlatformString(delta.getFullPath())));
 			break;
 		case IResourceDelta.CHANGED:
 			if((delta.getFlags() & IResourceDelta.MOVED_FROM) != 0) {
@@ -73,13 +73,13 @@ public class ScriptDeltaResourceVisitor implements IResourceDeltaVisitor {
 				StoredScriptService.getInstance().processNewOrChangedScript(URIScriptUtils.createStringURI(delta.getMovedToPath()));
 			}
 			if((delta.getFlags() & IResourceDelta.REPLACED) != 0) {
-				StoredScriptService.getInstance().processNewOrChangedScript(URIScriptUtils.createStringURI(file.getLocation()));
+				StoredScriptService.getInstance().processNewOrChangedScript(URIScriptUtils.createPlatformString(delta.getFullPath()));
 			}
 			if((delta.getFlags() & IResourceDelta.CONTENT) != 0) {
 				//TODO Notify change only if metadata has changed
 				//				IScriptMetadata newMetadata = MetadaParserService.getInstance().parseMetadata(StoredScriptService.getInstance().getStoreScript(delta.getFullPath()));
 				//				delta.getResource()
-				StoredScriptService.getInstance().processNewOrChangedScript(URIScriptUtils.createStringURI(file.getLocation()));
+				StoredScriptService.getInstance().processNewOrChangedScript(URIScriptUtils.createPlatformString(delta.getFullPath()));
 			}
 			break;
 		}

@@ -25,4 +25,5 @@ Export-Package: org.eclipse.escriptmonkey.scripting.storedscript,
  org.eclipse.escriptmonkey.scripting.storedscript.service,
  org.eclipse.escriptmonkey.scripting.storedscript.service.impl;x-internal:=true,
  org.eclipse.escriptmonkey.scripting.storedscript.storedscript,
+ org.eclipse.escriptmonkey.scripting.storedscript.storedscript.util,
  org.eclipse.escriptmonkey.scripting.storedscript.utils

@@ -29,6 +29,14 @@ public class URIScriptUtils {
 		return URI.createURI(uri);
 	}
 
+	public static URI createPlatformURI(IPath path) {
+		return URI.createPlatformResourceURI(path.toString(), true);
+	}
+
+	public static String createPlatformString(IPath path) {
+		return getStringFromURI(createPlatformURI(path));
+	}
+
 	public static String createStringURI(IPath path) {
 		return URI.createFileURI(path.toString()).toString();
 	}
@@ -48,6 +56,6 @@ public class URIScriptUtils {
 	}
 
 	public static String getStringFromURI(URI uri) {
-		return uri.toFileString();
+		return uri.toString();
 	}
 }
