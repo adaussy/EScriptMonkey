@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.escriptmonkey.scripting.language">
+      <module
+            class="org.eclipse.escriptmonkey.scripting.modules.resources.WorkspaceResourceModule"
+            documentation="true"
+            name="WorkspaceResourceModule"
+            visible="true">
+      </module>
+   <module
+            class="org.eclipse.escriptmonkey.scripting.modules.resources.ResourcesModule"
+            documentation="true"
+            name="ResourcesModule"
+            visible="true">
+    </module>
+   </extension>
+</plugin>
