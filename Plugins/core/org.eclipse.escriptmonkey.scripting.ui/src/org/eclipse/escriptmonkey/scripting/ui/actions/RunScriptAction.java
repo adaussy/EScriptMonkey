@@ -10,14 +10,8 @@
  */
 package org.eclipse.escriptmonkey.scripting.ui.actions;
 
-import java.io.IOException;
-
-import org.eclipse.escriptmonkey.scripting.IScriptEngine;
-import org.eclipse.escriptmonkey.scripting.debug.Logger;
-import org.eclipse.escriptmonkey.scripting.service.ScriptService;
 import org.eclipse.escriptmonkey.scripting.storedscript.storedscript.IStoredScript;
-import org.eclipse.escriptmonkey.scripting.storedscript.storedscript.ScriptType;
-import org.eclipse.escriptmonkey.scripting.ui.console.ScriptConsole;
+import org.eclipse.escriptmonkey.scripting.ui.utils.ScriptLauncherUtils;
 
 
 /**
@@ -35,19 +29,9 @@ public class RunScriptAction extends AbstractStoredScriptAction {
 	@Override
 	public void run() {
 		super.run();
-		ScriptType scriptType = script.getScriptType();
-		IScriptEngine engine = ScriptService.getInstance().createEngine(scriptType.getType());
-		ScriptConsole console = ScriptConsole.create(engine.getName() + ": " + script.getUri(), engine);
-		engine.setOutputStream(console.getOutputStream());
-		engine.setErrorStream(console.getErrorStream());
-		engine.setTerminateOnIdle(true);
-		try {
-			engine.executeAsync(script.getInputStream());
-		} catch (IOException e) {
-			e.printStackTrace();
-			Logger.logError(e.getMessage());
-		}
-		engine.schedule();
+		ScriptLauncherUtils.launchStoredScript(script);
 	}
+
+
 
 }

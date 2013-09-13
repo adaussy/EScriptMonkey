@@ -15,8 +15,8 @@
   <extension
         point="org.eclipse.escriptmonkey.scripting.storedscript.metadata">
      <metadata
-           name="Scope"
-           regex="Scope:\s*(.*)$">
+           name="Thread"
+           regex="Thread:\s*(.*)$">
      </metadata>
      <metadata
            name="Listener"
