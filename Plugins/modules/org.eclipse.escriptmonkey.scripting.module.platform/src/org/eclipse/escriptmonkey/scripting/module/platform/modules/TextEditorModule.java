@@ -23,7 +23,7 @@ public class TextEditorModule extends AbstractScriptModule {
 
 	@WrapToScript
 	public Editor getActiveEditor() {
-		return new Editor(WorkbenchModule.window.getActivePage().getActiveEditor());
+		return new Editor(WorkbenchModule.WINDOW.getActivePage().getActiveEditor());
 	}
 
 }
