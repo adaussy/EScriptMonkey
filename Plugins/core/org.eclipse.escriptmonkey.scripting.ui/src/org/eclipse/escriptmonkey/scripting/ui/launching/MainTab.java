@@ -56,7 +56,7 @@ public class MainTab extends AbstractLaunchConfigurationTab implements ILaunchCo
     @Override
     public void setDefaults(final ILaunchConfigurationWorkingCopy configuration) {
         configuration.setAttribute(LaunchConstants.PROJECT, "");
-        configuration.setAttribute(LaunchConstants.SCRIPT_LOCATION, "");
+        configuration.setAttribute(LaunchConstants.FILE_LOCATION, "");
         configuration.setAttribute(LaunchConstants.SUSPEND_ON_STARTUP, false);
         configuration.setAttribute(LaunchConstants.DISPLAY_DYNAMIC_CODE, false);
     }
@@ -72,7 +72,7 @@ public class MainTab extends AbstractLaunchConfigurationTab implements ILaunchCo
 
         try {
             txtProject.setText(configuration.getAttribute(LaunchConstants.PROJECT, ""));
-            txtFile.setText(configuration.getAttribute(LaunchConstants.SCRIPT_LOCATION, ""));
+            txtFile.setText(configuration.getAttribute(LaunchConstants.FILE_LOCATION, ""));
             chkSuspendLaunch.setSelection(configuration.getAttribute(LaunchConstants.SUSPEND_ON_STARTUP, false));
             chkDisplayDynamicCode.setSelection(configuration.getAttribute(LaunchConstants.DISPLAY_DYNAMIC_CODE, false));
         } catch (CoreException e) {
@@ -84,7 +84,7 @@ public class MainTab extends AbstractLaunchConfigurationTab implements ILaunchCo
     @Override
     public void performApply(final ILaunchConfigurationWorkingCopy configuration) {
         configuration.setAttribute(LaunchConstants.PROJECT, txtProject.getText());
-        configuration.setAttribute(LaunchConstants.SCRIPT_LOCATION, txtFile.getText());
+        configuration.setAttribute(LaunchConstants.FILE_LOCATION, txtFile.getText());
 
         configuration.setAttribute(LaunchConstants.SUSPEND_ON_STARTUP, chkSuspendLaunch.getSelection());
         configuration.setAttribute(LaunchConstants.DISPLAY_DYNAMIC_CODE, chkDisplayDynamicCode.getSelection());
@@ -97,7 +97,7 @@ public class MainTab extends AbstractLaunchConfigurationTab implements ILaunchCo
             String projectName = launchConfig.getAttribute(LaunchConstants.PROJECT, "");
             IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
             if (project.exists()) {
-                String scriptName = launchConfig.getAttribute(LaunchConstants.SCRIPT_LOCATION, "");
+                String scriptName = launchConfig.getAttribute(LaunchConstants.FILE_LOCATION, "");
                 IFile script = project.getFile(scriptName);
                 return script.exists();
             }

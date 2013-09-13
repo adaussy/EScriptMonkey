@@ -11,73 +11,74 @@ import org.mozilla.javascript.debug.Debugger;
 
 public class LineNumberDebugger implements Debugger {
 
-    /** Keeps stack immutable. */
-    private boolean mFreezeStack = false;
+	/** Keeps stack immutable. */
+	private boolean mFreezeStack = false;
 
-    public class LineNumberDebugFrame implements DebugFrame {
+	public class LineNumberDebugFrame implements DebugFrame {
 
-        private int mLineNumber;
-        private final DebuggableScript mScript;
+		private int mLineNumber;
 
-        public LineNumberDebugFrame(final DebuggableScript fnOrScript) {
-            mScript = fnOrScript;
-        }
+		private final DebuggableScript mScript;
 
-        @Override
-        public void onEnter(final Context cx, final Scriptable activation, final Scriptable thisObj, final Object[] args) {
-            mFreezeStack = false;
-            mLineNumber = 1;
-            mFrames.add(this);
-        }
+		public LineNumberDebugFrame(final DebuggableScript fnOrScript) {
+			mScript = fnOrScript;
+		}
 
-        @Override
-        public void onLineChange(final Context cx, final int lineNumber) {
-            // if stack was frozen, then we had some try/catch structure
-            mFreezeStack = false;
-            mLineNumber = lineNumber;
-        }
+		@Override
+		public void onEnter(final Context cx, final Scriptable activation, final Scriptable thisObj, final Object[] args) {
+			mFreezeStack = false;
+			mLineNumber = 1;
+			mFrames.add(this);
+		}
 
-        @Override
-        public void onExceptionThrown(final Context cx, final Throwable ex) {
-            // stack should be frozen when an exception is thrown
-            mFreezeStack = true;
-        }
+		@Override
+		public void onLineChange(final Context cx, final int lineNumber) {
+			// if stack was frozen, then we had some try/catch structure
+			mFreezeStack = false;
+			mLineNumber = lineNumber;
+		}
 
-        @Override
-        public void onExit(final Context cx, final boolean byThrow, final Object resultOrException) {
-            if (!mFreezeStack)
-                mFrames.remove(mFrames.size() - 1);
-        }
+		@Override
+		public void onExceptionThrown(final Context cx, final Throwable ex) {
+			// stack should be frozen when an exception is thrown
+			mFreezeStack = true;
+		}
 
-        @Override
-        public void onDebuggerStatement(final Context cx) {
-        }
+		@Override
+		public void onExit(final Context cx, final boolean byThrow, final Object resultOrException) {
+			if(!mFreezeStack)
+				mFrames.remove(mFrames.size() - 1);
+		}
 
-        public int getLineNumber() {
-            return mLineNumber;
-        }
+		@Override
+		public void onDebuggerStatement(final Context cx) {
+		}
 
-        public DebuggableScript getScript() {
-            return mScript;
-        }
-    }
+		public int getLineNumber() {
+			return mLineNumber;
+		}
 
-    private final List<LineNumberDebugFrame> mFrames = new ArrayList<LineNumberDebugFrame>();
+		public DebuggableScript getScript() {
+			return mScript;
+		}
+	}
 
-    public Object getContextData() {
-        return null;
-    }
+	private final List<LineNumberDebugFrame> mFrames = new ArrayList<LineNumberDebugFrame>();
 
-    @Override
-    public void handleCompilationDone(final Context cx, final DebuggableScript fnOrScript, final String source) {
-    }
+	public Object getContextData() {
+		return null;
+	}
 
-    @Override
-    public DebugFrame getFrame(final Context cx, final DebuggableScript fnOrScript) {
-        return new LineNumberDebugFrame(fnOrScript);
-    }
+	@Override
+	public void handleCompilationDone(final Context cx, final DebuggableScript fnOrScript, final String source) {
+	}
 
-    public List<LineNumberDebugFrame> getFrames() {
-        return mFrames;
-    }
+	@Override
+	public DebugFrame getFrame(final Context cx, final DebuggableScript fnOrScript) {
+		return new LineNumberDebugFrame(fnOrScript);
+	}
+
+	public List<LineNumberDebugFrame> getFrames() {
+		return mFrames;
+	}
 }

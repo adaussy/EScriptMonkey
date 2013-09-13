@@ -16,30 +16,13 @@
                type="JavaScript">
          </supportedScriptType>
       </engine>
-      <engine
-            class="org.eclipse.escriptmonkey.scripting.engine.javascript.rhino.debugger.RhinoScriptDebugEngine"
-            id="org.eclipse.escriptmonkey.scripting.javascript.rhino.debug"
-            name="JavaScript Debug"
-            priority="1">
-         <supportedScriptType
-               type="JavaScript">
-         </supportedScriptType>
-      </engine>
       <moduleWrapper
             class="org.eclipse.escriptmonkey.scripting.engine.javascript.rhino.RhinoModuleWrapper"
             engineID="org.eclipse.escriptmonkey.scripting.javascript.rhino">
       </moduleWrapper>
-      <moduleWrapper
-            class="org.eclipse.escriptmonkey.scripting.engine.javascript.rhino.RhinoModuleWrapper"
-            engineID="org.eclipse.escriptmonkey.scripting.javascript.rhino.debug">
-      </moduleWrapper>
       <launchExtension
             class="org.eclipse.escriptmonkey.scripting.modules.BootStrapper"
             engineID="org.eclipse.escriptmonkey.scripting.javascript.rhino">
-      </launchExtension>
-      <launchExtension
-            class="org.eclipse.escriptmonkey.scripting.modules.BootStrapper"
-            engineID="org.eclipse.escriptmonkey.scripting.javascript.rhino.debug">
       </launchExtension>
    </extension>
    <extension

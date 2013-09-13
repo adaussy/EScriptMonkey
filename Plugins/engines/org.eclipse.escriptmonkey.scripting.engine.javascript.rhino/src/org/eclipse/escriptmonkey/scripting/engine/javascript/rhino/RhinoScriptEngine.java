@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.escriptmonkey.scripting.engine.javascript.rhino;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -38,247 +39,277 @@ import org.mozilla.javascript.debug.Debugger;
  */
 public class RhinoScriptEngine extends AbstractScriptEngine implements IDebugEngine {
 
-    static {
-        // set context factory that is able to terminate script execution
-        ContextFactory.initGlobal(new ObservingContextFactory());
+	static {
+		// set context factory that is able to terminate script execution
+		ContextFactory.initGlobal(new ObservingContextFactory());
 
-        // set a custom class loader to find everything in the eclipse universe
-        AccessController.doPrivileged(new PrivilegedAction<Object>() {
-            @Override
-            public Object run() {
-                ContextFactory.getGlobal().initApplicationClassLoader(new RhinoClassLoader());
-                return null;
-            }
-        });
-    }
+		// set a custom class loader to find everything in the eclipse universe
+		AccessController.doPrivileged(new PrivilegedAction<Object>() {
 
-    /** Rhino Scope. Created when interpreter is initialized */
-    protected ScriptableObject mScope;
+			@Override
+			public Object run() {
+				ContextFactory.getGlobal().initApplicationClassLoader(new RhinoClassLoader());
+				return null;
+			}
+		});
+	}
 
-    private Context mContext;
+	/** Rhino Scope. Created when interpreter is initialized */
+	protected ScriptableObject mScope;
 
-    private int mOptimizationLevel = 9;
+	private Context mContext;
 
-    private boolean mCreateLineNumberInformation = false;
+	private Debugger mDebugger = null;
 
-    private final Map<String, Object> mBufferedVariables = new HashMap<String, Object>();
+	private int mOptimizationLevel = 9;
 
-    /**
-     * Creates a new Rhino interpreter.
-     */
-    public RhinoScriptEngine() {
-        super("Rhino");
-    }
+	private boolean mCreateLineNumberInformation = false;
 
-    /**
-     * Creates a new Rhino interpreter.
-     * 
-     * @param name
-     *            name of interpreter (used for the jobs name)
-     */
-    protected RhinoScriptEngine(final String name) {
-        super(name);
-    }
+	private final Map<String, Object> mBufferedVariables = new HashMap<String, Object>();
 
-    public void setOptimizationLevel(final int level) {
-        mOptimizationLevel = level;
-    }
+	/**
+	 * Creates a new Rhino interpreter.
+	 */
+	public RhinoScriptEngine() {
+		super("Rhino");
+	}
 
-    @Override
-    protected synchronized boolean setupEngine() {
-        mContext = getContext();
+	/**
+	 * Creates a new Rhino interpreter.
+	 * 
+	 * @param name
+	 *        name of interpreter (used for the jobs name)
+	 */
+	protected RhinoScriptEngine(final String name) {
+		super(name);
+	}
 
-        if (mCreateLineNumberInformation) {
-            // when we want to report line numbers on stack traces we need to add a debugger to our engine
-            mContext.setGeneratingDebug(true);
-            mContext.setOptimizationLevel(-1);
-            mContext.setDebugger(new LineNumberDebugger(), null);
+	public void setOptimizationLevel(final int level) {
+		mOptimizationLevel = level;
+	}
 
-        } else {
-            mContext.setGeneratingDebug(false);
-            mContext.setOptimizationLevel(mOptimizationLevel);
-            mContext.setDebugger(null, null);
-        }
+	@Override
+	protected synchronized boolean setupEngine() {
+		mContext = getContext();
 
-        mScope = mContext.initStandardObjects();
+		if(mDebugger != null) {
+			mContext.setOptimizationLevel(-1);
+			mContext.setGeneratingDebug(true);
+			mContext.setGeneratingSource(true);
+			mContext.setDebugger(mDebugger, null);
 
-        // scope is initialized, set buffered variables
-        for (String name : mBufferedVariables.keySet())
-            setVariable(name, mBufferedVariables.get(name));
+		} else if(mCreateLineNumberInformation) {
+			// when we want to report line numbers on stack traces we need to add a debugger to our engine
+			mContext.setOptimizationLevel(-1);
+			mContext.setGeneratingDebug(true);
+			mContext.setDebugger(new LineNumberDebugger(), null);
 
-        // enable script termination support
-        mContext.setGenerateObserverCount(true);
-        mContext.setInstructionObserverThreshold(10);
+		} else {
+			mContext.setGeneratingDebug(false);
+			mContext.setOptimizationLevel(mOptimizationLevel);
+			mContext.setDebugger(null, null);
+		}
 
-        return true;
-    }
+		mScope = mContext.initStandardObjects();
 
-    @Override
-    protected synchronized boolean teardownEngine() {
-        // cleanup context
-        Context.exit();
+		// scope is initialized, set buffered variables
+		for(final String name : mBufferedVariables.keySet())
+			setVariable(name, mBufferedVariables.get(name));
 
-        // unregister from classloader
-        RhinoClassLoader.unregisterEngine(this);
+		// enable script termination support
+		mContext.setGenerateObserverCount(true);
+		mContext.setInstructionObserverThreshold(10);
 
-        return true;
-    }
+		return true;
+	}
 
-    @Override
-    protected Object execute(final InputStream code, final Object reference, final String fileName) throws Exception {
-        // remove an eventually cached terminate request
-        ((ObservingContextFactory) ContextFactory.getGlobal()).cancelTerminate(mContext);
+	@Override
+	protected synchronized boolean teardownEngine() {
+		// cleanup context
+		Context.exit();
 
-        try {
-            final Object result = getContext().evaluateReader(mScope, new InputStreamReader(code), fileName, 1, null);
+		// unregister from classloader
+		RhinoClassLoader.unregisterEngine(this);
 
-            if (result instanceof Undefined)
-                return null;
+		// gracefully close I/O streams
+		try {
+			if((getInputStream() != null) && (!System.in.equals(getInputStream())))
+				getInputStream().close();
+		} catch (final IOException e) {
+		}
+		try {
+			if((getOutputStream() != null) && (!System.out.equals(getOutputStream())))
+				getOutputStream().close();
+		} catch (final Exception e) {
+		}
+		try {
+			if((getErrorStream() != null) && (!System.err.equals(getErrorStream())))
+				getErrorStream().close();
+		} catch (final Exception e) {
+		}
 
-            else if (result instanceof NativeJavaObject)
-                return ((NativeJavaObject) result).unwrap();
+		return true;
+	}
 
-            return result;
+	@Override
+	protected Object execute(final InputStream code, final Object reference, final String fileName) throws Exception {
+		// remove an eventually cached terminate request
+		((ObservingContextFactory)ContextFactory.getGlobal()).cancelTerminate(mContext);
 
-        } catch (final WrappedException e) {
-            final Throwable wrapped = e.getWrappedException();
-            if (wrapped instanceof Exception)
-                throw ((Exception) wrapped);
+		try {
+			final Object result = getContext().evaluateReader(mScope, new InputStreamReader(code), fileName, 1, null);
 
-            e.printStackTrace();
-        }
+			if(result instanceof Undefined)
+				return null;
 
-        return null;
-    }
+			else if(result instanceof NativeJavaObject)
+				return ((NativeJavaObject)result).unwrap();
 
-    public Context getContext() {
-        Context context = Context.getCurrentContext();
-        if (context == null) {
-            synchronized (ContextFactory.getGlobal()) {
-                context = Context.enter();
-            }
-        }
+			return result;
 
-        return context;
-    }
+		} catch (final WrappedException e) {
+			final Throwable wrapped = e.getWrappedException();
+			if(wrapped instanceof Exception)
+				throw ((Exception)wrapped);
 
-    @Override
-    public void terminateCurrent() {
-        ((ObservingContextFactory) ContextFactory.getGlobal()).terminate(mContext);
-    }
+			e.printStackTrace();
+		}
 
-    public Scriptable getScope() {
-        return mScope;
-    }
+		return null;
+	}
 
-    public synchronized void registerJar(final URL url) {
-        RhinoClassLoader.registerURL(this, url);
-    }
+	public Context getContext() {
+		Context context = Context.getCurrentContext();
+		if(context == null) {
+			synchronized(ContextFactory.getGlobal()) {
+				context = Context.enter();
+			}
+		}
 
-    @Override
-    public synchronized void reset() {
-        RhinoClassLoader.unregisterEngine(this);
+		return context;
+	}
 
-        super.reset();
+	@Override
+	public void terminateCurrent() {
+		((ObservingContextFactory)ContextFactory.getGlobal()).terminate(mContext);
+	}
 
-        setupEngine();
-    }
+	public void setDebugger(final Debugger debugger) {
+		mDebugger = debugger;
+	}
 
-    @Override
-    public void setVariable(final String name, final Object content) {
-        if (!RhinoModuleWrapper.isSaveName(name))
-            throw new RuntimeException("\"" + name + "\" is not a valid JavaScript variable name");
+	public Scriptable getScope() {
+		return mScope;
+	}
 
-        final Scriptable scope = getScope();
-        if (scope != null) {
+	public synchronized void registerJar(final URL url) {
+		RhinoClassLoader.registerURL(this, url);
+	}
 
-            final Object jsOut = javaToJS(content, scope);
-            scope.put(name, scope, jsOut);
-        } else
-            mBufferedVariables.put(name, content);
-    }
+	@Override
+	public synchronized void reset() {
+		RhinoClassLoader.unregisterEngine(this);
 
-    @Override
-    public Object getVariable(final String name) {
-        if (getScope() != null) {
-            final Object value = getScope().get(name, getScope());
-            if (value instanceof NativeJavaObject)
-                return ((NativeJavaObject) value).unwrap();
+		super.reset();
 
-            else if ((value != null) && (value.getClass().getName().startsWith("org.mozilla.javascript")))
-                return null;
+		setupEngine();
+	}
 
-            return value;
-        }
+	@Override
+	public void setVariable(final String name, final Object content) {
+		if(!RhinoModuleWrapper.isSaveName(name))
+			throw new RuntimeException("\"" + name + "\" is not a valid JavaScript variable name");
 
-        throw new RuntimeException("Cannot retrieve variable, Scope not initialized");
-    }
+		final Scriptable scope = getScope();
+		if(scope != null) {
 
-    @Override
-    public Object removeVariable(final String name) {
-        if (getScope() != null) {
-            final Object result = getVariable(name);
-            getScope().delete(name);
+			final Object jsOut = javaToJS(content, scope);
+			scope.put(name, scope, jsOut);
+		} else
+			mBufferedVariables.put(name, content);
+	}
 
-            return result;
-        }
+	@Override
+	public Object getVariable(final String name) {
+		if(getScope() != null) {
+			final Object value = getScope().get(name, getScope());
+			if(value instanceof NativeJavaObject)
+				return ((NativeJavaObject)value).unwrap();
 
-        // scope not initialized, no variables exist yet
-        return null;
-    }
+			else if((value != null) && (value.getClass().getName().startsWith("org.mozilla.javascript")))
+				return null;
 
-    @Override
-    public Map<String, Object> getVariables() {
-        if (getScope() != null) {
-            Map<String, Object> result = new HashMap<String, Object>();
+			return value;
+		}
 
-            for (Object key : getScope().getIds()) {
-                if (key instanceof String)
-                    result.put((String) key, getVariable((String) key));
-            }
+		throw new RuntimeException("Cannot retrieve variable, Scope not initialized");
+	}
 
-            return result;
-        }
+	@Override
+	public Object removeVariable(final String name) {
+		if(getScope() != null) {
+			final Object result = getVariable(name);
+			getScope().delete(name);
 
-        throw new RuntimeException("Cannot retrieve variable, Scope not initialized");
-    }
+			return result;
+		}
 
-    /**
-     * Method copied from {@link Context}.{@link #javaToJS(Object, Scriptable)} and slightly adapted to use associated context.
-     */
-    private Object javaToJS(final Object value, final Scriptable scope) {
-        if ((value instanceof String) || (value instanceof Number) || (value instanceof Boolean) || (value instanceof Scriptable)) {
-            return value;
-        } else if (value instanceof Character) {
-            return String.valueOf(((Character) value).charValue());
-        } else {
-            return getContext().getWrapFactory().wrap(getContext(), scope, value, null);
-        }
-    }
+		// scope not initialized, no variables exist yet
+		return null;
+	}
 
-    public void setCreateLineNumberInformation(final boolean createLineNumberInformation) {
-        mCreateLineNumberInformation = createLineNumberInformation;
-    }
+	@Override
+	public Map<String, Object> getVariables() {
+		if(getScope() != null) {
+			final Map<String, Object> result = new HashMap<String, Object>();
 
-    /**
-     * Get the current file trace. This trace is created dynamically.
-     */
-    @Override
-    public FileTrace getFileTrace() {
+			for(final Object key : getScope().getIds()) {
+				if(key instanceof String)
+					result.put((String)key, getVariable((String)key));
+			}
 
-        // might request the trace from a different thread, so do not use getContext() here
-        Debugger debugger = mContext.getDebugger();
-        if (debugger instanceof LineNumberDebugger) {
-            final FileTrace trace = new FileTrace();
+			return result;
+		}
 
-            List<LineNumberDebugFrame> frames = ((LineNumberDebugger) debugger).getFrames();
-            for (LineNumberDebugFrame frame : frames) {
-                trace.push(frame.getScript().getSourceName(), frame.getLineNumber(), null);
-            }
+		throw new RuntimeException("Cannot retrieve variable, Scope not initialized");
+	}
 
-            return trace;
-        }
+	/**
+	 * Method copied from {@link Context}.{@link #javaToJS(Object, Scriptable)} and slightly adapted to use associated context.
+	 */
+	private Object javaToJS(final Object value, final Scriptable scope) {
+		if((value instanceof String) || (value instanceof Number) || (value instanceof Boolean) || (value instanceof Scriptable)) {
+			return value;
+		} else if(value instanceof Character) {
+			return String.valueOf(((Character)value).charValue());
+		} else {
+			return getContext().getWrapFactory().wrap(getContext(), scope, value, null);
+		}
+	}
 
-        return super.getFileTrace();
-    }
+	public void setCreateLineNumberInformation(final boolean createLineNumberInformation) {
+		mCreateLineNumberInformation = createLineNumberInformation;
+	}
+
+	/**
+	 * Get the current file trace. This trace is created dynamically.
+	 */
+	@Override
+	public FileTrace getFileTrace() {
+
+		// might request the trace from a different thread, so do not use getContext() here
+		final Debugger debugger = mContext.getDebugger();
+		if(debugger instanceof LineNumberDebugger) {
+			final FileTrace trace = new FileTrace();
+
+			final List<LineNumberDebugFrame> frames = ((LineNumberDebugger)debugger).getFrames();
+			for(final LineNumberDebugFrame frame : frames) {
+				trace.push(frame.getScript().getSourceName(), frame.getLineNumber(), null);
+			}
+
+			return trace;
+		}
+
+		return super.getFileTrace();
+	}
 }
