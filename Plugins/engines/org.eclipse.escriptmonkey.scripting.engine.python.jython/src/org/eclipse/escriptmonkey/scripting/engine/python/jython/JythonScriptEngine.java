@@ -19,71 +19,73 @@ import org.python.util.PythonInterpreter;
 
 public class JythonScriptEngine extends AbstractScriptEngine {
 
-    private PythonInterpreter mEngine;
+	private PythonInterpreter mEngine;
 
-    public JythonScriptEngine() {
-        super("Jython");
-    }
+	public JythonScriptEngine() {
+		super("Jython");
+	}
 
-    @Override
-    public Object getExecutedFile() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+	@Override
+	public Object getExecutedFile() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-    @Override
-    public void terminateCurrent() {
-        try {
-            mEngine.getSystemState().callExitFunc();
-        } catch (PyIgnoreMethodTag e) {
-            // TODO handle this exception (but for now, at least know it happened)
-            throw new RuntimeException(e);
-        }
-    }
+	@Override
+	public void terminateCurrent() {
+		try {
+			mEngine.getSystemState().callExitFunc();
+		} catch (PyIgnoreMethodTag e) {
+			// TODO handle this exception (but for now, at least know it happened)
+			throw new RuntimeException(e);
+		}
+	}
 
-    @Override
-    protected boolean setupEngine() {
-        mEngine = new PythonInterpreter();
-        setOutputStream(getOutputStream());
-        setInputStream(getInputStream());
-        setErrorStream(getErrorStream());
+	@Override
+	protected boolean setupEngine() {
+		mEngine = new PythonInterpreter();
+		setOutputStream(getOutputStream());
+		setInputStream(getInputStream());
+		setErrorStream(getErrorStream());
 
-        return true;
-    }
+		return true;
+	}
 
-    @Override
-    protected boolean teardownEngine() {
-        return true;
-    }
+	@Override
+	protected boolean teardownEngine() {
+		return true;
+	}
 
-    @Override
-    protected Object execute(final InputStream code, final Object reference, final String fileName) throws Exception {
-        mEngine.execfile(code, fileName);
+	@Override
+	protected Object execute(final InputStream code, final Object reference, final String fileName) throws Exception {
+		mEngine.execfile(code, fileName);
 
-        return null;
-    }
+		return null;
+	}
 
-    @Override
-    public void setOutputStream(final OutputStream outputStream) {
-        super.setOutputStream(outputStream);
+	@Override
+	public void setOutputStream(final OutputStream outputStream) {
+		super.setOutputStream(outputStream);
 
-        if (mEngine != null)
-            mEngine.setOut(getOutputStream());
-    }
+		if(mEngine != null)
+			mEngine.setOut(getOutputStream());
+	}
 
-    @Override
-    public void setInputStream(final InputStream inputStream) {
-        super.setInputStream(inputStream);
+	@Override
+	public void setInputStream(final InputStream inputStream) {
+		super.setInputStream(inputStream);
 
-        if (mEngine != null)
-            mEngine.setIn(getInputStream());
-    }
+		if(mEngine != null)
+			mEngine.setIn(getInputStream());
+	}
 
-    @Override
-    public void setErrorStream(final OutputStream errorStream) {
-        super.setErrorStream(errorStream);
+	@Override
+	public void setErrorStream(final OutputStream errorStream) {
+		super.setErrorStream(errorStream);
 
-        if (mEngine != null)
-            mEngine.setErr(getErrorStream());
-    }
+		if(mEngine != null)
+			mEngine.setErr(getErrorStream());
+	}
+
+
 }

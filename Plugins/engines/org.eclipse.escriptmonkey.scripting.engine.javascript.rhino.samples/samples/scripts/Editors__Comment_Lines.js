@@ -1,17 +1,18 @@
 /*
- * Menu: Examples > Editors > JS >Comment Lines
+ * Thread: UI
+ * Menu: Examples > Editors > Comment Lines
+ * 
  * Kudos: Paul Colton (Aptana, Inc.)
  * Description: You can use this script to comment a line in the current active editor.(Only work with text editor)
  * License: EPL 1.0
- * DOM: http://download.eclipse.org/technology/dash/update/org.eclipse.eclipsemonkey.lang.javascript
  */
  
 var comment = "//";
 var commentLength = comment.length;
 
 function main() {
- 
-	var editor = editors.activeEditor;
+	loadModule("TextEditorModule")
+	var editor = getActiveEditor();
  
 	// get range of lines in the selection (or at the cursor position)
 	var range = editor.selectionRange;
@@ -44,3 +45,5 @@ function main() {
 		
 	editor.endCompoundChange();
 }
+
+main()
