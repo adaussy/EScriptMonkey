@@ -42,19 +42,10 @@
 		<module>
 			../../Plugins/engines/org.eclipse.escriptmonkey.scripting.engine.javascript.rhino.ui
 		</module>
-		<module>
-			../../Plugins/engines/org.eclipse.escriptmonkey.scripting.engine.python.jython
-		</module>
-		<module>
-			../../Plugins/modules/org.eclipse.escriptmonkey.scripting.modules.sample
-		</module>
-		<module>
-			../org.eclipse.escriptmonkey.scripting.releng.p2
-		</module>
+		
 		<module>
 			../../Plugins/core/org.eclipse.escriptmonkey.scripting.ui
 		</module>
-		<module>../../Plugins/engines/org.jython</module>
 		<module>
 			../org.eclipse.escriptmonkey.scripting.releng.target
 		</module>
@@ -66,6 +57,21 @@
 		</module>
 		<module>
 			../../Plugins/core/org.eclipse.escriptmonkey.scripting.storedscript
+		</module>
+		<module>
+			../../Plugins/engines/org.eclipse.escriptmonkey.scripting.engine.javascript.rhino.samples
+		</module>
+		<module>
+			../../Plugins/engines/org.eclipse.escriptmonkey.scripting.engine.python.jython.samples
+		</module>
+		<module>
+			../../Plugins/modules/org.eclipse.escriptmonkey.scripting.module.platform
+		</module>
+		<module>
+			../../Plugins/modules/org.eclipse.escriptmonkey.scripting.modules.interaction
+		</module>
+		<module>
+			../../Plugins/modules/org.eclipse.escriptmonkey.scripting.modules.resources
 		</module>
 	</modules>
 </project>  
