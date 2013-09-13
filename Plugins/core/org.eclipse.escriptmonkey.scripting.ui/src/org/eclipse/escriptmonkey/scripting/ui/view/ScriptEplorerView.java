@@ -6,6 +6,7 @@ import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 import org.eclipse.escriptmonkey.scripting.storedscript.storedscript.IStoredScript;
 import org.eclipse.escriptmonkey.scripting.ui.ScriptGraphService;
 import org.eclipse.escriptmonkey.scripting.ui.actions.EditScriptAction;
+import org.eclipse.escriptmonkey.scripting.ui.actions.RefreshStoredScriptAction;
 import org.eclipse.escriptmonkey.scripting.ui.actions.RunScriptAction;
 import org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.StoredScriptUI;
 import org.eclipse.jface.action.IMenuManager;
@@ -36,6 +37,8 @@ public class ScriptEplorerView extends ViewPart {
 	private TreeViewer treeViewer;
 
 	private RunScriptAction playScriptAction;
+
+	private RefreshStoredScriptAction refreshStoreAction;
 
 	private EditScriptAction editScriptAction;
 
@@ -156,6 +159,11 @@ public class ScriptEplorerView extends ViewPart {
 			editScriptAction.setImageDescriptor(ResourceManager.getPluginImageDescriptor("org.eclipse.escriptmonkey.scripting.ui", "images/editor.gif"));
 			editScriptAction.setEnabled(false);
 		}
+		{
+			refreshStoreAction = new RefreshStoredScriptAction("Edit Script");
+			refreshStoreAction.setImageDescriptor(ResourceManager.getPluginImageDescriptor("org.eclipse.escriptmonkey.scripting.ui", "images/refresh.gif"));
+			refreshStoreAction.setEnabled(true);
+		}
 	}
 
 	/**
@@ -165,6 +173,8 @@ public class ScriptEplorerView extends ViewPart {
 		IToolBarManager tbm = getViewSite().getActionBars().getToolBarManager();
 		tbm.add(playScriptAction);
 		tbm.add(editScriptAction);
+		tbm.add(refreshStoreAction);
+
 	}
 
 	/**
