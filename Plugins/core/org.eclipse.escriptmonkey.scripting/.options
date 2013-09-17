@@ -1,0 +1,3 @@
+org.eclipse.escriptmonkey.scripting/debug=true
+org.eclipse.escriptmonkey.scripting/debug/moduleWrapper=true
+org.eclipse.escriptmonkey.scripting/debug/EnvironementmoduleWrapper=true

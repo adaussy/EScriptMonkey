@@ -1,0 +1,2 @@
+org.eclipse.escriptmonkey.scripting.engine.python.jython/debug=true
+org.eclipse.escriptmonkey.scripting.engine.python.jython/debug/PythonBootStrapper=false
