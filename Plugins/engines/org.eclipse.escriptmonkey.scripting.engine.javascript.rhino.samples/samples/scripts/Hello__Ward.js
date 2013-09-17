@@ -1,5 +1,5 @@
 /*
- * Thread : UI
+ * Thread: UI
  * Menu: Examples > Hello > JS > Ward
  * Kudos: Ward Cunningham & Bjorn Freeman-Benson
  * Description: You can use this script to display a message into a dialog box.
