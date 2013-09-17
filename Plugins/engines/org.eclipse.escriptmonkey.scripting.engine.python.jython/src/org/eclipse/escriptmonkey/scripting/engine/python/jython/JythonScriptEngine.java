@@ -15,14 +15,21 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.escriptmonkey.scripting.AbstractScriptEngine;
 import org.eclipse.escriptmonkey.scripting.IModifiableScriptEngine;
+import org.eclipse.escriptmonkey.scripting.engine.python.jython.preferences.IPreferenceConstants;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.osgi.framework.Bundle;
 import org.python.core.PyCode;
 import org.python.core.PyIgnoreMethodTag;
+import org.python.core.PyList;
+import org.python.core.PyString;
 import org.python.util.PythonInterpreter;
 
 public class JythonScriptEngine extends AbstractScriptEngine implements IModifiableScriptEngine {
@@ -52,14 +59,23 @@ public class JythonScriptEngine extends AbstractScriptEngine implements IModifia
 	@Override
 	protected boolean setupEngine() {
 		mEngine = new PythonInterpreter();
-		//		Properties preProperties = System.getProperties();
-		//
-		//		Properties postProperties = new Properties();
-		//		postProperties.put("python.home", getPluginRootDir());
-		//		PySystemState.initialize(preProperties, postProperties, new String[0], new PythonClassLoader(Activator.getDefault().getBundle()));
 		setOutputStream(getOutputStream());
 		setInputStream(getInputStream());
 		setErrorStream(getErrorStream());
+
+		/*
+		 * Not optimized for now.
+		 * This should done at a Python System level
+		 */
+		for(String libraryPath : getPythonLibrairies()) {
+			if(libraryPath != null && !libraryPath.isEmpty()) {
+				PyString element = new PyString(libraryPath);
+				PyList systemPath = mEngine.getSystemState().path;
+				if(!systemPath.contains(element)) {
+					systemPath.add(0, element);
+				}
+			}
+		}
 
 		return true;
 	}
@@ -119,6 +135,17 @@ public class JythonScriptEngine extends AbstractScriptEngine implements IModifia
 	@Override
 	public Object getVariable(String name) {
 		return mEngine.get(name);
+	}
+
+	protected Collection<String> getPythonLibrairies() {
+		List<String> result = new ArrayList<String>();
+		IPreferenceStore preferences = Activator.getDefault().getPreferenceStore();
+		String libraries = preferences.getString(IPreferenceConstants.PYTHON_LIBRARIES);
+		String[] libs = libraries.split(";");
+		for(String lib : libs) {
+			result.add(lib);
+		}
+		return result;
 	}
 
 

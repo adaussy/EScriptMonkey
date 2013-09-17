@@ -1,5 +1,6 @@
 #
-# Menu: Examples > Editors > Py > Comment Lines
+# Thread: UI
+# Menu: Examples > Editors > Comment Lines
 # Kudos: Jose Fonseca & Paul Colton
 # Description: You can use this script to comment a line in the current active editor.(Only work with text editor)
 # License: EPL 1.0
@@ -7,10 +8,11 @@
 
 from org.eclipse.jface.text import DocumentRewriteSessionType
 
-comment = "//"
+comment = "#"
 commentLength = len(comment)
 
-editor = window.getActivePage().getActiveEditor()
+workbench = loadModule("WorkbenchModule")
+editor = workbench.getActiveEditor()
 document = editor.getDocumentProvider().getDocument(editor.getEditorInput())
 
 # get range of lines in the selection (or at the cursor position)

@@ -1,5 +1,5 @@
 #
-# Menu: Examples > Views > Py > Google Web View
+# Menu: Examples > Views > Google Web View
 # Kudos: Paul Colton
 # Description : You can use this script to open the Web View.
 # License: EPL 1.0
@@ -19,8 +19,9 @@ class MyLocationListener(LocationListener):
 	
 	def changed(self, event):
 		pass
-		
-page = window.getActivePage()
+	
+workbench = loadModule("WorkbenchModule")	
+page = workbench.getActivePage()
 
 view = page.showView(
 	"org.eclipse.eclipsemonkey.ui.scriptableView.GenericScriptableView", 

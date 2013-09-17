@@ -15,6 +15,7 @@ import org.eclipse.escriptmonkey.scripting.modules.WrapToScript;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
@@ -42,6 +43,11 @@ public class WorkbenchModule extends AbstractScriptModule {
 	@WrapToScript
 	public Shell getActiveShell() {
 		return getActiveWindow().getShell();
+	}
+
+	@WrapToScript
+	public IWorkbenchPage getActivePage() {
+		return getActiveWindow().getActivePage();
 	}
 
 	@WrapToScript

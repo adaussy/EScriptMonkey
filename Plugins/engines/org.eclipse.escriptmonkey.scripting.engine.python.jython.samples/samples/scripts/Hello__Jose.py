@@ -1,5 +1,6 @@
 #
-# Menu: Examples >Hello >  Py > Jose
+# Thread: UI
+# Menu: Examples >Hello > Jose
 # Kudos: Ward Cunningham & Bjorn Freeman-Benson
 # Description: You can use this script to display a message into a dialog box.
 # License: EPL 1.0
@@ -11,8 +12,10 @@ text = "Hello Jose\n\n";
 text += "The quick brown fox jumped over the lazy dog's back.";
 text += "Now is the time for all good men to come to the aid of their country."
 
+print text
+
 org.eclipse.jface.dialogs.MessageDialog.openInformation(
-	window.getShell(), 	
+	org.eclipse.swt.widgets.Display.getDefault().getActiveShell(), 	
 	"Monkey Dialog", 
 	text	
 )

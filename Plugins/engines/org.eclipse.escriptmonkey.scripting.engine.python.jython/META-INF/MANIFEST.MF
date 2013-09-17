@@ -6,10 +6,15 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: Eclipse
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.eclipse.escriptmonkey.scripting;bundle-version="1.0.0",
- org.jython;bundle-version="2.5.3",
  org.eclipse.escriptmonkey.scripting.storedscript;bundle-version="1.0.0",
  org.eclipse.emf;bundle-version="2.6.0",
  org.eclipse.emf.ecore;bundle-version="2.9.0",
- com.google.guava;bundle-version="11.0.2"
+ com.google.guava;bundle-version="11.0.2",
+ org.eclipse.swt,
+ org.eclipse.jface
 Bundle-Activator: org.eclipse.escriptmonkey.scripting.engine.python.jython.Activator
 Bundle-ActivationPolicy: lazy
+Export-Package: org.eclipse.escriptmonkey.scripting.engine.python.jython,
+ org.eclipse.escriptmonkey.scripting.engine.python.jython.preferences
+Bundle-ClassPath: .,
+ jython-standalone-2.5.4-rc1.jar

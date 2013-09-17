@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="org.eclipse.escriptmonkey.scripting.preferences.global"
+            class="org.eclipse.escriptmonkey.scripting.engine.python.jython.ui.preferences.PythonLibraryPreferencePage"
+            id="org.eclipse.escriptmonkey.scripting.engine.python.jython.ui.libraryPrefPage"
+            name="Jython external library">
+      </page>
+   </extension>
+
+</plugin>
