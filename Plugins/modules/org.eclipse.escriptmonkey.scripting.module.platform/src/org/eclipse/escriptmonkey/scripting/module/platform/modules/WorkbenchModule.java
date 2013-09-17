@@ -23,10 +23,11 @@ public class WorkbenchModule extends AbstractScriptModule {
 
 
 	public WorkbenchModule() {
+		WINDOW = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 	}
 
 	@WrapToScript
-	public static IWorkbenchWindow WINDOW = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+	public static IWorkbenchWindow WINDOW = null;
 
 	@WrapToScript
 	public IWorkbench getActiveWorkbench() {

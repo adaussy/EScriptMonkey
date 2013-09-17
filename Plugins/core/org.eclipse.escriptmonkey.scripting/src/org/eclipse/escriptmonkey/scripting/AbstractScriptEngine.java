@@ -140,7 +140,15 @@ public abstract class AbstractScriptEngine extends Job implements IScriptEngine 
 
 			} catch (final Exception e) {
 				script.setException(e);
-				getErrorStream().println(e.getLocalizedMessage());
+				String message = e.getMessage();
+				if(message != null) {
+
+					getErrorStream().println("Message :" + message);
+				} else {
+					getErrorStream().println("Stack trace");
+					e.printStackTrace(getErrorStream());
+				}
+
 
 			} finally {
 				if(notifyListeners)

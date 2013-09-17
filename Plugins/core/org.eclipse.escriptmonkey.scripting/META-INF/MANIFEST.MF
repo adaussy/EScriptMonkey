@@ -16,3 +16,4 @@ Export-Package: org.eclipse.escriptmonkey.scripting,
  org.eclipse.escriptmonkey.scripting.modules,
  org.eclipse.escriptmonkey.scripting.service
 Bundle-ActivationPolicy: lazy
+Bundle-Activator: org.eclipse.escriptmonkey.scripting.Activator

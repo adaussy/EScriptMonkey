@@ -9,11 +9,20 @@
       </scriptType>
       <engine
             class="org.eclipse.escriptmonkey.scripting.engine.python.jython.JythonScriptEngine"
-            id="org.eclipse.escriptmonkey.scripting.python.jython">
+            id="org.eclipse.escriptmonkey.scripting.python.jython"
+            name="Jython">
          <supportedScriptType
                type="Python">
          </supportedScriptType>
       </engine>
+      <launchExtension
+            class="org.eclipse.escriptmonkey.scripting.engine.python.jython.PythonEnvironementBootStrapper"
+            engineID="org.eclipse.escriptmonkey.scripting.python.jython">
+      </launchExtension>
+      <moduleWrapper
+            class="org.eclipse.escriptmonkey.scripting.engine.python.jython.PythonModuleWrapper"
+            engineID="org.eclipse.escriptmonkey.scripting.python.jython">
+      </moduleWrapper>
    </extension>
    <extension
          point="org.eclipse.escriptmonkey.scripting.storedscript.metadata">

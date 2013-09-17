@@ -31,8 +31,13 @@ import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.escriptmonkey.scripting.ExitException;
 import org.eclipse.escriptmonkey.scripting.IModifiableScriptEngine;
+import org.eclipse.escriptmonkey.scripting.debug.ITracingConstant;
+import org.eclipse.escriptmonkey.scripting.debug.Tracer;
 import org.eclipse.escriptmonkey.scripting.service.ScriptService;
 import org.eclipse.swt.widgets.Display;
+
+import com.google.common.base.Predicate;
+import com.google.common.collect.Sets;
 
 /**
  * The RhinoEnvironment provides base functions for all JavaScript interpreters. It is automatically loaded by any interpreter upon startup.
@@ -94,10 +99,13 @@ public class EnvironmentModule extends AbstractScriptModule implements IScriptMo
 						// engine supports direct setting of variables
 						module = definition.getModuleInstance();
 					}
-					if(module != null)
-						((IModifiableScriptEngine)getScriptEngine()).setVariable(getRegisteredModuleName(definition.getName()), module);
-
-					else
+					if(module != null) {
+						String registeredModuleName = getRegisteredModuleName(definition.getName());
+						((IModifiableScriptEngine)getScriptEngine()).setVariable(registeredModuleName, module);
+						if(ITracingConstant.ENVIRONEMENT_MODULE_WRAPPER_TRACING) {
+							Tracer.logInfo("[Environement Module] Add variable to engine :\n " + registeredModuleName + " with value" + module);
+						}
+					} else
 						// could not create instance, bail out
 						return null;
 
@@ -219,12 +227,22 @@ public class EnvironmentModule extends AbstractScriptModule implements IScriptMo
 
 				Set<String> methodNames = new HashSet<String>();
 				methodNames.add(method.getName());
-				methodNames.addAll(Arrays.asList(method.getAnnotation(WrapToScript.class).alias().split(WrapToScript.DELIMITER)));
+				String alias = method.getAnnotation(WrapToScript.class).alias();
+				methodNames.addAll(Arrays.asList(alias.split(WrapToScript.DELIMITER)));
+				//Prevent from null and empty string to pass to module wrapper
+				Set<String> methodNamesfiltered = Sets.filter(methodNames, new Predicate<String>() {
 
-				String code = getWrapper().createFunctionWrapper(getRegisteredModuleName(module.getModuleName()), method, methodNames, IScriptFunctionModifier.RESULT_NAME, preExecutionCode, postExecutionCode);
+					@Override
+					public boolean apply(String arg0) {
+						return arg0 != null && !arg0.isEmpty();
+					}
+				});
 
-				scriptCode.append(code);
-				scriptCode.append('\n');
+				String code = getWrapper().createFunctionWrapper(getRegisteredModuleName(module.getModuleName()), method, methodNamesfiltered, IScriptFunctionModifier.RESULT_NAME, preExecutionCode, postExecutionCode);
+				if(code != null && !code.isEmpty()) {
+					scriptCode.append(code);
+					scriptCode.append('\n');
+				}
 			}
 		}
 
@@ -240,7 +258,11 @@ public class EnvironmentModule extends AbstractScriptModule implements IScriptMo
 		}
 
 		// execute code
-		getScriptEngine().inject(scriptCode.toString());
+		String codeToInject = scriptCode.toString();
+		if(ITracingConstant.ENVIRONEMENT_MODULE_WRAPPER_TRACING) {
+			Tracer.logInfo("[Environement Module] Injecting code:\n" + codeToInject);
+		}
+		getScriptEngine().inject(codeToInject);
 	}
 
 	/**
@@ -459,12 +481,12 @@ public class EnvironmentModule extends AbstractScriptModule implements IScriptMo
 	// return null;
 	// }
 
-	/**
-	 * Print to standard output.
-	 * 
-	 * @param text
-	 *        text to write to standard output
-	 */
+	//	/**
+	//	 * Print to standard output.
+	//	 * 
+	//	 * @param text
+	//	 *        text to write to standard output
+	//	 */
 	@WrapToScript
 	public final void print(final Object text) {
 		getScriptEngine().getOutputStream().println(text);
