@@ -1,5 +1,6 @@
 #
 #Menu: Examples > Hello > Arthur
+#Description: Dispau a Hello Arthur Dialog
 #
 loadModule("DialogModule")
      
