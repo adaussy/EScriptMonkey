@@ -2,15 +2,16 @@ package org.eclipse.escriptmonkey.scripting.ui.view;
 
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
-import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 import org.eclipse.escriptmonkey.scripting.storedscript.storedscript.IStoredScript;
 import org.eclipse.escriptmonkey.scripting.ui.ScriptGraphService;
 import org.eclipse.escriptmonkey.scripting.ui.actions.EditScriptAction;
 import org.eclipse.escriptmonkey.scripting.ui.actions.RefreshStoredScriptAction;
 import org.eclipse.escriptmonkey.scripting.ui.actions.RunScriptAction;
 import org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.StoredScriptUI;
+import org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.provider.ScriptCellLabelProvider;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
@@ -57,12 +58,13 @@ public class ScriptEplorerView extends ViewPart {
 		container.setLayout(new FillLayout(SWT.HORIZONTAL));
 		{
 			treeViewer = new TreeViewer(container, SWT.BORDER);
+			ColumnViewerToolTipSupport.enableFor(treeViewer);
 			Tree tree = treeViewer.getTree();
 			toolkit.paintBordersFor(tree);
 			ComposedAdapterFactory adapterFactory = new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE);
 
 			treeViewer.setContentProvider(new AdapterFactoryContentProvider(adapterFactory));
-			treeViewer.setLabelProvider(new AdapterFactoryLabelProvider(adapterFactory));
+			treeViewer.setLabelProvider(new ScriptCellLabelProvider());
 			treeViewer.setInput(ScriptGraphService.getInstance().getScriptGraph());
 			treeViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 

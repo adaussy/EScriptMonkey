@@ -17,6 +17,8 @@ import java.util.Set;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.BasicEList;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -29,6 +31,7 @@ import org.eclipse.escriptmonkey.scripting.storedscript.storedscript.StoredScrip
 import org.eclipse.escriptmonkey.scripting.storedscript.storedscript.StoredscriptPackage;
 import org.eclipse.escriptmonkey.scripting.ui.metadata.IUIMetadata;
 import org.eclipse.escriptmonkey.scripting.ui.metadata.UIMetadataUtils;
+import org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.Node;
 import org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.Root;
 import org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.ScriptuigraphFactory;
 import org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.StoredScriptUI;
@@ -87,6 +90,28 @@ public class ScriptGraphService implements IStoredScriptListener {
 		}
 
 	}
+
+	public Node getNodeFromFragment(String fragment) {
+		Resource resource = getGraphResource();
+		if(resource != null) {
+			EObject eObject = resource.getEObject(fragment);
+			if(eObject instanceof Node) {
+				return (Node)eObject;
+			}
+		}
+		return null;
+	}
+
+	public String getNodeFragment(Node n) {
+		return getGraphResource().getURIFragment(n);
+	}
+
+
+	protected Resource getGraphResource() {
+		return resourceSet.getResources().get(0);
+	}
+
+
 
 	private Map<IStoredScript, StoredScriptUI> map = new HashMap<IStoredScript, StoredScriptUI>();
 

@@ -11,9 +11,11 @@ Require-Bundle: org.eclipse.escriptmonkey.scripting;bundle-version="1.0.0",
  org.eclipse.emf.ecore;bundle-version="2.9.0",
  com.google.guava;bundle-version="11.0.2",
  org.eclipse.swt,
- org.eclipse.jface
+ org.eclipse.jface,
+ org.eclipse.ui;bundle-version="3.105.0"
 Bundle-Activator: org.eclipse.escriptmonkey.scripting.engine.python.jython.Activator
 Bundle-ActivationPolicy: lazy
+Eclipse-BuddyPolicy: global
 Export-Package: org.eclipse.escriptmonkey.scripting.engine.python.jython,
  org.eclipse.escriptmonkey.scripting.engine.python.jython.preferences
 Bundle-ClassPath: .,

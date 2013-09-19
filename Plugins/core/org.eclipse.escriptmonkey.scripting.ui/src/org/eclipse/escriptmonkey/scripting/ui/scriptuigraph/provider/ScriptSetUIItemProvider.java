@@ -72,11 +72,11 @@ public class ScriptSetUIItemProvider extends ParentNodeItemProvider implements I
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
-	 * @generated
+	 * @generated not
 	 */
 	@Override
 	public Object getImage(Object object) {
-		return overlayImage(object, getResourceLocator().getImage("full/obj16/ScriptSetUI"));
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/ScriptSetUI.png"));
 	}
 
 	/**

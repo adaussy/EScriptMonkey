@@ -13,6 +13,7 @@ package org.eclipse.escriptmonkey.scripting.module.platform.modules;
 import org.eclipse.escriptmonkey.scripting.module.platform.modules.editors.Editor;
 import org.eclipse.escriptmonkey.scripting.modules.AbstractScriptModule;
 import org.eclipse.escriptmonkey.scripting.modules.WrapToScript;
+import org.eclipse.ui.PlatformUI;
 
 
 public class TextEditorModule extends AbstractScriptModule {
@@ -23,7 +24,7 @@ public class TextEditorModule extends AbstractScriptModule {
 
 	@WrapToScript
 	public Editor getActiveEditor() {
-		return new Editor(WorkbenchModule.WINDOW.getActivePage().getActiveEditor());
+		return new Editor(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor());
 	}
 
 }

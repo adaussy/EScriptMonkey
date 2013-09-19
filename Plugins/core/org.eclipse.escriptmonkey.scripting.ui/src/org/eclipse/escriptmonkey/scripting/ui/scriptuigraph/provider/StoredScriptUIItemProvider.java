@@ -101,11 +101,11 @@ public class StoredScriptUIItemProvider extends SubNodeItemProvider implements I
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
-	 * @generated
+	 * @generated not
 	 */
 	@Override
 	public Object getImage(Object object) {
-		return overlayImage(object, getResourceLocator().getImage("full/obj16/StoredScriptUI"));
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/eclipse_monkey.png"));
 	}
 
 	/**
