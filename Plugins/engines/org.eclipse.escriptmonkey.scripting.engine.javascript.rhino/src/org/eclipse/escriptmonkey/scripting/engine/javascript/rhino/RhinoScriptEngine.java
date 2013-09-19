@@ -11,7 +11,6 @@
 package org.eclipse.escriptmonkey.scripting.engine.javascript.rhino;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.security.AccessController;
@@ -23,6 +22,7 @@ import java.util.Map;
 import org.eclipse.escriptmonkey.scripting.AbstractScriptEngine;
 import org.eclipse.escriptmonkey.scripting.FileTrace;
 import org.eclipse.escriptmonkey.scripting.IDebugEngine;
+import org.eclipse.escriptmonkey.scripting.Script;
 import org.eclipse.escriptmonkey.scripting.engine.javascript.rhino.debugger.LineNumberDebugger;
 import org.eclipse.escriptmonkey.scripting.engine.javascript.rhino.debugger.LineNumberDebugger.LineNumberDebugFrame;
 import org.mozilla.javascript.Context;
@@ -152,12 +152,19 @@ public class RhinoScriptEngine extends AbstractScriptEngine implements IDebugEng
 	}
 
 	@Override
-	protected Object execute(final InputStream code, final Object reference, final String fileName) throws Exception {
+	protected Object execute(final Script script, final Object reference, final String fileName) throws Exception {
 		// remove an eventually cached terminate request
 		((ObservingContextFactory)ContextFactory.getGlobal()).cancelTerminate(mContext);
 
+		final InputStreamReader codeReader = new InputStreamReader(script.getCodeStream());
 		try {
-			final Object result = getContext().evaluateReader(mScope, new InputStreamReader(code), fileName, 1, null);
+			final Object result;
+			if(script.getCommand() instanceof org.mozilla.javascript.Script)
+				// execute anonymous functions
+				result = ((org.mozilla.javascript.Script)script.getCommand()).exec(getContext(), getScope());
+
+			else
+				result = getContext().evaluateReader(mScope, codeReader, fileName, 1, null);
 
 			if(result instanceof Undefined)
 				return null;
@@ -173,6 +180,13 @@ public class RhinoScriptEngine extends AbstractScriptEngine implements IDebugEng
 				throw ((Exception)wrapped);
 
 			e.printStackTrace();
+		} finally {
+			try {
+				if(codeReader != null)
+					codeReader.close();
+			} catch (final IOException e) {
+				// we did our best, give up
+			}
 		}
 
 		return null;
@@ -312,4 +326,5 @@ public class RhinoScriptEngine extends AbstractScriptEngine implements IDebugEng
 
 		return super.getFileTrace();
 	}
+
 }

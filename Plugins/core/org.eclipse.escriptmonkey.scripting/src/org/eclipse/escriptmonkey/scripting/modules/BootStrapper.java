@@ -12,6 +12,7 @@ package org.eclipse.escriptmonkey.scripting.modules;
 
 import org.eclipse.escriptmonkey.scripting.IScriptEngine;
 import org.eclipse.escriptmonkey.scripting.IScriptEngineLaunchExtension;
+import org.eclipse.escriptmonkey.scripting.Script;
 import org.eclipse.escriptmonkey.scripting.service.ScriptService;
 
 /**
@@ -19,21 +20,21 @@ import org.eclipse.escriptmonkey.scripting.service.ScriptService;
  */
 public class BootStrapper implements IScriptEngineLaunchExtension {
 
-    @Override
-    public void createEngine(final IScriptEngine engine) {
-        IModuleWrapper wrapper = getWrapper(engine.getID());
-        if (wrapper != null) {
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append(wrapper.classInstantiation(EnvironmentModule.class, new String[0]));
-            stringBuilder.append(".loadModule(\"");
-            stringBuilder.append(EnvironmentModule.ENVIRONMENT_MODULE_NAME);
-            stringBuilder.append("\");");
+	@Override
+	public void createEngine(final IScriptEngine engine) {
+		final IModuleWrapper wrapper = getWrapper(engine.getID());
+		if(wrapper != null) {
+			final StringBuilder stringBuilder = new StringBuilder();
+			stringBuilder.append(wrapper.classInstantiation(EnvironmentModule.class, new String[0]));
+			stringBuilder.append(".loadModule(\"");
+			stringBuilder.append(EnvironmentModule.ENVIRONMENT_MODULE_NAME);
+			stringBuilder.append("\");");
 
-            engine.executeAsync(stringBuilder.toString());
-        }
-    }
+			engine.executeAsync(new Script("Bootloader", stringBuilder.toString()));
+		}
+	}
 
-    public static IModuleWrapper getWrapper(final String engineID) {
-        return ScriptService.getInstance().getModuleWrapper(engineID);
-    }
+	public static IModuleWrapper getWrapper(final String engineID) {
+		return ScriptService.getInstance().getModuleWrapper(engineID);
+	}
 }

@@ -248,13 +248,6 @@
       </propertyTester>
    </extension>
    <extension
-         point="org.eclipse.debug.core.launchConfigurationTypes">
-      <launchConfigurationType
-            id="org.eclipse.escriptmonkey.scripting.ui.launchConfigurationType1"
-            name="name">
-      </launchConfigurationType>
-   </extension>
-   <extension
          point="org.eclipse.ui.console.consolePageParticipants">
       <consolePageParticipant
             class="org.eclipse.escriptmonkey.scripting.ui.console.ScriptConsolePageParticipant"

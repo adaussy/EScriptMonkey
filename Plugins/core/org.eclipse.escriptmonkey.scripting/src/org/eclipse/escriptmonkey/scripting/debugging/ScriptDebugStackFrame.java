@@ -1,4 +1,4 @@
-package org.eclipse.escriptmonkey.scripting.engine.javascript.rhino.debugger.model;
+package org.eclipse.escriptmonkey.scripting.debugging;
 
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IRegisterGroup;
@@ -7,16 +7,17 @@ import org.eclipse.debug.core.model.IThread;
 import org.eclipse.debug.core.model.IVariable;
 import org.eclipse.escriptmonkey.scripting.Script;
 
-public class RhinoDebugStackFrame extends RhinoDebugElement implements IStackFrame {
+public class ScriptDebugStackFrame extends ScriptDebugElement implements IStackFrame {
 
-	private RhinoDebugThread mThread;
+	private final ScriptDebugThread mThread;
 
-	private final Script mScript;
+	private final IScriptDebugFrame mDebugFrame;
 
-	public RhinoDebugStackFrame(final RhinoDebugTarget debugTarget, final Script script) {
-		super(debugTarget);
+	public ScriptDebugStackFrame(final ScriptDebugThread thread, final IScriptDebugFrame debugFrame) {
+		super(thread.getDebugTarget());
+		mThread = thread;
 
-		mScript = script;
+		mDebugFrame = debugFrame;
 	}
 
 	@Override
@@ -24,14 +25,10 @@ public class RhinoDebugStackFrame extends RhinoDebugElement implements IStackFra
 		return mThread;
 	}
 
-	public void setThread(final RhinoDebugThread thread) {
-		mThread = thread;
-	}
-
 	@Override
 	public IVariable[] getVariables() throws DebugException {
 		// TODO Auto-generated method stub
-		return null;
+		return new IVariable[0];
 	}
 
 	@Override
@@ -42,8 +39,7 @@ public class RhinoDebugStackFrame extends RhinoDebugElement implements IStackFra
 
 	@Override
 	public int getLineNumber() throws DebugException {
-		// TODO Auto-generated method stub
-		return 0;
+		return getDebugFrame().getLineNumber();
 	}
 
 	@Override
@@ -58,14 +54,13 @@ public class RhinoDebugStackFrame extends RhinoDebugElement implements IStackFra
 
 	@Override
 	public String getName() throws DebugException {
-		// TODO Auto-generated method stub
-		return null;
+		return getScript().toString();
 	}
 
 	@Override
 	public IRegisterGroup[] getRegisterGroups() throws DebugException {
 		// TODO Auto-generated method stub
-		return null;
+		return new IRegisterGroup[0];
 	}
 
 	@Override
@@ -74,4 +69,27 @@ public class RhinoDebugStackFrame extends RhinoDebugElement implements IStackFra
 		return false;
 	}
 
+	// TODO eventually move next three methods to base class
+	@Override
+	public boolean isTerminated() {
+		return getThread().isTerminated();
+	}
+
+	@Override
+	public boolean isSuspended() {
+		return getThread().isSuspended();
+	}
+
+	@Override
+	public boolean isStepping() {
+		return getThread().isStepping();
+	}
+
+	public Script getScript() {
+		return getDebugFrame().getScript();
+	}
+
+	public IScriptDebugFrame getDebugFrame() {
+		return mDebugFrame;
+	}
 }

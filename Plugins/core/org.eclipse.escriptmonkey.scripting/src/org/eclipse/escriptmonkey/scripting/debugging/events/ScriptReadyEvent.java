@@ -1,7 +1,6 @@
-package org.eclipse.escriptmonkey.scripting.engine.javascript.rhino.debugger.events.debugger;
+package org.eclipse.escriptmonkey.scripting.debugging.events;
 
 import org.eclipse.escriptmonkey.scripting.Script;
-import org.eclipse.escriptmonkey.scripting.engine.javascript.rhino.debugger.events.IDebuggerEvent;
 
 public class ScriptReadyEvent implements IDebuggerEvent {
 

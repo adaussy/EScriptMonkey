@@ -1,4 +1,4 @@
-package org.eclipse.escriptmonkey.scripting.engine.javascript.rhino.debugger;
+package org.eclipse.escriptmonkey.scripting.debugging;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,9 +7,9 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.escriptmonkey.scripting.engine.javascript.rhino.debugger.events.IDebugEvent;
-import org.eclipse.escriptmonkey.scripting.engine.javascript.rhino.debugger.events.IDebuggerEvent;
-import org.eclipse.escriptmonkey.scripting.engine.javascript.rhino.debugger.events.IModelEvent;
+import org.eclipse.escriptmonkey.scripting.debugging.events.IDebugEvent;
+import org.eclipse.escriptmonkey.scripting.debugging.events.IDebuggerEvent;
+import org.eclipse.escriptmonkey.scripting.debugging.events.IModelRequest;
 
 public class EventDispatchJob extends Job {
 
@@ -77,7 +77,7 @@ public class EventDispatchJob extends Job {
 		if(event instanceof IDebuggerEvent)
 			mHost.handleEvent(event);
 
-		else if(event instanceof IModelEvent)
+		else if(event instanceof IModelRequest)
 			mDebugger.handleEvent(event);
 
 		else

@@ -1,4 +1,4 @@
-package org.eclipse.escriptmonkey.scripting.engine.javascript.rhino.debugger.model;
+package org.eclipse.escriptmonkey.scripting.debugging;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -8,37 +8,25 @@ import org.eclipse.debug.core.model.IDisconnect;
 import org.eclipse.debug.core.model.IStep;
 import org.eclipse.debug.core.model.ISuspendResume;
 import org.eclipse.debug.core.model.ITerminate;
-import org.eclipse.escriptmonkey.scripting.engine.javascript.rhino.debugger.Activator;
 
-public abstract class RhinoDebugElement extends DebugElement implements ITerminate, ISuspendResume, IDisconnect, IStep {
+public abstract class ScriptDebugElement extends DebugElement implements ITerminate, ISuspendResume, IDisconnect, IStep {
 
 	protected enum State {
 		NOT_STARTED, SUSPENDED, RESUMED, STEPPING, TERMINATED
 	}
 
-	private State mState = State.NOT_STARTED;
-
-	public RhinoDebugElement(final RhinoDebugTarget target) {
+	public ScriptDebugElement(final ScriptDebugTarget target) {
 		super(target);
 	}
 
 	@Override
-	public RhinoDebugTarget getDebugTarget() {
-		return (RhinoDebugTarget)super.getDebugTarget();
+	public ScriptDebugTarget getDebugTarget() {
+		return (ScriptDebugTarget)super.getDebugTarget();
 	}
 
 	@Override
 	public String getModelIdentifier() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	protected void setState(final State state) {
-		((RhinoDebugElement)getDebugTarget()).mState = state;
-	}
-
-	protected State getState() {
-		return ((RhinoDebugElement)getDebugTarget()).mState;
+		return "org.eclipse.escriptmonkey.debugModelPresentation.rhino";
 	}
 
 	// ************************************************************
@@ -48,11 +36,6 @@ public abstract class RhinoDebugElement extends DebugElement implements ITermina
 	@Override
 	public boolean canTerminate() {
 		return !isTerminated();
-	}
-
-	@Override
-	public boolean isTerminated() {
-		return State.TERMINATED == getState();
 	}
 
 	@Override
@@ -75,18 +58,14 @@ public abstract class RhinoDebugElement extends DebugElement implements ITermina
 	}
 
 	@Override
-	public boolean isSuspended() {
-		return State.SUSPENDED == getState();
-	}
-
-	@Override
 	public void resume() throws DebugException {
 		getDebugTarget().resume();
 	}
 
 	@Override
 	public void suspend() throws DebugException {
-		throw new DebugException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "getMemoryBlock() not supported by " + getDebugTarget().getName()));
+		// FIXME add correct plugin id
+		throw new DebugException(new Status(IStatus.ERROR, "Activator.PLUGIN_ID", "getMemoryBlock() not supported by " + getDebugTarget().getName()));
 	}
 
 	// ************************************************************
@@ -95,7 +74,7 @@ public abstract class RhinoDebugElement extends DebugElement implements ITermina
 
 	@Override
 	public boolean canDisconnect() {
-		return isDisconnected();
+		return !isDisconnected();
 	}
 
 	@Override
@@ -114,36 +93,49 @@ public abstract class RhinoDebugElement extends DebugElement implements ITermina
 
 	@Override
 	public boolean canStepInto() {
-		return isSuspended();
+		final ScriptDebugThread[] threads = getDebugTarget().getThreads();
+		if(threads.length == 1)
+			return threads[0].canStepInto();
+
+		return false;
 	}
 
 	@Override
 	public boolean canStepOver() {
-		return isSuspended();
+		final ScriptDebugThread[] threads = getDebugTarget().getThreads();
+		if(threads.length == 1)
+			return threads[0].canStepOver();
+
+		return false;
 	}
 
 	@Override
 	public boolean canStepReturn() {
-		return isSuspended();
-	}
+		final ScriptDebugThread[] threads = getDebugTarget().getThreads();
+		if(threads.length == 1)
+			return threads[0].canStepReturn();
 
-	@Override
-	public boolean isStepping() {
-		return State.STEPPING == getState();
+		return false;
 	}
 
 	@Override
 	public void stepInto() throws DebugException {
-		getDebugTarget().stepInto();
+		final ScriptDebugThread[] threads = getDebugTarget().getThreads();
+		if(threads.length == 1)
+			threads[0].stepInto();
 	}
 
 	@Override
 	public void stepOver() throws DebugException {
-		getDebugTarget().stepOver();
+		final ScriptDebugThread[] threads = getDebugTarget().getThreads();
+		if(threads.length == 1)
+			threads[0].stepOver();
 	}
 
 	@Override
 	public void stepReturn() throws DebugException {
-		getDebugTarget().stepReturn();
+		final ScriptDebugThread[] threads = getDebugTarget().getThreads();
+		if(threads.length == 1)
+			threads[0].stepReturn();
 	}
 }

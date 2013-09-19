@@ -15,27 +15,33 @@ package org.eclipse.escriptmonkey.scripting;
  */
 public interface IExecutionListener {
 
-    /** Event script execution started */
-    public static final int SCRIPT_START = 1;
+	/** Event execution ended. */
+	public static final int ENGINE_START = 1;
 
-    /** Event script execution ended */
-    public static final int SCRIPT_END = 2;
+	/** Event execution ended. */
+	public static final int ENGINE_END = 2;
 
-    /** Event execution ended */
-    public static final int ENGINE_START = 3;
+	/** Event script execution started. */
+	public static final int SCRIPT_START = 3;
 
-    /** Event execution ended */
-    public static final int ENGINE_END = 4;
+	/** Event script execution ended. */
+	public static final int SCRIPT_END = 4;
 
-    /**
-     * Notifies the listeners when script execution started/ended or when the engine itself is started/ended.
-     * 
-     * @param engine
-     *            Script Engine
-     * @param script
-     *            Script or <code>null</code>
-     * @param status
-     *            Event Status
-     */
-    void notify(IScriptEngine engine, Script script, int status);
+	/** Event injected script (subscript) started. */
+	public static final int SCRIPT_INJECTION_START = 5;
+
+	/** Event injected script (subscript) ended. */
+	public static final int SCRIPT_INJECTION_END = 6;
+
+	/**
+	 * Notifies the listeners when script execution started/ended or when the engine itself is started/ended.
+	 * 
+	 * @param engine
+	 *        Script Engine
+	 * @param script
+	 *        Script or <code>null</code>
+	 * @param status
+	 *        Event Status
+	 */
+	void notify(IScriptEngine engine, Script script, int status);
 }
