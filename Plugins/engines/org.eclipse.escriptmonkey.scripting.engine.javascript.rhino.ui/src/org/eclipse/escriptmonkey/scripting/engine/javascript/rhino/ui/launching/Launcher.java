@@ -44,7 +44,13 @@ public class Launcher extends AbstractLaunchDelegate {
 	protected void setupDebugger(final IScriptEngine engine, final ILaunchConfiguration configuration, final ILaunch launch) {
 		if(engine instanceof RhinoScriptEngine) {
 
-			final RhinoDebugTarget debugTarget = new RhinoDebugTarget(launch);
+			boolean suspendOnStartup = false;
+			try {
+				suspendOnStartup = configuration.getAttribute(LaunchConstants.SUSPEND_ON_STARTUP, false);
+			} catch (CoreException e) {
+			}
+
+			final RhinoDebugTarget debugTarget = new RhinoDebugTarget(launch, suspendOnStartup);
 			launch.addDebugTarget(debugTarget);
 
 			boolean showDynamicCode = false;

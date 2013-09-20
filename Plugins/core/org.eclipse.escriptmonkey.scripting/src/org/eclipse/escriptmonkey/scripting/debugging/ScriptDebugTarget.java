@@ -39,9 +39,12 @@ public abstract class ScriptDebugTarget extends ScriptDebugElement implements ID
 
 	private State mState = State.NOT_STARTED;
 
-	public ScriptDebugTarget(final ILaunch launch) {
+	private final boolean mSuspendOnStartup;
+
+	public ScriptDebugTarget(final ILaunch launch, final boolean suspendOnStartup) {
 		super(null);
 		mLaunch = launch;
+		mSuspendOnStartup = suspendOnStartup;
 
 		fireCreationEvent();
 	}
@@ -125,7 +128,7 @@ public abstract class ScriptDebugTarget extends ScriptDebugElement implements ID
 			fireSuspendEvent(DebugEvent.CLIENT_REQUEST);
 			debugThread.setSuspended(DebugEvent.CLIENT_REQUEST);
 
-			if(!suspendOnLoad())
+			if(!mSuspendOnStartup)
 				// resume thread
 				fireDispatchEvent(new ScriptStartRequest(debugThread.getThread()));
 
@@ -146,6 +149,7 @@ public abstract class ScriptDebugTarget extends ScriptDebugElement implements ID
 
 		} else if(event instanceof SuspendedEvent) {
 			final ScriptDebugThread debugThread = findDebugThread(((SuspendedEvent)event).getThread());
+			debugThread.setStackFrames(((SuspendedEvent)event).getDebugFrames());
 			debugThread.setSuspended(((SuspendedEvent)event).getType());
 
 		} else if(event instanceof EngineTerminatedEvent) {
@@ -179,10 +183,6 @@ public abstract class ScriptDebugTarget extends ScriptDebugElement implements ID
 	}
 
 	protected abstract IBreakpoint[] getBreakpoints(Script script);
-
-	protected boolean suspendOnLoad() {
-		return true;
-	}
 
 	// ************************************************************
 	// IBreakpointListener

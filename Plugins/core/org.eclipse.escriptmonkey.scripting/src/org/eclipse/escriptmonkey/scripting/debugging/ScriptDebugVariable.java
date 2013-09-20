@@ -22,14 +22,10 @@ public class ScriptDebugVariable extends ScriptDebugElement implements IVariable
 
 	@Override
 	public void setValue(final String expression) throws DebugException {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void setValue(final IValue value) throws DebugException {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -64,7 +60,7 @@ public class ScriptDebugVariable extends ScriptDebugElement implements IVariable
 
 	@Override
 	public IValue getValue() throws DebugException {
-		return new ScriptDebugValue(this);
+		return new ScriptDebugValue(mStackFrame, mValue);
 	}
 
 	@Override
@@ -74,20 +70,11 @@ public class ScriptDebugVariable extends ScriptDebugElement implements IVariable
 
 	@Override
 	public String getReferenceTypeName() throws DebugException {
-		// TODO Auto-generated method stub
-		return "your reference type";
+		return (mValue != null) ? mValue.getClass().getSimpleName() : "";
 	}
 
 	@Override
 	public boolean hasValueChanged() throws DebugException {
 		return false;
-	}
-
-	public Object getRawValue() {
-		return mValue;
-	}
-
-	public ScriptDebugStackFrame getStackFrame() {
-		return mStackFrame;
 	}
 }

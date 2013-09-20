@@ -10,8 +10,8 @@ import org.eclipse.escriptmonkey.scripting.debugging.events.IDebugEvent;
 
 public class RhinoDebugTarget extends ScriptDebugTarget {
 
-	public RhinoDebugTarget(final ILaunch launch) {
-		super(launch);
+	public RhinoDebugTarget(final ILaunch launch, final boolean suspendOnStartup) {
+		super(launch, suspendOnStartup);
 
 		fireCreationEvent();
 	}

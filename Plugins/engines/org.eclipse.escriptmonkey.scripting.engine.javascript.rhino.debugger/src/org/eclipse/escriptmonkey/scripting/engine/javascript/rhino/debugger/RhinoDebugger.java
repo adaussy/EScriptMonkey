@@ -102,7 +102,7 @@ public class RhinoDebugger implements Debugger, IEventProcessor, IExecutionListe
 						if(breakpoint.isEnabled()) {
 							final int breakline = breakpoint.getMarker().getAttribute(IMarker.LINE_NUMBER, -1);
 							if(breakline == lineNumber) {
-								fireDispatchEvent(new SuspendedEvent(DebugEvent.BREAKPOINT, mThread));
+								fireDispatchEvent(new SuspendedEvent(DebugEvent.BREAKPOINT, mThread, mDebugFrames));
 								mRunMode = DebugEvent.CLIENT_REQUEST;
 								suspend();
 								return;
@@ -117,7 +117,7 @@ public class RhinoDebugger implements Debugger, IEventProcessor, IExecutionListe
 			// no breakpoint, check for step into
 			if(mRunMode == DebugEvent.STEP_INTO) {
 				// this is the next chance to stop
-				fireDispatchEvent(new SuspendedEvent(DebugEvent.STEP_END, mThread));
+				fireDispatchEvent(new SuspendedEvent(DebugEvent.STEP_END, mThread, mDebugFrames));
 				suspend();
 				return;
 			}
@@ -127,7 +127,7 @@ public class RhinoDebugger implements Debugger, IEventProcessor, IExecutionListe
 				// check call stack
 				if(mResumedFrames.size() >= mDebugFrames.size()) {
 					// call stack did not grow
-					fireDispatchEvent(new SuspendedEvent(DebugEvent.STEP_END, mThread));
+					fireDispatchEvent(new SuspendedEvent(DebugEvent.STEP_END, mThread, mDebugFrames));
 					suspend();
 					return;
 				}
@@ -147,7 +147,7 @@ public class RhinoDebugger implements Debugger, IEventProcessor, IExecutionListe
 				// check call stack
 				if((mResumedFrames.size() > mDebugFrames.size()) && (!mDebugFrames.isEmpty())) {
 					// call stack got smaller
-					fireDispatchEvent(new SuspendedEvent(DebugEvent.STEP_END, mThread));
+					fireDispatchEvent(new SuspendedEvent(DebugEvent.STEP_END, mThread, mDebugFrames));
 					suspend();
 				}
 			}

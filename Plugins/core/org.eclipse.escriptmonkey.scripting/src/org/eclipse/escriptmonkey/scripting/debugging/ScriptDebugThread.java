@@ -8,7 +8,6 @@ import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IBreakpoint;
 import org.eclipse.debug.core.model.IStackFrame;
 import org.eclipse.debug.core.model.IThread;
-import org.eclipse.escriptmonkey.scripting.debugging.events.GetStackFramesRequest;
 import org.eclipse.escriptmonkey.scripting.debugging.events.ResumeRequest;
 
 public class ScriptDebugThread extends ScriptDebugElement implements IThread {
@@ -18,10 +17,6 @@ public class ScriptDebugThread extends ScriptDebugElement implements IThread {
 	private State mState = State.NOT_STARTED;
 
 	private List<ScriptDebugStackFrame> mStackFrames = new ArrayList<ScriptDebugStackFrame>();
-
-	private boolean mDirty = true;
-
-	private boolean mRefreshTriggered = false;
 
 	public ScriptDebugThread(final ScriptDebugTarget target, final Thread thread) {
 		super(target);
@@ -36,12 +31,6 @@ public class ScriptDebugThread extends ScriptDebugElement implements IThread {
 
 	@Override
 	public synchronized IStackFrame[] getStackFrames() {
-		if(mDirty && !mRefreshTriggered) {
-			// trigger refresh
-			getDebugTarget().fireDispatchEvent(new GetStackFramesRequest(getThread()));
-			mRefreshTriggered = true;
-		}
-
 		return mStackFrames.toArray(new IStackFrame[mStackFrames.size()]);
 	}
 
@@ -93,7 +82,6 @@ public class ScriptDebugThread extends ScriptDebugElement implements IThread {
 	}
 
 	protected void setSuspended(final int type) {
-		mDirty = true;
 		mState = State.SUSPENDED;
 		fireSuspendEvent(type);
 	}
@@ -124,8 +112,6 @@ public class ScriptDebugThread extends ScriptDebugElement implements IThread {
 		}
 
 		mStackFrames = newStackFrames;
-		mDirty = false;
-		mRefreshTriggered = false;
 		fireChangeEvent(DebugEvent.CHANGE);
 	}
 
