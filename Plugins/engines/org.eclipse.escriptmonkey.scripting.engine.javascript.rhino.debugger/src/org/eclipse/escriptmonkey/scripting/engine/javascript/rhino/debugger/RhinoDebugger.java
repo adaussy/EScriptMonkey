@@ -195,6 +195,11 @@ public class RhinoDebugger implements Debugger, IEventProcessor, IExecutionListe
 
 			return "(unknown source)";
 		}
+
+		@Override
+		public Map<String, Object> getVariables() {
+			return mEngine.getVariables();
+		}
 	}
 
 	@Override

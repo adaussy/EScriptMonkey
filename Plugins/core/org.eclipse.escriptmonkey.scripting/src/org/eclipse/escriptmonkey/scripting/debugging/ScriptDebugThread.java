@@ -112,6 +112,7 @@ public class ScriptDebugThread extends ScriptDebugElement implements IThread {
 			for(final ScriptDebugStackFrame oldStackFrame : mStackFrames) {
 				if(debugFrame.equals(oldStackFrame.getDebugFrame())) {
 					stackFrame = oldStackFrame;
+					stackFrame.setDirty();
 					break;
 				}
 			}

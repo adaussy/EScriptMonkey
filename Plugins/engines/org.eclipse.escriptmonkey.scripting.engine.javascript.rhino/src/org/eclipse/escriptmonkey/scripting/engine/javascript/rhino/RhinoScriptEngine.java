@@ -250,9 +250,6 @@ public class RhinoScriptEngine extends AbstractScriptEngine implements IDebugEng
 			if(value instanceof NativeJavaObject)
 				return ((NativeJavaObject)value).unwrap();
 
-			else if((value != null) && (value.getClass().getName().startsWith("org.mozilla.javascript")))
-				return null;
-
 			return value;
 		}
 

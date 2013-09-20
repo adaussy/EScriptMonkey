@@ -1,5 +1,7 @@
 package org.eclipse.escriptmonkey.scripting.debugging;
 
+import java.util.Map;
+
 import org.eclipse.escriptmonkey.scripting.Script;
 
 public interface IScriptDebugFrame {
@@ -15,4 +17,6 @@ public interface IScriptDebugFrame {
 	int getType();
 
 	String getName();
+
+	Map<String, Object> getVariables();
 }

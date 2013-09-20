@@ -1,5 +1,9 @@
 package org.eclipse.escriptmonkey.scripting.debugging;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IRegisterGroup;
 import org.eclipse.debug.core.model.IStackFrame;
@@ -12,6 +16,10 @@ public class ScriptDebugStackFrame extends ScriptDebugElement implements IStackF
 	private final ScriptDebugThread mThread;
 
 	private final IScriptDebugFrame mDebugFrame;
+
+	private final List<ScriptDebugVariable> mVariables = new ArrayList<ScriptDebugVariable>();
+
+	private boolean mDirty = true;
 
 	public ScriptDebugStackFrame(final ScriptDebugThread thread, final IScriptDebugFrame debugFrame) {
 		super(thread.getDebugTarget());
@@ -27,14 +35,27 @@ public class ScriptDebugStackFrame extends ScriptDebugElement implements IStackF
 
 	@Override
 	public IVariable[] getVariables() throws DebugException {
-		// TODO Auto-generated method stub
-		return new IVariable[0];
+		if(mDirty) {
+			// TODO do not clear old variables, try to update them
+			mVariables.clear();
+
+			Map<String, Object> variables = getDebugFrame().getVariables();
+			for(String name : variables.keySet()) {
+				if(variables.get(name) != null) {
+					ScriptDebugVariable variable = new ScriptDebugVariable(this, name, variables.get(name));
+					mVariables.add(variable);
+				}
+			}
+
+			mDirty = false;
+		}
+
+		return mVariables.toArray(new IVariable[mVariables.size()]);
 	}
 
 	@Override
 	public boolean hasVariables() throws DebugException {
-		// TODO Auto-generated method stub
-		return false;
+		return getVariables().length > 0;
 	}
 
 	@Override
@@ -59,13 +80,11 @@ public class ScriptDebugStackFrame extends ScriptDebugElement implements IStackF
 
 	@Override
 	public IRegisterGroup[] getRegisterGroups() throws DebugException {
-		// TODO Auto-generated method stub
 		return new IRegisterGroup[0];
 	}
 
 	@Override
 	public boolean hasRegisterGroups() throws DebugException {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -91,5 +110,9 @@ public class ScriptDebugStackFrame extends ScriptDebugElement implements IStackF
 
 	public IScriptDebugFrame getDebugFrame() {
 		return mDebugFrame;
+	}
+
+	public void setDirty() {
+		mDirty = true;
 	}
 }
