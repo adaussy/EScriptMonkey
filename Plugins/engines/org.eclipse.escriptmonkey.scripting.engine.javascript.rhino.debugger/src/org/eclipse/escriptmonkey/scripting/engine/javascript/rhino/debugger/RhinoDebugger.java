@@ -83,13 +83,10 @@ public class RhinoDebugger implements Debugger, IEventProcessor, IExecutionListe
 		@Override
 		public void onEnter(final Context cx, final Scriptable activation, final Scriptable thisObj, final Object[] args) {
 			if(!mFnOrScript.isFunction()) {
-				//				 this is a new script source, no function call
-				//				if(mShowDynamicCode || !isDynamicCode(getScript())) {
-				// only suspend if user is interested in our code
+				// this is a new script source, no function call
 				fireDispatchEvent(new ScriptReadyEvent(getScript(), mThread, mDebugFrames.size() == 1));
 				suspend();
 			}
-			//			}
 		}
 
 		@Override
@@ -117,9 +114,6 @@ public class RhinoDebugger implements Debugger, IEventProcessor, IExecutionListe
 				}
 			}
 
-			// only check for further breakpoints if code is visible for debugging
-			//			if(mShowDynamicCode || (!isDynamicCode(getScript()))) {
-
 			// no breakpoint, check for step into
 			if(mRunMode == DebugEvent.STEP_INTO) {
 				// this is the next chance to stop
@@ -138,18 +132,6 @@ public class RhinoDebugger implements Debugger, IEventProcessor, IExecutionListe
 					return;
 				}
 			}
-
-			// check for step return
-			if(mRunMode == DebugEvent.STEP_RETURN) {
-				// check call stack
-				if(mResumedFrames.size() > mDebugFrames.size()) {
-					// call stack got smaller
-					fireDispatchEvent(new SuspendedEvent(DebugEvent.STEP_END, mThread));
-					suspend();
-					return;
-				}
-			}
-			//			}
 		}
 
 		@Override
@@ -159,6 +141,16 @@ public class RhinoDebugger implements Debugger, IEventProcessor, IExecutionListe
 		@Override
 		public void onExit(final Context cx, final boolean byThrow, final Object resultOrException) {
 			mDebugFrames.remove(this);
+
+			// check for step return / step over
+			if((mRunMode == DebugEvent.STEP_RETURN) || (mRunMode == DebugEvent.STEP_OVER)) {
+				// check call stack
+				if((mResumedFrames.size() > mDebugFrames.size()) && (!mDebugFrames.isEmpty())) {
+					// call stack got smaller
+					fireDispatchEvent(new SuspendedEvent(DebugEvent.STEP_END, mThread));
+					suspend();
+				}
+			}
 		}
 
 		@Override
@@ -172,12 +164,7 @@ public class RhinoDebugger implements Debugger, IEventProcessor, IExecutionListe
 
 		@Override
 		public Script getScript() {
-			// find root script (eg for function calls)
-			DebuggableScript root = mFnOrScript;
-			while(root.getParent() != null)
-				root = root.getParent();
-
-			return mFrameToSource.get(root);
+			return RhinoDebugger.this.getScript(mFnOrScript);
 		}
 
 		@Override
