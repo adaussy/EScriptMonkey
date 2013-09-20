@@ -17,7 +17,7 @@ public class ScriptDebugProcess extends ScriptDebugElement implements IProcess {
 
 	@Override
 	public String getLabel() {
-		return "virtual Rhino Process";
+		return "virtual Script Process";
 	}
 
 	@Override

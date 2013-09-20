@@ -8,9 +8,12 @@ public class ScriptReadyEvent implements IDebuggerEvent {
 
 	private final Thread mThread;
 
-	public ScriptReadyEvent(final Script script, final Thread thread) {
+	private final boolean mRoot;
+
+	public ScriptReadyEvent(final Script script, final Thread thread, final boolean root) {
 		mScript = script;
 		mThread = thread;
+		mRoot = root;
 	}
 
 	public Script getScript() {
@@ -19,5 +22,9 @@ public class ScriptReadyEvent implements IDebuggerEvent {
 
 	public Thread getThread() {
 		return mThread;
+	}
+
+	public boolean isRoot() {
+		return mRoot;
 	}
 }

@@ -22,6 +22,7 @@ import org.eclipse.escriptmonkey.scripting.debugging.events.IDebugEvent;
 import org.eclipse.escriptmonkey.scripting.debugging.events.ResumeRequest;
 import org.eclipse.escriptmonkey.scripting.debugging.events.ResumedEvent;
 import org.eclipse.escriptmonkey.scripting.debugging.events.ScriptReadyEvent;
+import org.eclipse.escriptmonkey.scripting.debugging.events.ScriptStartRequest;
 import org.eclipse.escriptmonkey.scripting.debugging.events.StackFramesEvent;
 import org.eclipse.escriptmonkey.scripting.debugging.events.SuspendedEvent;
 import org.eclipse.escriptmonkey.scripting.debugging.events.TerminateRequest;
@@ -122,14 +123,16 @@ public abstract class ScriptDebugTarget extends ScriptDebugElement implements ID
 
 			// tell framework we are suspended
 			fireSuspendEvent(DebugEvent.CLIENT_REQUEST);
+			debugThread.setSuspended(DebugEvent.CLIENT_REQUEST);
 
 			if(!suspendOnLoad())
 				// resume thread
-				fireDispatchEvent(new ResumeRequest(DebugEvent.CLIENT_REQUEST, debugThread.getThread()));
+				fireDispatchEvent(new ScriptStartRequest(debugThread.getThread()));
 
-			else {
-				// fire suspended event
-				debugThread.setSuspended(DebugEvent.CLIENT_REQUEST);
+			else if(!((ScriptReadyEvent)event).isRoot()) {
+				// resume thread
+				fireDispatchEvent(new ScriptStartRequest(debugThread.getThread()));
+
 			}
 
 		} else if(event instanceof StackFramesEvent) {
@@ -139,7 +142,7 @@ public abstract class ScriptDebugTarget extends ScriptDebugElement implements ID
 
 		} else if(event instanceof ResumedEvent) {
 			final ScriptDebugThread debugThread = findDebugThread(((ResumedEvent)event).getThread());
-			debugThread.setResumed(((ResumedEvent)event).getRequest().getType());
+			debugThread.setResumed(((ResumedEvent)event).getType());
 
 		} else if(event instanceof SuspendedEvent) {
 			final ScriptDebugThread debugThread = findDebugThread(((SuspendedEvent)event).getThread());
@@ -248,7 +251,7 @@ public abstract class ScriptDebugTarget extends ScriptDebugElement implements ID
 	@Override
 	public void resume() throws DebugException {
 		final ScriptDebugThread[] threads = getThreads();
-		if(threads.length > 0)
+		if(threads.length == 1)
 			fireDispatchEvent(new ResumeRequest(DebugEvent.CLIENT_REQUEST, threads[0].getThread()));
 	}
 

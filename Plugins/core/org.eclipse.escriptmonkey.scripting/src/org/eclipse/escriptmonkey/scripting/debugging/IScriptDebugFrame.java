@@ -13,4 +13,6 @@ public interface IScriptDebugFrame {
 	Script getScript();
 
 	int getType();
+
+	String getName();
 }

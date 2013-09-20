@@ -6,7 +6,6 @@ import org.eclipse.debug.ui.IDebugModelPresentation;
 import org.eclipse.debug.ui.IValueDetailListener;
 import org.eclipse.escriptmonkey.scripting.Script;
 import org.eclipse.escriptmonkey.scripting.debugging.DynamicContentEditorInput;
-import org.eclipse.escriptmonkey.scripting.debugging.IScriptDebugFrame;
 import org.eclipse.escriptmonkey.scripting.debugging.ScriptDebugStackFrame;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.swt.graphics.Image;
@@ -28,15 +27,8 @@ public class RhinoDebugModelPresentation implements IDebugModelPresentation {
 	@Override
 	public String getText(final Object element) {
 		if(element instanceof ScriptDebugStackFrame) {
-			final IScriptDebugFrame frame = ((ScriptDebugStackFrame)element).getDebugFrame();
-			if(frame.getType() == IScriptDebugFrame.TYPE_FUNCTION)
-				return "Function!!!";
-			else {
-				final Object file = frame.getScript().getFile();
-				final String title = frame.getScript().getTitle();
-				if(file == null)
-					return (title != null) ? "Dynamic: " + title : "(Dynamic)";
-			}
+			// FIXME  ScriptDebugStackFrame.getName needs refactoring
+			return ((ScriptDebugStackFrame)element).getDebugFrame().getName();
 		}
 
 		return null;

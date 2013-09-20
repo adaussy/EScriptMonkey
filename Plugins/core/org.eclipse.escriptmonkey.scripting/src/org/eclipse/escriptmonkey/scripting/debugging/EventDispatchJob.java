@@ -32,7 +32,8 @@ public class EventDispatchJob extends Job {
 
 	public void addEvent(final IDebugEvent event) {
 		synchronized(mEvents) {
-			mEvents.add(event);
+			if(!mEvents.contains(event))
+				mEvents.add(event);
 		}
 
 		synchronized(this) {

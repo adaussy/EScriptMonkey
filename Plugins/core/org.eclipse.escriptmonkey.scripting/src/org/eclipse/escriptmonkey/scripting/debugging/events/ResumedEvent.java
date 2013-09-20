@@ -4,18 +4,18 @@ public class ResumedEvent implements IDebuggerEvent {
 
 	private final Thread mThread;
 
-	private final ResumeRequest mRequest;
+	private final int mType;
 
-	public ResumedEvent(final Thread thread, final ResumeRequest request) {
+	public ResumedEvent(final Thread thread, final int type) {
 		mThread = thread;
-		mRequest = request;
+		mType = type;
 	}
 
 	public Thread getThread() {
 		return mThread;
 	}
 
-	public ResumeRequest getRequest() {
-		return mRequest;
+	public int getType() {
+		return mType;
 	}
 }

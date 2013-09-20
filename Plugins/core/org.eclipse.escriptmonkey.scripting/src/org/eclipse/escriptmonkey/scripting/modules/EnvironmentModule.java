@@ -326,9 +326,14 @@ public class EnvironmentModule extends AbstractScriptModule implements IScriptMo
 				return getScriptEngine().inject(systemFile);
 
 			// maybe this is an absolute path within the workspace
-			IFile workspaceFile = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(filename));
-			if(workspaceFile.exists())
-				return getScriptEngine().inject(workspaceFile);
+			IFile workspaceFile;
+			try {
+				workspaceFile = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(filename));
+				if(workspaceFile.exists())
+					return getScriptEngine().inject(workspaceFile);
+			} catch (IllegalArgumentException e) {
+				// invalid path detected
+			}
 
 			// maybe a relative filename
 			final Object currentFile = getScriptEngine().getExecutedFile();

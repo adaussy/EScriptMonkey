@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.escriptmonkey.scripting.engine.javascript.rhino.ui.launching;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.escriptmonkey.scripting.IScriptEngine;
@@ -19,6 +20,7 @@ import org.eclipse.escriptmonkey.scripting.engine.javascript.rhino.RhinoScriptEn
 import org.eclipse.escriptmonkey.scripting.engine.javascript.rhino.debugger.RhinoDebugger;
 import org.eclipse.escriptmonkey.scripting.engine.javascript.rhino.debugger.model.RhinoDebugTarget;
 import org.eclipse.escriptmonkey.scripting.ui.launching.AbstractLaunchDelegate;
+import org.eclipse.escriptmonkey.scripting.ui.launching.LaunchConstants;
 import org.eclipse.ui.PlatformUI;
 
 /**
@@ -45,7 +47,13 @@ public class Launcher extends AbstractLaunchDelegate {
 			final RhinoDebugTarget debugTarget = new RhinoDebugTarget(launch);
 			launch.addDebugTarget(debugTarget);
 
-			final RhinoDebugger debugger = new RhinoDebugger((RhinoScriptEngine)engine);
+			boolean showDynamicCode = false;
+			try {
+				showDynamicCode = configuration.getAttribute(LaunchConstants.DISPLAY_DYNAMIC_CODE, false);
+			} catch (CoreException e) {
+			}
+
+			final RhinoDebugger debugger = new RhinoDebugger((RhinoScriptEngine)engine, showDynamicCode);
 			((RhinoScriptEngine)engine).setDebugger(debugger);
 
 			final EventDispatchJob dispatcher = new EventDispatchJob(debugTarget, debugger);

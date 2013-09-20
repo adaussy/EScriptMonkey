@@ -21,6 +21,8 @@ public class ScriptDebugThread extends ScriptDebugElement implements IThread {
 
 	private boolean mDirty = true;
 
+	private boolean mRefreshTriggered = false;
+
 	public ScriptDebugThread(final ScriptDebugTarget target, final Thread thread) {
 		super(target);
 
@@ -34,9 +36,11 @@ public class ScriptDebugThread extends ScriptDebugElement implements IThread {
 
 	@Override
 	public synchronized IStackFrame[] getStackFrames() {
-		if(mDirty)
+		if(mDirty && !mRefreshTriggered) {
 			// trigger refresh
 			getDebugTarget().fireDispatchEvent(new GetStackFramesRequest(getThread()));
+			mRefreshTriggered = true;
+		}
 
 		return mStackFrames.toArray(new IStackFrame[mStackFrames.size()]);
 	}
@@ -120,6 +124,7 @@ public class ScriptDebugThread extends ScriptDebugElement implements IThread {
 
 		mStackFrames = newStackFrames;
 		mDirty = false;
+		mRefreshTriggered = false;
 		fireChangeEvent(DebugEvent.CHANGE);
 	}
 
