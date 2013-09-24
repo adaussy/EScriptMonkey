@@ -11,8 +11,12 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="3.8.0";visibility:=reex
  org.eclipse.ui.workbench;bundle-version="3.103.0";visibility:=reexport,
  org.eclipse.ecf.filetransfer,
  com.google.guava;bundle-version="10.0.1",
- org.eclipse.escriptmonkey.scripting.log;bundle-version="1.0.0";visibility:=reexport
+ org.eclipse.escriptmonkey.scripting.log;bundle-version="1.0.0";visibility:=reexport,
+ org.eclipse.debug.core,
+ org.eclipse.ui.ide;bundle-version="3.9.0"
 Export-Package: org.eclipse.escriptmonkey.scripting,
+ org.eclipse.escriptmonkey.scripting.debugging,
+ org.eclipse.escriptmonkey.scripting.debugging.events,
  org.eclipse.escriptmonkey.scripting.modules,
  org.eclipse.escriptmonkey.scripting.service
 Bundle-ActivationPolicy: lazy

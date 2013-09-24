@@ -31,6 +31,7 @@ import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.escriptmonkey.scripting.ExitException;
 import org.eclipse.escriptmonkey.scripting.IModifiableScriptEngine;
+import org.eclipse.escriptmonkey.scripting.Script;
 import org.eclipse.escriptmonkey.scripting.debug.ITracingConstant;
 import org.eclipse.escriptmonkey.scripting.debug.Tracer;
 import org.eclipse.escriptmonkey.scripting.service.ScriptService;
@@ -150,9 +151,9 @@ public class EnvironmentModule extends AbstractScriptModule implements IScriptMo
 
 		private IScriptModule result;
 
-		private ModuleDefinition def;
+		private final ModuleDefinition def;
 
-		public InstaciateModuleRunnble(ModuleDefinition def) {
+		public InstaciateModuleRunnble(final ModuleDefinition def) {
 			super();
 			this.def = def;
 		}
@@ -233,13 +234,13 @@ public class EnvironmentModule extends AbstractScriptModule implements IScriptMo
 				Set<String> methodNamesfiltered = Sets.filter(methodNames, new Predicate<String>() {
 
 					@Override
-					public boolean apply(String arg0) {
-						return arg0 != null && !arg0.isEmpty();
+					public boolean apply(final String arg0) {
+						return (arg0 != null) && !arg0.isEmpty();
 					}
 				});
 
 				String code = getWrapper().createFunctionWrapper(getRegisteredModuleName(module.getModuleName()), method, methodNamesfiltered, IScriptFunctionModifier.RESULT_NAME, preExecutionCode, postExecutionCode);
-				if(code != null && !code.isEmpty()) {
+				if((code != null) && !code.isEmpty()) {
 					scriptCode.append(code);
 					scriptCode.append('\n');
 				}
@@ -262,7 +263,7 @@ public class EnvironmentModule extends AbstractScriptModule implements IScriptMo
 		if(ITracingConstant.ENVIRONEMENT_MODULE_WRAPPER_TRACING) {
 			Tracer.logInfo("[Environement Module] Injecting code:\n" + codeToInject);
 		}
-		getScriptEngine().inject(codeToInject);
+		getScriptEngine().inject(new Script("Module " + module.getModuleName(), scriptCode.toString()));
 	}
 
 	/**
@@ -387,9 +388,14 @@ public class EnvironmentModule extends AbstractScriptModule implements IScriptMo
 				return getScriptEngine().inject(systemFile);
 
 			// maybe this is an absolute path within the workspace
-			IFile workspaceFile = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(filename));
-			if(workspaceFile.exists())
-				return getScriptEngine().inject(workspaceFile);
+			IFile workspaceFile;
+			try {
+				workspaceFile = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(filename));
+				if(workspaceFile.exists())
+					return getScriptEngine().inject(workspaceFile);
+			} catch (IllegalArgumentException e) {
+				// invalid path detected
+			}
 
 			// maybe a relative filename
 			Object currentFile = getScriptEngine().getExecutedFile();
@@ -481,12 +487,12 @@ public class EnvironmentModule extends AbstractScriptModule implements IScriptMo
 	// return null;
 	// }
 
-	//	/**
-	//	 * Print to standard output.
-	//	 * 
-	//	 * @param text
-	//	 *        text to write to standard output
-	//	 */
+	/**
+	 * Print to standard output.
+	 * 
+	 * @param text
+	 *        text to write to standard output
+	 */
 	@WrapToScript
 	public final void print(final Object text) {
 		getScriptEngine().getOutputStream().println(text);

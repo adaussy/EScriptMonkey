@@ -10,12 +10,16 @@
  *******************************************************************************/
 package org.eclipse.escriptmonkey.scripting.ui.launching;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -39,134 +43,202 @@ import org.eclipse.ui.part.FileEditorInput;
  */
 public abstract class AbstractLaunchDelegate implements ILaunchShortcut, ILaunchShortcut2, ILaunchConfigurationDelegate {
 
-    protected final static String MODE_RUN = "run";
-    protected final static String MODE_DEBUG = "debug";
+	/**
+	 * Retrieve the source file from an {@link ILaunchConfiguration}.
+	 * 
+	 * @param configuration
+	 *        configuration to use
+	 * @return source file or <code>null</code>
+	 * @throws CoreException
+	 */
+	public static IFile getSourceFile(final ILaunchConfiguration configuration) throws CoreException {
+		final String projectName = configuration.getAttribute(LaunchConstants.PROJECT, "");
+		final IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 
-    @Override
-    public final void launch(final ISelection selection, final String mode) {
-        launch(getLaunchableResource(selection), mode);
-    }
+		if(project.exists()) {
+			final String fileName = configuration.getAttribute(LaunchConstants.FILE_LOCATION, "");
+			final IFile file = project.getFile(fileName);
 
-    @Override
-    public final void launch(final IEditorPart editor, final String mode) {
-        launch(getLaunchableResource(editor), mode);
-    }
+			if(file.exists())
+				return file;
+		}
 
-    @Override
-    public void launch(final ILaunchConfiguration configuration, final String mode, final ILaunch launch, final IProgressMonitor monitor) throws CoreException {
-        String projectName = configuration.getAttribute(LaunchConstants.PROJECT, "");
-        IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
+		return null;
+	}
 
-        if (project.exists()) {
-            String scriptName = configuration.getAttribute(LaunchConstants.SCRIPT_LOCATION, "");
-            IFile script = project.getFile(scriptName);
+	// **********************************************************************
+	// ILaunchShortcut
+	// **********************************************************************
 
-            if (script.exists())
-                // we have a valid script, lets feed it to the script engine
-                launch(script, configuration, mode);
-        }
-    }
+	@Override
+	public final void launch(final IEditorPart editor, final String mode) {
+		launch(getLaunchableResource(editor), mode);
+	}
 
-    private void launch(final IResource scriptFile, final String mode) {
-        if (scriptFile instanceof IFile) {
-            // try to save dirty editors
-            PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().saveAllEditors(true);
+	@Override
+	public final void launch(final ISelection selection, final String mode) {
+		launch(getLaunchableResource(selection), mode);
+	}
 
-            try {
-                ILaunchConfiguration configuration = createLaunchConfiguration((IFile) scriptFile, mode);
-                // TODO add nice progress monitor
-                configuration.launch(mode, null);
+	// **********************************************************************
+	// ILaunchShortcut2
+	// **********************************************************************
 
-            } catch (CoreException e) {
-                // could not create launch configuration, run script directly
-                launch((IFile) scriptFile, null, mode);
-            }
-        }
-    }
+	@Override
+	public final IResource getLaunchableResource(final IEditorPart editorpart) {
+		final IEditorInput input = editorpart.getEditorInput();
+		if(input instanceof FileEditorInput)
+			return ((FileEditorInput)input).getFile();
 
-    /**
-     * Execute script code from an {@link IFile}.
-     * 
-     * @param file
-     *            file to execute
-     */
-    private void launch(final IFile file, final ILaunchConfiguration configuration, final String mode) {
-        IScriptEngine engine = getScriptEngine(configuration, mode);
+		return null;
+	}
 
-        ScriptConsole console = ScriptConsole.create(engine.getName() + ": " + file.getFullPath(), engine);
-        engine.setOutputStream(console.getOutputStream());
-        engine.setErrorStream(console.getErrorStream());
+	@Override
+	public final IResource getLaunchableResource(final ISelection selection) {
+		if(selection instanceof IStructuredSelection) {
+			for(final Object element : ((IStructuredSelection)selection).toArray()) {
+				if(element instanceof IFile)
+					return (IResource)element;
+			}
+		}
 
-        engine.setTerminateOnIdle(true);
-        engine.executeAsync(file);
+		return null;
+	}
 
-        engine.schedule();
-    }
+	@Override
+	public final ILaunchConfiguration[] getLaunchConfigurations(final IEditorPart editorpart) {
+		return getLaunchConfgurations(getLaunchableResource(editorpart));
+	}
 
-    private ILaunchConfiguration createLaunchConfiguration(final IFile scriptFile, final String mode) throws CoreException {
-        ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
-        ILaunchConfigurationType type = manager.getLaunchConfigurationType(getLaunchConfigurationType());
+	@Override
+	public final ILaunchConfiguration[] getLaunchConfigurations(final ISelection selection) {
+		return getLaunchConfgurations(getLaunchableResource(selection));
+	}
 
-        // try to find an existing configuration
-        try {
-            for (ILaunchConfiguration configuration : manager.getLaunchConfigurations(type)) {
-                try {
-                    String projectName = configuration.getAttribute(LaunchConstants.PROJECT, "");
-                    String scriptLocation = configuration.getAttribute(LaunchConstants.SCRIPT_LOCATION, "");
+	// **********************************************************************
+	// ILaunchConfigurationDelegate
+	// **********************************************************************
 
-                    IFile script = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName).getFile(scriptLocation);
-                    if (scriptFile.equals(script))
-                        return configuration;
+	@Override
+	public void launch(final ILaunchConfiguration configuration, final String mode, final ILaunch launch, final IProgressMonitor monitor) throws CoreException {
+		final IFile file = getSourceFile(configuration);
+		if(file != null) {
+			// we have a valid script, lets feed it to the script engine
+			launch(file, configuration, mode, launch, monitor);
+		}
+	}
 
-                } catch (CoreException e) {
-                    // could not read configuration, ignore
-                }
-            }
-        } catch (CoreException e) {
-            // could not load configurations, ignore
-        }
+	// **********************************************************************
+	// internal stuff
+	// **********************************************************************
 
-        // configuration not found, create a new one
-        ILaunchConfigurationWorkingCopy configuration = type.newInstance(null, scriptFile.getName());
-        configuration.setAttribute(LaunchConstants.PROJECT, scriptFile.getProject().getName());
-        configuration.setAttribute(LaunchConstants.SCRIPT_LOCATION, scriptFile.getProjectRelativePath().toPortableString());
+	/**
+	 * Get all launch configurations that target a dedicated resource file.
+	 * 
+	 * @param resource
+	 *        root file to execute
+	 * @return {@link ILaunchConfiguration}s using resource
+	 */
+	private ILaunchConfiguration[] getLaunchConfgurations(final IResource resource) {
+		final List<ILaunchConfiguration> configurations = new ArrayList<ILaunchConfiguration>();
 
-        // save and return new configuration
-        return configuration.doSave();
-    }
+		final ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
+		final ILaunchConfigurationType type = manager.getLaunchConfigurationType(getLaunchConfigurationType());
 
-    @Override
-    public final ILaunchConfiguration[] getLaunchConfigurations(final ISelection selection) {
-        return null;
-    }
+		// try to find existing configurations using the same file
+		try {
+			for(final ILaunchConfiguration configuration : manager.getLaunchConfigurations(type)) {
+				try {
+					final IFile file = getSourceFile(configuration);
+					if(resource.equals(file))
+						configurations.add(configuration);
 
-    @Override
-    public final ILaunchConfiguration[] getLaunchConfigurations(final IEditorPart editorpart) {
-        return null;
-    }
+				} catch (final CoreException e) {
+					// could not read configuration, ignore
+				}
+			}
+		} catch (final CoreException e) {
+			// could not load configurations, ignore
+		}
 
-    @Override
-    public final IResource getLaunchableResource(final ISelection selection) {
-        if (selection instanceof IStructuredSelection) {
-            for (final Object element : ((IStructuredSelection) selection).toArray()) {
-                if (element instanceof IFile)
-                    return (IResource) element;
-            }
-        }
+		return configurations.toArray(new ILaunchConfiguration[configurations.size()]);
+	}
 
-        return null;
-    }
+	/**
+	 * Launch a resource. Try to launch using a launch configuration. Used for
+	 * contextual launches
+	 * 
+	 * @param file
+	 *        source file
+	 * @param mode
+	 *        launch mode
+	 */
+	private void launch(final IResource file, final String mode) {
 
-    @Override
-    public final IResource getLaunchableResource(final IEditorPart editorpart) {
-        final IEditorInput input = editorpart.getEditorInput();
-        if (input instanceof FileEditorInput)
-            return ((FileEditorInput) input).getFile();
+		if(file instanceof IFile) {
+			// try to save dirty editors
+			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().saveAllEditors(true);
 
-        return null;
-    }
+			try {
+				ILaunchConfiguration[] configurations = getLaunchConfgurations(file);
+				if(configurations.length == 0) {
+					// no configuration found, create new one
+					final ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
+					final ILaunchConfigurationType type = manager.getLaunchConfigurationType(getLaunchConfigurationType());
 
-    protected abstract IScriptEngine getScriptEngine(ILaunchConfiguration configuration, String mode);
+					final ILaunchConfigurationWorkingCopy configuration = type.newInstance(null, file.getName());
+					configuration.setAttribute(LaunchConstants.PROJECT, file.getProject().getName());
+					configuration.setAttribute(LaunchConstants.FILE_LOCATION, file.getProjectRelativePath().toPortableString());
 
-    protected abstract String getLaunchConfigurationType();
+					// save and return new configuration
+					configuration.doSave();
+
+					configurations = new ILaunchConfiguration[]{ configuration };
+				}
+
+				// launch
+				configurations[0].launch(mode, new NullProgressMonitor());
+
+			} catch (final CoreException e) {
+				// could not create launch configuration, run file directly
+				launch((IFile)file, null, mode, null, new NullProgressMonitor());
+			}
+		}
+	}
+
+	/**
+	 * Execute script code from an {@link IFile}.
+	 * 
+	 * @param file
+	 *        file to execute
+	 * @param configuration
+	 *        launch configuration
+	 * @param mode
+	 *        launch mode
+	 * @param launch
+	 * @param monitor
+	 */
+	private void launch(final IFile file, final ILaunchConfiguration configuration, final String mode, final ILaunch launch, final IProgressMonitor monitor) {
+
+		final IScriptEngine engine = getScriptEngine(configuration, mode);
+
+		final ScriptConsole console = ScriptConsole.create(engine.getName() + ": " + file.getFullPath(), engine);
+		engine.setOutputStream(console.getOutputStream());
+		engine.setErrorStream(console.getErrorStream());
+
+		engine.setTerminateOnIdle(true);
+
+		if(ILaunchManager.DEBUG_MODE.equals(mode))
+			setupDebugger(engine, configuration, launch);
+
+		engine.executeAsync(file);
+
+		engine.schedule();
+	}
+
+	protected abstract void setupDebugger(IScriptEngine engine, ILaunchConfiguration configuration, ILaunch launch);
+
+	protected abstract IScriptEngine getScriptEngine(ILaunchConfiguration configuration, String mode);
+
+	protected abstract String getLaunchConfigurationType();
 }
