@@ -124,6 +124,18 @@ public class ScriptDebugValue extends ScriptDebugElement implements IValue {
 		return getVariables().length > 0;
 	}
 
+	@Override
+	public Object getAdapter(final Class adapter) {
+		if(String.class.equals(adapter))
+			return (mValue != null) ? mValue.toString() : "";
+
+		return super.getAdapter(adapter);
+	}
+
+	public Object getValue() {
+		return mValue;
+	}
+
 	private static boolean isSimpleType(final Object value) {
 		return (value instanceof Integer) || (value instanceof Byte) || (value instanceof Short) || (value instanceof Boolean) || (value instanceof Character) || (value instanceof Long) || (value instanceof Double) || (value instanceof Float);
 	}

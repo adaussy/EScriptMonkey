@@ -36,8 +36,9 @@ public class RhinoDebugModelPresentation implements IDebugModelPresentation {
 
 	@Override
 	public void computeDetail(final IValue value, final IValueDetailListener listener) {
-		// TODO Auto-generated method stub
-
+		Object adapter = value.getAdapter(String.class);
+		if(adapter instanceof String)
+			listener.detailComputed(value, (String)adapter);
 	}
 
 	@Override

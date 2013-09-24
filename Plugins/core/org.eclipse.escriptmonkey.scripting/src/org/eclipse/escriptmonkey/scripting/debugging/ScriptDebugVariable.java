@@ -59,7 +59,7 @@ public class ScriptDebugVariable extends ScriptDebugElement implements IVariable
 	}
 
 	@Override
-	public IValue getValue() throws DebugException {
+	public ScriptDebugValue getValue() throws DebugException {
 		return new ScriptDebugValue(mStackFrame, mValue);
 	}
 
