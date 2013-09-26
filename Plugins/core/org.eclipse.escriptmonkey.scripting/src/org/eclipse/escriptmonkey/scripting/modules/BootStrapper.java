@@ -12,6 +12,7 @@ package org.eclipse.escriptmonkey.scripting.modules;
 
 import org.eclipse.escriptmonkey.scripting.IScriptEngine;
 import org.eclipse.escriptmonkey.scripting.IScriptEngineLaunchExtension;
+import org.eclipse.escriptmonkey.scripting.Script;
 import org.eclipse.escriptmonkey.scripting.debug.ITracingConstant;
 import org.eclipse.escriptmonkey.scripting.debug.Tracer;
 import org.eclipse.escriptmonkey.scripting.service.ScriptService;
@@ -33,7 +34,7 @@ public class BootStrapper implements IScriptEngineLaunchExtension {
 			if(ITracingConstant.MODULE_WRAPPER_TRACING) {
 				Tracer.logInfo("[Java script bootstrap] Injecting :\n" + stringBuilder.toString());
 			}
-			engine.executeAsync(stringBuilder.toString());
+			engine.executeAsync(new Script("Bootloader", stringBuilder.toString()));
 		}
 	}
 

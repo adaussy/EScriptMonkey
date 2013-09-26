@@ -56,225 +56,234 @@ import org.eclipse.ui.part.ShowInContext;
  */
 public class ScriptConsolePageParticipant implements IConsolePageParticipant, IShowInSource, IShowInTargetList, IDebugContextListener {
 
-    // actions
-    private TerminateConsoleAction fTerminate;
-    private RemoveCurrentConsoleAction fRemoveTerminated;
-    private RemoveAllTerminatedConsolesAction fRemoveAllTerminated;
-    private ShowWhenContentChangesAction fStdOut;
-    private ShowWhenContentChangesAction fStdErr;
+	// actions
+	private TerminateConsoleAction fTerminate;
 
-    private ScriptConsole fConsole;
+	private RemoveCurrentConsoleAction fRemoveTerminated;
 
-    private IPageBookViewPage fPage;
+	private RemoveAllTerminatedConsolesAction fRemoveAllTerminated;
 
-    private IConsoleView fView;
+	private ShowWhenContentChangesAction fStdOut;
 
-    private EOFHandler fEOFHandler;
-    private final String fContextId = "org.eclipse.debug.ui.console"; //$NON-NLS-1$;
-    private IContextActivation fActivatedContext;
-    private IHandlerActivation fActivatedHandler;
+	private ShowWhenContentChangesAction fStdErr;
 
-    /**
-     * Handler to send EOF
-     */
-    private class EOFHandler extends AbstractHandler {
-        @Override
-        public Object execute(final ExecutionEvent event) throws org.eclipse.core.commands.ExecutionException {
-            IStreamsProxy proxy = getProcess().getStreamsProxy();
-            if (proxy instanceof IStreamsProxy2) {
-                IStreamsProxy2 proxy2 = (IStreamsProxy2) proxy;
-                try {
-                    proxy2.closeInputStream();
-                } catch (IOException e1) {
-                }
-            }
-            return null;
-        }
+	private ScriptConsole fConsole;
 
-    }
+	private IPageBookViewPage fPage;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.console.IConsolePageParticipant#init(IPageBookViewPage, IConsole)
-     */
-    @Override
-    public void init(final IPageBookViewPage page, final IConsole console) {
-        fPage = page;
-        fConsole = (ScriptConsole) console;
-        fConsole.setPageParticipant(this);
+	private IConsoleView fView;
 
-        fRemoveTerminated = new RemoveCurrentConsoleAction(fConsole);
-        fRemoveAllTerminated = new RemoveAllTerminatedConsolesAction();
-        fTerminate = new TerminateConsoleAction(page.getSite().getWorkbenchWindow(), fConsole);
-        fStdOut = new ShowStandardOutAction(console);
-        fStdErr = new ShowStandardErrorAction(console);
+	private EOFHandler fEOFHandler;
 
-        fView = (IConsoleView) fPage.getSite().getPage().findView(IConsoleConstants.ID_CONSOLE_VIEW);
+	private final String fContextId = "org.eclipse.debug.ui.console"; //$NON-NLS-1$;
 
-        DebugUITools.getDebugContextManager().getContextService(fPage.getSite().getWorkbenchWindow()).addDebugContextListener(this);
+	private IContextActivation fActivatedContext;
 
-        // contribute to toolbar
-        IActionBars actionBars = fPage.getSite().getActionBars();
-        configureToolBar(actionBars.getToolBarManager());
+	private IHandlerActivation fActivatedHandler;
 
-        // create handler and submissions for EOF
-        fEOFHandler = new EOFHandler();
-    }
+	/**
+	 * Handler to send EOF
+	 */
+	private class EOFHandler extends AbstractHandler {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.console.IConsolePageParticipant#dispose()
-     */
-    @Override
-    public void dispose() {
-        fConsole.setPageParticipant(null);
+		@Override
+		public Object execute(final ExecutionEvent event) throws org.eclipse.core.commands.ExecutionException {
+			final IStreamsProxy proxy = getProcess().getStreamsProxy();
+			if(proxy instanceof IStreamsProxy2) {
+				final IStreamsProxy2 proxy2 = (IStreamsProxy2)proxy;
+				try {
+					proxy2.closeInputStream();
+				} catch (final IOException e1) {
+				}
+			}
+			return null;
+		}
 
-        DebugUITools.getDebugContextManager().getContextService(fPage.getSite().getWorkbenchWindow()).removeDebugContextListener(this);
-        fRemoveTerminated = null;
-        fRemoveAllTerminated = null;
+	}
 
-        if (fTerminate != null) {
-            fTerminate.dispose();
-            fTerminate = null;
-        }
-        if (fStdOut != null) {
-            fStdOut.dispose();
-            fStdOut = null;
-        }
-        if (fStdErr != null) {
-            fStdErr.dispose();
-            fStdErr = null;
-        }
-        fConsole = null;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.ui.console.IConsolePageParticipant#init(IPageBookViewPage, IConsole)
+	 */
+	@Override
+	public void init(final IPageBookViewPage page, final IConsole console) {
+		fPage = page;
+		fConsole = (ScriptConsole)console;
+		fConsole.setPageParticipant(this);
 
-    /**
-     * Contribute actions to the toolbar
-     */
-    protected void configureToolBar(final IToolBarManager mgr) {
-        mgr.appendToGroup(IConsoleConstants.LAUNCH_GROUP, fTerminate);
-        mgr.appendToGroup(IConsoleConstants.LAUNCH_GROUP, fRemoveTerminated);
-        mgr.appendToGroup(IConsoleConstants.LAUNCH_GROUP, fRemoveAllTerminated);
-        mgr.appendToGroup(IConsoleConstants.OUTPUT_GROUP, fStdOut);
-        mgr.appendToGroup(IConsoleConstants.OUTPUT_GROUP, fStdErr);
-    }
+		fRemoveTerminated = new RemoveCurrentConsoleAction(fConsole);
+		fRemoveAllTerminated = new RemoveAllTerminatedConsolesAction();
+		fTerminate = new TerminateConsoleAction(page.getSite().getWorkbenchWindow(), fConsole);
+		fStdOut = new ShowStandardOutAction(console);
+		fStdErr = new ShowStandardErrorAction(console);
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
-     */
-    @Override
-    public Object getAdapter(final Class required) {
-        if (IShowInSource.class.equals(required)) {
-            return this;
-        }
-        if (IShowInTargetList.class.equals(required)) {
-            return this;
-        }
-        // CONTEXTLAUNCHING
-        if (ILaunchConfiguration.class.equals(required)) {
-            ILaunch launch = getProcess().getLaunch();
-            if (launch != null) {
-                return launch.getLaunchConfiguration();
-            }
-            return null;
-        }
-        return null;
-    }
+		fView = (IConsoleView)fPage.getSite().getPage().findView(IConsoleConstants.ID_CONSOLE_VIEW);
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.part.IShowInSource#getShowInContext()
-     */
-    @Override
-    public ShowInContext getShowInContext() {
-        IProcess process = getProcess();
-        if (process == null) {
-            return null;
-        }
-        IDebugTarget target = (IDebugTarget) process.getAdapter(IDebugTarget.class);
-        ISelection selection = null;
-        if (target == null) {
-            selection = new TreeSelection(new TreePath(new Object[] { DebugPlugin.getDefault().getLaunchManager(), process.getLaunch(), process }));
-        } else {
-            selection = new TreeSelection(new TreePath(new Object[] { DebugPlugin.getDefault().getLaunchManager(), target.getLaunch(), target }));
-        }
-        return new ShowInContext(null, selection);
-    }
+		DebugUITools.getDebugContextManager().getContextService(fPage.getSite().getWorkbenchWindow()).addDebugContextListener(this);
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.part.IShowInTargetList#getShowInTargetIds()
-     */
-    @Override
-    public String[] getShowInTargetIds() {
-        return new String[] { IDebugUIConstants.ID_DEBUG_VIEW };
-    }
+		// contribute to toolbar
+		final IActionBars actionBars = fPage.getSite().getActionBars();
+		configureToolBar(actionBars.getToolBarManager());
 
-    protected IProcess getProcess() {
-        // FIXME implement
-        // return fConsole != null ? fConsole.getProcess() : null;
-        return null;
-    }
+		// create handler and submissions for EOF
+		fEOFHandler = new EOFHandler();
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.console.IConsolePageParticipant#activated()
-     */
-    @Override
-    public void activated() {
-        // add EOF submissions
-        IPageSite site = fPage.getSite();
-        if ((fActivatedContext == null) && (fActivatedHandler == null)) {
-            IHandlerService handlerService = (IHandlerService) site.getService(IHandlerService.class);
-            IContextService contextService = (IContextService) site.getService(IContextService.class);
-            fActivatedContext = contextService.activateContext(fContextId);
-            fActivatedHandler = handlerService.activateHandler("org.eclipse.debug.ui.commands.eof", fEOFHandler); //$NON-NLS-1$
-        }
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.ui.console.IConsolePageParticipant#dispose()
+	 */
+	@Override
+	public void dispose() {
+		fConsole.setPageParticipant(null);
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.console.IConsolePageParticipant#deactivated()
-     */
-    @Override
-    public void deactivated() {
-        // remove EOF submissions
-        IPageSite site = fPage.getSite();
-        IHandlerService handlerService = (IHandlerService) site.getService(IHandlerService.class);
-        IContextService contextService = (IContextService) site.getService(IContextService.class);
-        handlerService.deactivateHandler(fActivatedHandler);
-        contextService.deactivateContext(fActivatedContext);
-        fActivatedContext = null;
-        fActivatedHandler = null;
-    }
+		DebugUITools.getDebugContextManager().getContextService(fPage.getSite().getWorkbenchWindow()).removeDebugContextListener(this);
+		fRemoveTerminated = null;
+		fRemoveAllTerminated = null;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.eclipse.debug.internal.ui.contexts.provisional.IDebugContextListener#contextEvent(org.eclipse.debug.internal.ui.contexts.provisional.DebugContextEvent
-     * )
-     */
-    @Override
-    public void debugContextChanged(final DebugContextEvent event) {
-        if ((event.getFlags() & DebugContextEvent.ACTIVATED) > 0) {
-            if ((fView != null) && getProcess().equals(DebugUITools.getCurrentProcess())) {
-                fView.display(fConsole);
-            }
-        }
+		if(fTerminate != null) {
+			fTerminate.dispose();
+			fTerminate = null;
+		}
+		if(fStdOut != null) {
+			fStdOut.dispose();
+			fStdOut = null;
+		}
+		if(fStdErr != null) {
+			fStdErr.dispose();
+			fStdErr = null;
+		}
+		fConsole = null;
+	}
 
-    }
+	/**
+	 * Contribute actions to the toolbar
+	 */
+	protected void configureToolBar(final IToolBarManager mgr) {
+		mgr.appendToGroup(IConsoleConstants.LAUNCH_GROUP, fTerminate);
+		mgr.appendToGroup(IConsoleConstants.LAUNCH_GROUP, fRemoveTerminated);
+		mgr.appendToGroup(IConsoleConstants.LAUNCH_GROUP, fRemoveAllTerminated);
+		mgr.appendToGroup(IConsoleConstants.OUTPUT_GROUP, fStdOut);
+		mgr.appendToGroup(IConsoleConstants.OUTPUT_GROUP, fStdErr);
+	}
 
-    public void engineChanged() {
-        if (fTerminate != null)
-            fTerminate.update();
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
+	 */
+	@Override
+	public Object getAdapter(final Class required) {
+		if(IShowInSource.class.equals(required)) {
+			return this;
+		}
+		if(IShowInTargetList.class.equals(required)) {
+			return this;
+		}
+		// CONTEXTLAUNCHING
+		if(ILaunchConfiguration.class.equals(required)) {
+			final ILaunch launch = getProcess().getLaunch();
+			if(launch != null) {
+				return launch.getLaunchConfiguration();
+			}
+			return null;
+		}
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.ui.part.IShowInSource#getShowInContext()
+	 */
+	@Override
+	public ShowInContext getShowInContext() {
+		final IProcess process = getProcess();
+		if(process == null) {
+			return null;
+		}
+		final IDebugTarget target = (IDebugTarget)process.getAdapter(IDebugTarget.class);
+		ISelection selection = null;
+		if(target == null) {
+			selection = new TreeSelection(new TreePath(new Object[]{ DebugPlugin.getDefault().getLaunchManager(), process.getLaunch(), process }));
+		} else {
+			selection = new TreeSelection(new TreePath(new Object[]{ DebugPlugin.getDefault().getLaunchManager(), target.getLaunch(), target }));
+		}
+		return new ShowInContext(null, selection);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.ui.part.IShowInTargetList#getShowInTargetIds()
+	 */
+	@Override
+	public String[] getShowInTargetIds() {
+		return new String[]{ IDebugUIConstants.ID_DEBUG_VIEW };
+	}
+
+	protected IProcess getProcess() {
+		// FIXME implement
+		// return fConsole != null ? fConsole.getProcess() : null;
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.ui.console.IConsolePageParticipant#activated()
+	 */
+	@Override
+	public void activated() {
+		// add EOF submissions
+		final IPageSite site = fPage.getSite();
+		if((fActivatedContext == null) && (fActivatedHandler == null)) {
+			final IHandlerService handlerService = (IHandlerService)site.getService(IHandlerService.class);
+			final IContextService contextService = (IContextService)site.getService(IContextService.class);
+			fActivatedContext = contextService.activateContext(fContextId);
+			fActivatedHandler = handlerService.activateHandler("org.eclipse.debug.ui.commands.eof", fEOFHandler); //$NON-NLS-1$
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.ui.console.IConsolePageParticipant#deactivated()
+	 */
+	@Override
+	public void deactivated() {
+		// remove EOF submissions
+		final IPageSite site = fPage.getSite();
+		final IHandlerService handlerService = (IHandlerService)site.getService(IHandlerService.class);
+		final IContextService contextService = (IContextService)site.getService(IContextService.class);
+		handlerService.deactivateHandler(fActivatedHandler);
+		contextService.deactivateContext(fActivatedContext);
+		fActivatedContext = null;
+		fActivatedHandler = null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.debug.internal.ui.contexts.provisional.IDebugContextListener#contextEvent(org.eclipse.debug.internal.ui.contexts.provisional.
+	 * DebugContextEvent
+	 * )
+	 */
+	@Override
+	public void debugContextChanged(final DebugContextEvent event) {
+		if((event.getFlags() & DebugContextEvent.ACTIVATED) > 0) {
+			if((fView != null) && (getProcess() != null) && getProcess().equals(DebugUITools.getCurrentProcess())) {
+				fView.display(fConsole);
+			}
+		}
+
+	}
+
+	public void engineChanged() {
+		if(fTerminate != null)
+			fTerminate.update();
+	}
 }

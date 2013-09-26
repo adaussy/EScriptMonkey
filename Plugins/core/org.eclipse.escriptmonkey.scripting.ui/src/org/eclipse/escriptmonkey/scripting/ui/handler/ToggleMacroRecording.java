@@ -39,90 +39,89 @@ import org.eclipse.ui.menus.UIElement;
  */
 public class ToggleMacroRecording extends ToggleHandler implements IHandler, IElementUpdater, IExecutionListener {
 
-    private boolean mChecked = false;
+	private boolean mChecked = false;
 
-    private static final Map<Object, StringBuffer> mRecordings = new HashMap<Object, StringBuffer>();
+	private static final Map<Object, StringBuffer> mRecordings = new HashMap<Object, StringBuffer>();
 
-    @Override
-    protected final void executeToggle(final ExecutionEvent event, final boolean checked) {
-        final IWorkbenchPart part = HandlerUtil.getActivePart(event);
-        if (part instanceof IScriptEngineProvider) {
-            final IScriptEngine engine = ((IScriptEngineProvider) part).getScriptEngine();
-            if (engine != null) {
-                if (checked) {
-                    // start recording, eventually overrides a running recording of the same provider
-                    mRecordings.put(engine, new StringBuffer());
-                    engine.addExecutionListener(this);
-                } else {
-                    // stop recording
-                    final StringBuffer buffer = mRecordings.get(engine);
-                    if (buffer.length() > 0) {
-                        final InputDialog dialog = new InputDialog(HandlerUtil.getActiveShell(event), "Save Macro",
-                                "Enter a unique name for your macro (use '/' as path delimiter)", "", new IInputValidator() {
+	@Override
+	protected final void executeToggle(final ExecutionEvent event, final boolean checked) {
+		final IWorkbenchPart part = HandlerUtil.getActivePart(event);
+		if(part instanceof IScriptEngineProvider) {
+			final IScriptEngine engine = ((IScriptEngineProvider)part).getScriptEngine();
+			if(engine != null) {
+				if(checked) {
+					// start recording, eventually overrides a running recording of the same provider
+					mRecordings.put(engine, new StringBuffer());
+					engine.addExecutionListener(this);
+				} else {
+					// stop recording
+					final StringBuffer buffer = mRecordings.get(engine);
+					if(buffer.length() > 0) {
+						final InputDialog dialog = new InputDialog(HandlerUtil.getActiveShell(event), "Save Macro", "Enter a unique name for your macro (use '/' as path delimiter)", "", new IInputValidator() {
 
-                                    @Override
-                                    public String isValid(final String name) {
-                                        if (name.indexOf(';') >= 0)
-                                            return "Invalid character ';' detected in macro name";
+							@Override
+							public String isValid(final String name) {
+								if(name.indexOf(';') >= 0)
+									return "Invalid character ';' detected in macro name";
 
-                                        IMacroService macroService = (IMacroService) PlatformUI.getWorkbench().getService(IMacroService.class);
-                                        if (macroService == null)
-                                            return "Cannot store macro, Macro service unavailable";
+								final IMacroService macroService = (IMacroService)PlatformUI.getWorkbench().getService(IMacroService.class);
+								if(macroService == null)
+									return "Cannot store macro, Macro service unavailable";
 
-                                        if (macroService.getMacro(name) != null)
-                                            return "Macro name <" + name + "> already in use. Choose a different one.";
+								if(macroService.getMacro(name) != null)
+									return "Macro name <" + name + "> already in use. Choose a different one.";
 
-                                        return null;
-                                    }
-                                });
+								return null;
+							}
+						});
 
-                        if (dialog.open() == Window.OK) {
-                            IMacroService macroService = (IMacroService) PlatformUI.getWorkbench().getService(IMacroService.class);
+						if(dialog.open() == Window.OK) {
+							final IMacroService macroService = (IMacroService)PlatformUI.getWorkbench().getService(IMacroService.class);
 
-                            if (macroService != null)
-                                macroService.addMacro(dialog.getValue(), engine, buffer.toString());
-                        }
-                    }
-                }
-            }
-        }
+							if(macroService != null)
+								macroService.addMacro(dialog.getValue(), engine, buffer.toString());
+						}
+					}
+				}
+			}
+		}
 
-        mChecked = checked;
-    }
+		mChecked = checked;
+	}
 
-    @Override
-    public final void updateElement(final UIElement element, @SuppressWarnings("rawtypes") final Map parameters) {
-        super.updateElement(element, parameters);
+	@Override
+	public final void updateElement(final UIElement element, @SuppressWarnings("rawtypes") final Map parameters) {
+		super.updateElement(element, parameters);
 
-        if (mChecked)
-            element.setIcon(Activator.getImageDescriptor(Activator.PLUGIN_ID, "/images/stop_record_macro.gif"));
+		if(mChecked)
+			element.setIcon(Activator.getImageDescriptor(Activator.PLUGIN_ID, "/images/stop_record_macro.gif"));
 
-        else
-            element.setIcon(Activator.getImageDescriptor(Activator.PLUGIN_ID, "/images/start_record_macro.gif"));
-    }
+		else
+			element.setIcon(Activator.getImageDescriptor(Activator.PLUGIN_ID, "/images/start_record_macro.gif"));
+	}
 
-    @Override
-    public void notify(final IScriptEngine engine, final Script script, final int status) {
-        if (IExecutionListener.SCRIPT_END == status) {
-            try {
-                final StringBuffer buffer = mRecordings.get(engine);
-                if (buffer != null) {
-                    // TODO add support to add trailing returns and ;
-                    buffer.append(StringTools.toString(script.getCode()));
-                    buffer.append(StringTools.LINE_DELIMITER);
-                } else
-                    engine.removeExecutionListener(this);
+	@Override
+	public void notify(final IScriptEngine engine, final Script script, final int status) {
+		if(IExecutionListener.SCRIPT_END == status) {
+			try {
+				final StringBuffer buffer = mRecordings.get(engine);
+				if(buffer != null) {
+					// TODO add support to add trailing returns and ;
+					buffer.append(script.getCode());
+					buffer.append(StringTools.LINE_DELIMITER);
+				} else
+					engine.removeExecutionListener(this);
 
-            } catch (final FileNotFoundException e) {
-                // cannot record / execute macro when file is not found
-            } catch (final CoreException e) {
-                // cannot record / execute macro when file is not found
-            } catch (final IOException e) {
-                // cannot extract string from getCode()
-            } catch (Exception e) {
-                // TODO handle this exception (but for now, at least know it happened)
-                throw new RuntimeException(e);
-            }
-        }
-    }
+			} catch (final FileNotFoundException e) {
+				// cannot record / execute macro when file is not found
+			} catch (final CoreException e) {
+				// cannot record / execute macro when file is not found
+			} catch (final IOException e) {
+				// cannot extract string from getCode()
+			} catch (final Exception e) {
+				// TODO handle this exception (but for now, at least know it happened)
+				throw new RuntimeException(e);
+			}
+		}
+	}
 }

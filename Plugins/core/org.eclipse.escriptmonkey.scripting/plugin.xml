@@ -43,5 +43,13 @@
             visible="false">
       </module>
    </extension>
+   <extension
+         point="org.eclipse.debug.core.sourceLocators">
+      <sourceLocator
+            class="org.eclipse.escriptmonkey.scripting.debugging.ScriptSourceLocator"
+            id="org.eclipse.escriptmonkey.sourceLocator.generic"
+            name="Generic Script Source Locator">
+      </sourceLocator>
+   </extension>
 
 </plugin>

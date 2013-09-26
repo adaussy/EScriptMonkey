@@ -63,8 +63,7 @@
             id="org.eclipse.escriptmonkey.launchConfigurationType.rhino"
             modes="run,debug"
             name="EScript JavaScript (Rhino)"
-            sourceLocatorId="org.eclipse.wst.jsdt.debug.rhino.ui.source.locator"
-            sourcePathComputerId="org.eclipse.wst.jsdt.debug.rhino.ui.source.path.computer">
+            sourceLocatorId="org.eclipse.escriptmonkey.sourceLocator.generic">
       </launchConfigurationType>
    </extension>
 

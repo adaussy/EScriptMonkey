@@ -74,7 +74,11 @@ public abstract class AbstractScriptEngine extends Job implements IScriptEngine 
 
 	@Override
 	public final ScriptResult executeAsync(final Object content) {
-		final Script piece = new Script(content);
+		final Script piece;
+		if(content instanceof Script)
+			piece = (Script)content;
+		else
+			piece = new Script(content);
 
 		mCodePieces.add(piece);
 		synchronized(this) {
@@ -101,10 +105,14 @@ public abstract class AbstractScriptEngine extends Job implements IScriptEngine 
 
 	@Override
 	public final ScriptResult inject(final Object content) {
-		final Script script = new Script(content);
+		final Script piece;
+		if(content instanceof Script)
+			piece = (Script)content;
+		else
+			piece = new Script(content);
 
 		// injected code shall not trigger a new event, therefore notifyListerners needs to be false
-		return inject(script, false);
+		return inject(piece, false);
 	}
 
 	/**
@@ -114,23 +122,20 @@ public abstract class AbstractScriptEngine extends Job implements IScriptEngine 
 	 *        script to be executed
 	 * @return script execution result
 	 */
-	private ScriptResult inject(final Script script, final boolean notifyListeners) {
+	private ScriptResult inject(final Script script, final boolean newScriptEvent) {
 
 		synchronized(script.getResult()) {
 
-			InputStream code = null;
 			try {
 				mFileTrace.push(script.getFile());
 
 				// execution
-				if(notifyListeners)
+				if(newScriptEvent)
 					notifyExecutionListeners(script, IExecutionListener.SCRIPT_START);
+				else
+					notifyExecutionListeners(script, IExecutionListener.SCRIPT_INJECTION_START);
 
-				code = script.getCode();
-				if(code != null) {
-					script.setResult(execute(code, script.getFile(), mFileTrace.peek().getFileName()));
-				} else
-					script.setException(new Exception("Invalid script input detected"));
+				script.setResult(execute(script, script.getFile(), mFileTrace.peek().getFileName()));
 
 			} catch (final ExitException e) {
 				script.setResult(e.getCondition());
@@ -151,17 +156,12 @@ public abstract class AbstractScriptEngine extends Job implements IScriptEngine 
 
 
 			} finally {
-				if(notifyListeners)
+				if(newScriptEvent)
 					notifyExecutionListeners(script, IExecutionListener.SCRIPT_END);
+				else
+					notifyExecutionListeners(script, IExecutionListener.SCRIPT_INJECTION_END);
 
 				mFileTrace.pop();
-
-				// gracefully close input stream
-				if(code != null)
-					try {
-						code.close();
-					} catch (IOException e) {
-					}
 			}
 		}
 
@@ -436,5 +436,5 @@ public abstract class AbstractScriptEngine extends Job implements IScriptEngine 
 	 * @throws Exception
 	 *         any exception thrown during script execution
 	 */
-	protected abstract Object execute(InputStream code, Object reference, String fileName) throws Exception;
+	protected abstract Object execute(Script script, Object reference, String fileName) throws Exception;
 }

@@ -10,10 +10,17 @@
  *******************************************************************************/
 package org.eclipse.escriptmonkey.scripting.engine.javascript.rhino.ui.launching;
 
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.escriptmonkey.scripting.IScriptEngine;
 import org.eclipse.escriptmonkey.scripting.IScriptService;
+import org.eclipse.escriptmonkey.scripting.debugging.EventDispatchJob;
+import org.eclipse.escriptmonkey.scripting.engine.javascript.rhino.RhinoScriptEngine;
+import org.eclipse.escriptmonkey.scripting.engine.javascript.rhino.debugger.RhinoDebugger;
+import org.eclipse.escriptmonkey.scripting.engine.javascript.rhino.debugger.model.RhinoDebugTarget;
 import org.eclipse.escriptmonkey.scripting.ui.launching.AbstractLaunchDelegate;
+import org.eclipse.escriptmonkey.scripting.ui.launching.LaunchConstants;
 import org.eclipse.ui.PlatformUI;
 
 /**
@@ -21,20 +28,44 @@ import org.eclipse.ui.PlatformUI;
  */
 public class Launcher extends AbstractLaunchDelegate {
 
-    @Override
-    protected IScriptEngine getScriptEngine(final ILaunchConfiguration configuration, final String mode) {
-        IScriptService scriptService = (IScriptService) PlatformUI.getWorkbench().getService(IScriptService.class);
-        if (MODE_RUN.equals(mode))
-            return scriptService.createEngineByID("org.eclipse.escriptmonkey.scripting.javascript.rhino");
+	@Override
+	protected IScriptEngine getScriptEngine(final ILaunchConfiguration configuration, final String mode) {
+		final IScriptService scriptService = (IScriptService)PlatformUI.getWorkbench().getService(IScriptService.class);
 
-        else if (MODE_DEBUG.equals(mode))
-            return scriptService.createEngineByID("org.eclipse.escriptmonkey.scripting.javascript.rhino.debug");
+		return scriptService.createEngineByID("org.eclipse.escriptmonkey.scripting.javascript.rhino");
+	}
 
-        return null;
-    }
+	@Override
+	protected String getLaunchConfigurationType() {
+		return "org.eclipse.escriptmonkey.launchConfigurationType.rhino";
+	}
 
-    @Override
-    protected String getLaunchConfigurationType() {
-        return "org.eclipse.escriptmonkey.launchConfigurationType.rhino";
-    }
+	@Override
+	protected void setupDebugger(final IScriptEngine engine, final ILaunchConfiguration configuration, final ILaunch launch) {
+		if(engine instanceof RhinoScriptEngine) {
+
+			boolean suspendOnStartup = false;
+			try {
+				suspendOnStartup = configuration.getAttribute(LaunchConstants.SUSPEND_ON_STARTUP, false);
+			} catch (CoreException e) {
+			}
+
+			final RhinoDebugTarget debugTarget = new RhinoDebugTarget(launch, suspendOnStartup);
+			launch.addDebugTarget(debugTarget);
+
+			boolean showDynamicCode = false;
+			try {
+				showDynamicCode = configuration.getAttribute(LaunchConstants.DISPLAY_DYNAMIC_CODE, false);
+			} catch (CoreException e) {
+			}
+
+			final RhinoDebugger debugger = new RhinoDebugger((RhinoScriptEngine)engine, showDynamicCode);
+			((RhinoScriptEngine)engine).setDebugger(debugger);
+
+			final EventDispatchJob dispatcher = new EventDispatchJob(debugTarget, debugger);
+			debugTarget.setDispatcher(dispatcher);
+			debugger.setDispatcher(dispatcher);
+			dispatcher.schedule();
+		}
+	}
 }
