@@ -157,8 +157,10 @@ public class ScriptGraphService implements IStoredScriptListener {
 			Logger.logError("No script in registry for " + script.getUri());
 		}
 		List<String> menus = UIMetadataUtils.getMenu(script);
-		StoredScriptUI node = getScriptGraph().addScript(new BasicEList<String>(menus));
+		BasicEList<String> path = new BasicEList<String>(menus);
+		StoredScriptUI node = getScriptGraph().addScript(path);
 		node.setScript(script);
+		node.setName(path.get(path.size() - 1));
 		map.put(script, node);
 	}
 

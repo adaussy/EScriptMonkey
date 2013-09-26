@@ -12,19 +12,24 @@ package org.eclipse.escriptmonkey.scripting.ui.metadata;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
+
+import org.eclipse.escriptmonkey.scripting.storedscript.metada.AbstractRegexMetadataParser;
 
 import com.google.common.collect.Iterators;
 import com.google.common.collect.UnmodifiableIterator;
 
 
-public class MenuMetadataParser {
+public class MenuMetadataParser extends AbstractRegexMetadataParser {
+
+	public MenuMetadataParser() {
+	}
+
 
 
 	private static final String SEPARATOR = ">";
 
-	public MenuMetadataParser() {
-		super();
-	}
+
 
 
 	public static List<String> getMenus(String toParse) {
@@ -36,6 +41,14 @@ public class MenuMetadataParser {
 			menu.add(m.trim());
 		}
 		return menu;
+	}
+
+
+
+
+	@Override
+	protected Pattern createPattern() {
+		return Pattern.compile("Menu:\\s*(.*)");
 	}
 
 }

@@ -13,9 +13,10 @@ package org.eclipse.escriptmonkey.scripting.storedscript.service;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.Matcher;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -23,6 +24,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.escriptmonkey.scripting.debug.Logger;
 import org.eclipse.escriptmonkey.scripting.storedscript.metada.IHeaderParser;
+import org.eclipse.escriptmonkey.scripting.storedscript.metada.IMetadataParser;
 import org.eclipse.escriptmonkey.scripting.storedscript.metada.Metadata;
 import org.eclipse.escriptmonkey.scripting.storedscript.service.impl.StoredScriptService;
 import org.eclipse.escriptmonkey.scripting.storedscript.storedscript.IStoredScript;
@@ -76,14 +78,16 @@ public class MetadaParserService {
 		String header = parser.getHeader(storedScript);
 		if(header != null) {
 			for(Metadata metaDef : getMetadatas()) {
-				Matcher matcher = metaDef.getRegex().matcher(header);
-				while(matcher.find()) {
-					String data = matcher.group(1);
-					ScriptMetadata meta = StoredscriptFactory.eINSTANCE.createScriptMetadata();
-					metadata.add(meta);
-					meta.setKey(metaDef.getName());
-					meta.getValue().add(data);
-
+				List<String> metas = metaDef.parse(header);
+				if(metas != null) {
+					ListIterator<String> ite = metas.listIterator();
+					while(ite.hasNext()) {
+						String data = (String)ite.next();
+						ScriptMetadata meta = StoredscriptFactory.eINSTANCE.createScriptMetadata();
+						metadata.add(meta);
+						meta.setKey(metaDef.getName());
+						meta.getValue().add(data);
+					}
 				}
 			}
 		}
@@ -111,8 +115,15 @@ public class MetadaParserService {
 			for(final IConfigurationElement e : config) {
 				if("metadata".equals(e.getName())) {
 					String name = e.getAttribute("name");
-					String regex = e.getAttribute("regex");
-					metadatas.add(new Metadata(name, regex));
+					Object parser;
+					try {
+						parser = e.createExecutableExtension("impl");
+						if(parser instanceof IMetadataParser) {
+							metadatas.add(new Metadata(name, (IMetadataParser)parser));
+						}
+					} catch (CoreException e1) {
+						e1.printStackTrace();
+					}
 				}
 			}
 

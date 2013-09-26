@@ -35,5 +35,7 @@ public interface IUIMetadata {
 	 */
 	public static final String NAME_METADATA = "Name";
 
+	public static final String ENABLE_WHEN = "EnableWhen";
+
 
 }

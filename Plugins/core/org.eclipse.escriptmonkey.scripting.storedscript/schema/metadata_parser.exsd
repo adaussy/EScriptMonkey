@@ -97,11 +97,14 @@
                </documentation>
             </annotation>
          </attribute>
-         <attribute name="regex" type="string" use="required">
+         <attribute name="impl" type="string" use="required">
             <annotation>
                <documentation>
-                  
+                  The parser used to extract the metadata
                </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn=":org.eclipse.escriptmonkey.scripting.storedscript.metada.IMetadataParser"/>
+               </appinfo>
             </annotation>
          </attribute>
       </complexType>

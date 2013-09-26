@@ -291,16 +291,16 @@
    <extension
         point="org.eclipse.escriptmonkey.scripting.storedscript.metadata">
      <metadata
-           name="Description"
-           regex="Description:\s*(.*)$">
+           impl="org.eclipse.escriptmonkey.scripting.ui.metadata.DescriptionMetadataParser"
+           name="Description">
      </metadata>
      <metadata
-           name="Key"
-           regex="Key:\\s*(.*)$">
+           impl="org.eclipse.escriptmonkey.scripting.ui.metadata.MenuMetadataParser"
+           name="Menu">
      </metadata>
-     <metadata
-           name="Menu"
-           regex="Menu:\s*(.*)$">
-     </metadata>
+      <metadata
+            impl="org.eclipse.escriptmonkey.scripting.ui.metadata.EnableWhenMetadataParser"
+            name="EnableWhen">
+      </metadata>
   </extension>
 </plugin>

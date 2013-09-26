@@ -21,6 +21,12 @@
             name="TextEditorModule"
             visible="true">
       </module>
+      <module
+            class="org.eclipse.escriptmonkey.scripting.module.platform.modules.SelectionModule"
+            documentation="true"
+            name="SelectionModule"
+            visible="true">
+      </module>
    </extension>
 
 </plugin>
