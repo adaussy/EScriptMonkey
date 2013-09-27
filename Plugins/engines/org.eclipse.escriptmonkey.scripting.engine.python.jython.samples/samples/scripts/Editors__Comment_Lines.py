@@ -1,7 +1,11 @@
 #
 # Thread: UI
 # Menu: Examples > Editors > Comment Lines
-# Kudos: Jose Fonseca & Paul Colton
+# Kudos: Jose Fonseca & Paul Colton & Arthur Daussy
+#EnableWen::[With selection {
+#        InstanceOf "org.eclipse.jface.text.TextSelection"{
+#            }
+#}]::
 # Description: You can use this script to comment a line in the current active editor.(Only work with text editor)
 # License: EPL 1.0
 #

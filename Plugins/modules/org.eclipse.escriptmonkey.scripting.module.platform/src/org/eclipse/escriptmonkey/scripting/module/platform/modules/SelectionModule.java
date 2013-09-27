@@ -10,12 +10,19 @@
  *******************************************************************************/
 package org.eclipse.escriptmonkey.scripting.module.platform.modules;
 
+import org.eclipse.core.expressions.IIterable;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IAdapterManager;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.escriptmonkey.scripting.modules.AbstractScriptModule;
 import org.eclipse.escriptmonkey.scripting.modules.WrapToScript;
+import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.ISelectionService;
 import org.eclipse.ui.PlatformUI;
+
+import com.google.common.collect.Lists;
 
 
 /**
@@ -36,6 +43,29 @@ public class SelectionModule extends AbstractScriptModule {
 		Display.getDefault().syncExec(runnable);
 		return runnable.getSelection();
 	}
+
+	@WrapToScript
+	public Iterable<Object> getIterableSelection() {
+		ISelection selection = getSelection();
+		IIterable result = getAdapter(IIterable.class, selection);
+		if(result != null) {
+			return Lists.newArrayList(result.iterator());
+		}
+		ErrorDialog.openError(Display.getDefault().getActiveShell(), "Error getting iterable selection", "The current selection is not an iterable", null);
+		return null;
+	}
+
+	protected <T extends Object> T getAdapter(Class<T> cla, Object o) {
+		if(cla.isInstance(o)) {
+			return (T)o;
+		} else if(o instanceof IAdaptable) {
+			return (T)((IAdaptable)o).getAdapter(cla);
+		} else {
+			IAdapterManager manager = Platform.getAdapterManager();
+			return (T)manager.getAdapter(o, cla);
+		}
+	}
+
 
 	private static class GetSelectionRunnable implements Runnable {
 

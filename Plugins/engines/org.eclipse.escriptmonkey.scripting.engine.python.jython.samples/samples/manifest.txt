@@ -6,3 +6,6 @@ scripts/Hello__Arthur.py
 scripts/IO__File_Sample.py
 scripts/IO__Web_Sample.py
 scripts/Views__Web_View.py
+scripts/DisplayLocation.py
+scripts/DisplaySelection.py
+editor/CreateYourEnableWhenExpressionHere.coreexpression
