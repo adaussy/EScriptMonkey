@@ -302,5 +302,9 @@
             impl="org.eclipse.escriptmonkey.scripting.ui.metadata.EnableWhenMetadataParser"
             name="EnableWhen">
       </metadata>
+      <metadata
+            impl="org.eclipse.escriptmonkey.scripting.ui.metadata.ThreadMetadataParser"
+            name="Thread">
+      </metadata>
   </extension>
 </plugin>
