@@ -8,6 +8,7 @@
  * Contributors:
  *     Arthur Daussy - initial implementation
  *******************************************************************************/
+
 package org.eclipse.escriptmonkey.scripting.storedscript.metada;
 
 
