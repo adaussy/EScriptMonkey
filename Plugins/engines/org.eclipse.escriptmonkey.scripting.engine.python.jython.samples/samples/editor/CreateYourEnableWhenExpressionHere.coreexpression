@@ -1,3 +1,6 @@
 [With selection {
-	AdaptTo ""
-}
+	Iterable {
+		InstanceOf ""
+	}
+		
+}]
