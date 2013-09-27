@@ -23,6 +23,7 @@ import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.escriptmonkey.scripting.AbstractScriptEngine;
 import org.eclipse.escriptmonkey.scripting.IModifiableScriptEngine;
+import org.eclipse.escriptmonkey.scripting.Script;
 import org.eclipse.escriptmonkey.scripting.engine.python.jython.preferences.IPreferenceConstants;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.osgi.framework.Bundle;
@@ -96,8 +97,8 @@ public class JythonScriptEngine extends AbstractScriptEngine implements IModifia
 	}
 
 	@Override
-	protected Object execute(final InputStream code, final Object reference, final String fileName) throws Exception {
-		PyCode pyCode = mEngine.compile(new InputStreamReader(code));
+	protected Object execute(final Script script, final Object reference, final String fileName) throws Exception {
+		PyCode pyCode = mEngine.compile(new InputStreamReader(script.getCodeStream()));
 		mEngine.exec(pyCode);
 		return null;
 	}
