@@ -8,4 +8,7 @@ scripts/IO__Web_Sample.py
 scripts/Views__Web_View.py
 scripts/DisplayLocation.py
 scripts/DisplaySelection.py
+scripts/ConvertToScriptingProject.py
+scripts/Script__Create_new_script_project.py
 editor/CreateYourEnableWhenExpressionHere.coreexpression
+
