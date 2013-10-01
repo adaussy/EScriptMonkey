@@ -36,6 +36,11 @@ import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.wizards.IWizardDescriptor;
 import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
 
+/**
+ * Is module is an helper to interact with the workspace
+ * @author adaussy
+ *
+ */
 public class WorkspaceResourceModule extends AbstractScriptModule {
 
 	private final class WizardRunnable implements Runnable {
@@ -148,7 +153,9 @@ public class WorkspaceResourceModule extends AbstractScriptModule {
 	public void addProjectNature(IProject project, String nature) {
 		if(project != null && project.exists()) {
 			try {
-				ScriptResourceUtils.addNature(project, nature);
+				if(project.getNature(nature) == null) {
+					ScriptResourceUtils.addNature(project, nature);
+				}
 			} catch (CoreException e) {
 				e.printStackTrace();
 			}

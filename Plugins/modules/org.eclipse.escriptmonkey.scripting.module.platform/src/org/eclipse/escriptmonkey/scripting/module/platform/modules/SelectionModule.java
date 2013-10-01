@@ -14,6 +14,7 @@ import org.eclipse.core.expressions.IIterable;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IAdapterManager;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.escriptmonkey.scripting.debug.Logger;
 import org.eclipse.escriptmonkey.scripting.modules.AbstractScriptModule;
 import org.eclipse.escriptmonkey.scripting.modules.WrapToScript;
 import org.eclipse.jface.dialogs.ErrorDialog;
@@ -21,6 +22,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.ISelectionService;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.services.IEvaluationService;
 
 import com.google.common.collect.Lists;
 
@@ -41,7 +43,27 @@ public class SelectionModule extends AbstractScriptModule {
 	public ISelection getSelection() {
 		GetSelectionRunnable runnable = new GetSelectionRunnable();
 		Display.getDefault().syncExec(runnable);
-		return runnable.getSelection();
+		ISelection selection = runnable.getSelection();
+		return selection;
+	}
+
+	@WrapToScript
+	public Object getCustomSelection() {
+		ISelection selection = getSelection();
+		IEvaluationService esrvc = (IEvaluationService)PlatformUI.getWorkbench().getService(IEvaluationService.class);
+
+		Object customSelection = SelectorService.getInstance().getSelectionFromContext(selection, esrvc.getCurrentState());
+		if(customSelection == null) {
+			String message = "Unable to retreive custom selection service";
+			ErrorDialog.openError(Display.getDefault().getActiveShell(), "Custom Selection Service", message, Logger.createErrorStatus(message, org.eclipse.escriptmonkey.scripting.module.platform.Activator.PLUGIN_ID));
+		}
+		return customSelection;
+	}
+
+	@WrapToScript
+	public Object getCustomSelectionFromSelector(String selectorID) {
+		ISelection selection = getSelection();
+		return SelectorService.getInstance().getSelectionFromSelector(selection, selectorID);
 	}
 
 	@WrapToScript
