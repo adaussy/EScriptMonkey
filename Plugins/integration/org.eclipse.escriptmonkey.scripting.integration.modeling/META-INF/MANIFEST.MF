@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Modeling
+Bundle-SymbolicName: org.eclipse.escriptmonkey.scripting.integration.modeling;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.eclipse.escriptmonkey.scripting.integration.modeling.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.escriptmonkey.scripting.module.platform;bundle-version="1.0.0",
+ org.eclipse.emf.ecore;bundle-version="2.9.0",
+ org.eclipse.gmf.runtime.diagram.ui;bundle-version="1.7.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
