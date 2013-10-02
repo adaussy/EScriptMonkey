@@ -9,16 +9,16 @@
 
 
 def addToHeader(metadata, value) :
-	return " * " + metadata + ": " + value + "\n";
+	return " # " + metadata + ": " + value + "\n";
 
 
 def createHeader(scriptName) :
 	scriptMenu = input.askSimpleString("Create a new script","Give me the menu path (Separator = >)","Category1 > Category1.1 > "+scriptName);
 	scriptDescription = input.askSimpleString("Create a new script","Give me a description","Put a descript here");
-	header = "/*\n";
+	header = "#\n";
 	header += addToHeader("Menu", scriptMenu);
 	header += addToHeader("Description", scriptDescription);
-	header += " */\n";
+	header += " #\n";
 	return header;
 
 
