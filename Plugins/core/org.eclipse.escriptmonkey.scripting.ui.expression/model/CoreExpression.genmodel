@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/org.eclipse.escriptmonkey.scripting.ui.expression/src"
+    modelPluginID="org.eclipse.escriptmonkey.scripting.ui.expression" modelName="CoreExpression"
+    rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" importerID="org.eclipse.emf.importer.ecore"
+    complianceLevel="6.0" copyrightFields="false" operationReflection="true" importOrganizing="true">
+  <foreignModel>CoreExpression.ecore</foreignModel>
+  <genPackages prefix="Coreexpression" basePackage="org.eclipse.escriptmonkey.scripting.ui.expression"
+      disposableProviderFactory="true" ecorePackage="CoreExpression.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="CoreExpression.ecore#//Variable">
+      <genEnumLiterals ecoreEnumLiteral="CoreExpression.ecore#//Variable/activeContexts"/>
+      <genEnumLiterals ecoreEnumLiteral="CoreExpression.ecore#//Variable/activeEditor"/>
+      <genEnumLiterals ecoreEnumLiteral="CoreExpression.ecore#//Variable/activeEditorId"/>
+      <genEnumLiterals ecoreEnumLiteral="CoreExpression.ecore#//Variable/activePartId"/>
+      <genEnumLiterals ecoreEnumLiteral="CoreExpression.ecore#//Variable/activeSite"/>
+      <genEnumLiterals ecoreEnumLiteral="CoreExpression.ecore#//Variable/selection"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="CoreExpression.ecore#//Operator">
+      <genEnumLiterals ecoreEnumLiteral="CoreExpression.ecore#//Operator/and"/>
+      <genEnumLiterals ecoreEnumLiteral="CoreExpression.ecore#//Operator/or"/>
+    </genEnums>
+    <genClasses image="false" ecoreClass="CoreExpression.ecore#//Expression"/>
+    <genClasses ecoreClass="CoreExpression.ecore#//InstanceExpression"/>
+    <genClasses image="false" ecoreClass="CoreExpression.ecore#//CompositeExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference CoreExpression.ecore#//CompositeExpression/expressions"/>
+    </genClasses>
+    <genClasses ecoreClass="CoreExpression.ecore#//AndExpression"/>
+    <genClasses ecoreClass="CoreExpression.ecore#//OrExpresison"/>
+    <genClasses image="false" ecoreClass="CoreExpression.ecore#//BooleanExpression"/>
+    <genClasses ecoreClass="CoreExpression.ecore#//NotExpression"/>
+    <genClasses ecoreClass="CoreExpression.ecore#//IterableExpression">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CoreExpression.ecore#//IterableExpression/operand"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CoreExpression.ecore#//IterableExpression/ifEmpty"/>
+    </genClasses>
+    <genClasses ecoreClass="CoreExpression.ecore#//WithExpression">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CoreExpression.ecore#//WithExpression/variable"/>
+    </genClasses>
+    <genClasses ecoreClass="CoreExpression.ecore#//AdaptExpression"/>
+    <genClasses image="false" ecoreClass="CoreExpression.ecore#//ValuedExpression">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CoreExpression.ecore#//ValuedExpression/value"/>
+    </genClasses>
+    <genClasses ecoreClass="CoreExpression.ecore#//EqualExpression"/>
+    <genClasses ecoreClass="CoreExpression.ecore#//Root">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference CoreExpression.ecore#//Root/expression"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="coreexpression" nsURI="http://coreexpression/1.0" nsPrefix="coreexpression">
+  <eClassifiers xsi:type="ecore:EEnum" name="Variable">
+    <eLiterals name="activeContexts"/>
+    <eLiterals name="activeEditor" value="1"/>
+    <eLiterals name="activeEditorId" value="2"/>
+    <eLiterals name="activePartId" value="3"/>
+    <eLiterals name="activeSite" value="4"/>
+    <eLiterals name="selection" value="5"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Expression" abstract="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="InstanceExpression" eSuperTypes="#//Expression #//ValuedExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="CompositeExpression" abstract="true"
+      eSuperTypes="#//Expression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expressions" upperBound="-1"
+        eType="#//Expression" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="AndExpression" eSuperTypes="#//BooleanExpression #//CompositeExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="OrExpresison" eSuperTypes="#//CompositeExpression #//BooleanExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="BooleanExpression" abstract="true" eSuperTypes="#//CompositeExpression #//Expression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="NotExpression" eSuperTypes="#//BooleanExpression #//CompositeExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="IterableExpression" eSuperTypes="#//CompositeExpression">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operand" eType="#//Operator"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="ifEmpty" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="Operator">
+    <eLiterals name="and"/>
+    <eLiterals name="or" value="1"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="WithExpression" eSuperTypes="#//CompositeExpression">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="variable" eType="#//Variable"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="AdaptExpression" eSuperTypes="#//CompositeExpression #//ValuedExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ValuedExpression" abstract="true" eSuperTypes="#//Expression">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="EqualExpression" eSuperTypes="#//ValuedExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Root">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expression" lowerBound="1"
+        eType="#//Expression" containment="true"/>
+  </eClassifiers>
+</ecore:EPackage>
