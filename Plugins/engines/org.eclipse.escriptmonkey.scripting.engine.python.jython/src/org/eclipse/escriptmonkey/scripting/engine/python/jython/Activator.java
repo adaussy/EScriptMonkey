@@ -15,6 +15,7 @@ import java.util.Properties;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -54,7 +55,7 @@ public class Activator extends AbstractUIPlugin {
 
 	private String getPluginRootDir() {
 		try {
-			Bundle bundle = Activator.getDefault().getBundle();
+			Bundle bundle = Platform.getBundle("org.jython");
 			URL fileURL = FileLocator.find(bundle, new Path("."), null);
 			return FileLocator.toFileURL(fileURL).getFile();
 		} catch (Exception e) {
