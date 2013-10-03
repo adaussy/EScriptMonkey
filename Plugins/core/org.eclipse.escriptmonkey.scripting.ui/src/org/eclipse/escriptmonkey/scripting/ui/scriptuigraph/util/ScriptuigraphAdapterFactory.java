@@ -12,12 +12,16 @@ package org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.util;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
-
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
-
 import org.eclipse.emf.ecore.EObject;
-
-import org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.*;
+import org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.Node;
+import org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.ParentNode;
+import org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.Root;
+import org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.ScriptGraph;
+import org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.ScriptSetUI;
+import org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.ScriptuigraphPackage;
+import org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.StoredScriptUI;
+import org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.SubNode;
 
 /**
  * <!-- begin-user-doc -->

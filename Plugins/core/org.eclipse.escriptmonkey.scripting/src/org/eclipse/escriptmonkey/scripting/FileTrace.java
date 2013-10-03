@@ -20,162 +20,163 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
 
 /**
- * File trace containing called files and current line numbers. A file trace is quite similar to a stack trace. It just indicates currently executed files down
+ * File trace containing called files and current line numbers. A file trace is quite similar to a stack trace. It just indicates currently executed
+ * files down
  * to the current include level.
  */
 public class FileTrace implements Iterable<FileTrace.Trace> {
 
-    /**
-     * Trace object. Contains trace data for one file.
-     */
-    public final class Trace {
+	/**
+	 * Trace object. Contains trace data for one file.
+	 */
+	public final class Trace {
 
-        /** Line number currently executed. */
-        private int mLineNumber = 0;
+		/** Line number currently executed. */
+		private int mLineNumber = 0;
 
-        /** File URL. */
-        private String mUrl = null;
+		/** File URL. */
+		private String mUrl = null;
 
-        /** Optionally execution content (for dynamically generated code). */
-        private String mContent = "";
+		/** Optionally execution content (for dynamically generated code). */
+		private String mContent = "";
 
-        /**
-         * Constructor.
-         * 
-         * @param url
-         *            file URL or <code>null</code>
-         * @param lineNumber
-         *            line number
-         * @param content
-         *            script content in case that URL is <code>null</code>
-         */
-        private Trace(final String url, final int lineNumber, final String content) {
-            mUrl = url;
-            mLineNumber = lineNumber;
-            mContent = content;
-        }
+		/**
+		 * Constructor.
+		 * 
+		 * @param url
+		 *        file URL or <code>null</code>
+		 * @param lineNumber
+		 *        line number
+		 * @param content
+		 *        script content in case that URL is <code>null</code>
+		 */
+		private Trace(final String url, final int lineNumber, final String content) {
+			mUrl = url;
+			mLineNumber = lineNumber;
+			mContent = content;
+		}
 
-        public Trace(final Object reference) {
-            if (reference instanceof IFile)
-                mUrl = ((IFile) reference).getFullPath().toPortableString();
+		public Trace(final Object reference) {
+			if(reference instanceof IFile)
+				mUrl = ((IFile)reference).getFullPath().toPortableString();
 
-            else if (reference instanceof File)
-                mUrl = ((File) reference).getAbsolutePath();
+			else if(reference instanceof File)
+				mUrl = ((File)reference).getAbsolutePath();
 
-            else if (reference != null)
-                mContent = reference.toString();
-        }
+			else if(reference != null)
+				mContent = reference.toString();
+		}
 
-        /**
-         * Get the line number currently executed.
-         * 
-         * @return line number
-         */
-        public int getLineNumber() {
-            return mLineNumber;
-        }
+		/**
+		 * Get the line number currently executed.
+		 * 
+		 * @return line number
+		 */
+		public int getLineNumber() {
+			return mLineNumber;
+		}
 
-        /**
-         * Get the file currently executed.
-         * 
-         * @return executed file
-         */
-        public Object getFile() {
-            if (mUrl != null) {
-                // first try to resolve the file in workspace
-                try {
-                    IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(mUrl));
-                    if (file.exists())
-                        return file;
+		/**
+		 * Get the file currently executed.
+		 * 
+		 * @return executed file
+		 */
+		public Object getFile() {
+			if(mUrl != null) {
+				// first try to resolve the file in workspace
+				try {
+					IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(mUrl));
+					if(file.exists())
+						return file;
 
-                } catch (final Exception e) {
-                }
+				} catch (final Exception e) {
+				}
 
-                // didn't work, resolve from system
-                File file = new File(mUrl);
-                if (file.exists())
-                    return file;
-            }
+				// didn't work, resolve from system
+				File file = new File(mUrl);
+				if(file.exists())
+					return file;
+			}
 
-            return null;
-        }
+			return null;
+		}
 
-        public String getFileName() {
-            // if (mUrl != null)
-            return mUrl;
+		public String getFileName() {
+			// if (mUrl != null)
+			return mUrl;
 
-            // return "";
-        }
+			// return "";
+		}
 
-        public void setLineNumber(final int lineNumber) {
-            mLineNumber = lineNumber;
-        }
+		public void setLineNumber(final int lineNumber) {
+			mLineNumber = lineNumber;
+		}
 
-        public String getContent() {
-            return mContent;
-        }
-    }
+		public String getContent() {
+			return mContent;
+		}
+	}
 
-    /** Trace stack. */
-    private final List<FileTrace.Trace> mTrace = new ArrayList<FileTrace.Trace>();
+	/** Trace stack. */
+	private final List<FileTrace.Trace> mTrace = new ArrayList<FileTrace.Trace>();
 
-    public final void push(final String url, final int lineNumber, final String content) {
-        mTrace.add(0, new Trace(url, lineNumber, content));
-    }
+	public final void push(final String url, final int lineNumber, final String content) {
+		mTrace.add(0, new Trace(url, lineNumber, content));
+	}
 
-    @Override
-    public final Iterator<FileTrace.Trace> iterator() {
-        return mTrace.iterator();
-    }
+	@Override
+	public final Iterator<FileTrace.Trace> iterator() {
+		return mTrace.iterator();
+	}
 
-    /**
-     * Get the whole file trace.
-     * 
-     * @return trace stack
-     */
-    public final List<Trace> getTrace() {
-        return mTrace;
-    }
+	/**
+	 * Get the whole file trace.
+	 * 
+	 * @return trace stack
+	 */
+	public final List<Trace> getTrace() {
+		return mTrace;
+	}
 
-    public void push(final Object reference) {
-        if (reference instanceof Trace)
-            mTrace.add(0, (Trace) reference);
+	public void push(final Object reference) {
+		if(reference instanceof Trace)
+			mTrace.add(0, (Trace)reference);
 
-        else
-            mTrace.add(0, new Trace(reference));
-    }
+		else
+			mTrace.add(0, new Trace(reference));
+	}
 
-    public Trace pop() {
-        if (!mTrace.isEmpty())
-            return mTrace.remove(0);
+	public Trace pop() {
+		if(!mTrace.isEmpty())
+			return mTrace.remove(0);
 
-        return null;
-    }
+		return null;
+	}
 
-    public Trace peek() {
-        if (!mTrace.isEmpty())
-            return mTrace.get(0);
+	public Trace peek() {
+		if(!mTrace.isEmpty())
+			return mTrace.get(0);
 
-        return null;
-    }
+		return null;
+	}
 
-    public List<Object> getFileStack() {
-        List<Object> files = new ArrayList<Object>();
+	public List<Object> getFileStack() {
+		List<Object> files = new ArrayList<Object>();
 
-        for (Trace trace : getTrace()) {
-            Object file = trace.getFile();
-            if ((file instanceof IFile) && (((IFile) file).exists()))
-                files.add(file);
+		for(Trace trace : getTrace()) {
+			Object file = trace.getFile();
+			if((file instanceof IFile) && (((IFile)file).exists()))
+				files.add(file);
 
-            else if ((file instanceof File) && (((File) file).exists()))
-                files.add(file);
-        }
+			else if((file instanceof File) && (((File)file).exists()))
+				files.add(file);
+		}
 
-        return files;
-    }
+		return files;
+	}
 
-    public Object getTopMostFile() {
-        List<Object> list = getFileStack();
-        return (list.isEmpty()) ? null : list.get(0);
-    }
+	public Object getTopMostFile() {
+		List<Object> list = getFileStack();
+		return (list.isEmpty()) ? null : list.get(0);
+	}
 }

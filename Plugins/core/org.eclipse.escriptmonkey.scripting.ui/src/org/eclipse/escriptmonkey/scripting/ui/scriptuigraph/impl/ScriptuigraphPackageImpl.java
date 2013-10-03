@@ -15,9 +15,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
-
 import org.eclipse.emf.ecore.impl.EPackageImpl;
-
 import org.eclipse.escriptmonkey.scripting.storedscript.storedscript.StoredscriptPackage;
 import org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.Node;
 import org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.ParentNode;

@@ -19,21 +19,21 @@ import org.mozilla.javascript.ContextFactory;
 
 public class ObservingContextFactory extends ContextFactory {
 
-    private final Set<Context> mTerminationRequests = new HashSet<Context>();
+	private final Set<Context> mTerminationRequests = new HashSet<Context>();
 
-    @Override
-    protected synchronized void observeInstructionCount(final Context cx, final int instructionCount) {
-        if (mTerminationRequests.remove(cx))
-            throw new ExitException();
+	@Override
+	protected synchronized void observeInstructionCount(final Context cx, final int instructionCount) {
+		if(mTerminationRequests.remove(cx))
+			throw new ExitException();
 
-        super.observeInstructionCount(cx, instructionCount);
-    }
+		super.observeInstructionCount(cx, instructionCount);
+	}
 
-    public synchronized void terminate(final Context context) {
-        mTerminationRequests.add(context);
-    }
+	public synchronized void terminate(final Context context) {
+		mTerminationRequests.add(context);
+	}
 
-    public void cancelTerminate(final Context context) {
-        mTerminationRequests.remove(context);
-    }
+	public void cancelTerminate(final Context context) {
+		mTerminationRequests.remove(context);
+	}
 }

@@ -13,12 +13,14 @@ package org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.impl;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
-
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
-
-import org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.*;
+import org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.Root;
+import org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.ScriptGraph;
+import org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.ScriptSetUI;
+import org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.ScriptuigraphFactory;
+import org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.ScriptuigraphPackage;
+import org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.StoredScriptUI;
 
 /**
  * <!-- begin-user-doc -->

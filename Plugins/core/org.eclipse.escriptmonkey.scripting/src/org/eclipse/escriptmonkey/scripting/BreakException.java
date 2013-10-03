@@ -12,18 +12,19 @@ package org.eclipse.escriptmonkey.scripting;
 
 public class BreakException extends RuntimeException {
 
-    private static final long serialVersionUID = -4157933914171239048L;
-    private Object mCondition = null;
+	private static final long serialVersionUID = -4157933914171239048L;
 
-    public BreakException() {
-    }
+	private Object mCondition = null;
 
-    public BreakException(final Object condition) {
-        super();
-        mCondition = condition;
-    }
+	public BreakException() {
+	}
 
-    public Object getCondition() {
-        return mCondition;
-    }
+	public BreakException(final Object condition) {
+		super();
+		mCondition = condition;
+	}
+
+	public Object getCondition() {
+		return mCondition;
+	}
 }

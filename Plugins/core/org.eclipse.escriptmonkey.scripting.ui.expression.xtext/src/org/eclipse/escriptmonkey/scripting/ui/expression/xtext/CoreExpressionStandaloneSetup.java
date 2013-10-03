@@ -11,13 +11,12 @@
 package org.eclipse.escriptmonkey.scripting.ui.expression.xtext;
 
 /**
- * Initialization support for running Xtext languages 
+ * Initialization support for running Xtext languages
  * without equinox extension registry
  */
-public class CoreExpressionStandaloneSetup extends CoreExpressionStandaloneSetupGenerated{
+public class CoreExpressionStandaloneSetup extends CoreExpressionStandaloneSetupGenerated {
 
 	public static void doSetup() {
 		new CoreExpressionStandaloneSetup().createInjectorAndDoEMFRegistration();
 	}
 }
-

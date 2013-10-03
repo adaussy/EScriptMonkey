@@ -15,11 +15,12 @@ package org.eclipse.escriptmonkey.scripting;
  */
 public interface IScriptEngineLaunchExtension {
 
-    /**
-     * Called upon a script engine creation. As there might be multiple launch extensions, this might not be the only contribution to the script engine.
-     * 
-     * @param engine
-     *            engine just created
-     */
-    void createEngine(IScriptEngine engine);
+	/**
+	 * Called upon a script engine creation. As there might be multiple launch extensions, this might not be the only contribution to the script
+	 * engine.
+	 * 
+	 * @param engine
+	 *        engine just created
+	 */
+	void createEngine(IScriptEngine engine);
 }

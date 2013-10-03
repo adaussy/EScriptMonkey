@@ -38,8 +38,9 @@ import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
 
 /**
  * Is module is an helper to interact with the workspace
+ * 
  * @author adaussy
- *
+ * 
  */
 public class WorkspaceResourceModule extends AbstractScriptModule {
 

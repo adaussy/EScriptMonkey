@@ -18,12 +18,12 @@ package org.eclipse.escriptmonkey.scripting.ui.expression.xtext.ui.labeling;
 public class CoreExpressionDescriptionLabelProvider extends org.eclipse.xtext.ui.label.DefaultDescriptionLabelProvider {
 
 	// Labels and icons can be computed like this:
-	
-//	String text(IEObjectDescription ele) {
-//	   return ele.getName();
-//	}
-//	 
-//  String image(IEObjectDescription ele) {
-//     return ele.getEClass().getName() + ".gif";
-//  }	 
+
+	//	String text(IEObjectDescription ele) {
+	//	   return ele.getName();
+	//	}
+	//	 
+	//  String image(IEObjectDescription ele) {
+	//     return ele.getEClass().getName() + ".gif";
+	//  }	 
 }

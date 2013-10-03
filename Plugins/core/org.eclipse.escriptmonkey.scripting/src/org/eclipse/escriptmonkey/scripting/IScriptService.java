@@ -18,13 +18,13 @@ import org.eclipse.escriptmonkey.scripting.modules.ModuleDefinition;
 
 public interface IScriptService {
 
-    IScriptEngine createEngine(String scriptType);
+	IScriptEngine createEngine(String scriptType);
 
-    IScriptEngine createEngineByID(String engineID);
+	IScriptEngine createEngineByID(String engineID);
 
-    Collection<EngineDescription> getEngines();
+	Collection<EngineDescription> getEngines();
 
-    IModuleWrapper getModuleWrapper(String engineID);
+	IModuleWrapper getModuleWrapper(String engineID);
 
-    Map<String, ModuleDefinition> getAvailableModules();
+	Map<String, ModuleDefinition> getAvailableModules();
 }

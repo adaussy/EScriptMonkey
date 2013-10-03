@@ -21,7 +21,7 @@ import com.google.inject.name.Names;
 /**
  * Manual modifications go to {org.eclipse.escriptmonkey.scripting.ui.expression.xtext.CoreExpressionRuntimeModule}
  */
- @SuppressWarnings("all")
+@SuppressWarnings("all")
 public abstract class AbstractCoreExpressionRuntimeModule extends DefaultRuntimeModule {
 
 	protected Properties properties = null;
@@ -31,16 +31,16 @@ public abstract class AbstractCoreExpressionRuntimeModule extends DefaultRuntime
 		properties = tryBindProperties(binder, "org/eclipse/escriptmonkey/scripting/ui/expression/xtext/CoreExpression.properties");
 		super.configure(binder);
 	}
-	
+
 	public void configureLanguageName(Binder binder) {
 		binder.bind(String.class).annotatedWith(Names.named(Constants.LANGUAGE_NAME)).toInstance("org.eclipse.escriptmonkey.scripting.ui.expression.xtext.CoreExpression");
 	}
-	
+
 	public void configureFileExtensions(Binder binder) {
-		if (properties == null || properties.getProperty(Constants.FILE_EXTENSIONS) == null)
+		if(properties == null || properties.getProperty(Constants.FILE_EXTENSIONS) == null)
 			binder.bind(String.class).annotatedWith(Names.named(Constants.FILE_EXTENSIONS)).toInstance("coreexpression");
 	}
-	
+
 	// contributed by org.eclipse.xtext.generator.grammarAccess.GrammarAccessFragment
 	public Class<? extends org.eclipse.xtext.IGrammarAccess> bindIGrammarAccess() {
 		return org.eclipse.escriptmonkey.scripting.ui.expression.xtext.services.CoreExpressionGrammarAccess.class;
@@ -102,7 +102,8 @@ public abstract class AbstractCoreExpressionRuntimeModule extends DefaultRuntime
 	}
 
 	// contributed by org.eclipse.xtext.generator.validation.ValidatorFragment
-	@org.eclipse.xtext.service.SingletonBinding(eager=true)	public Class<? extends org.eclipse.escriptmonkey.scripting.ui.expression.xtext.validation.CoreExpressionValidator> bindCoreExpressionValidator() {
+	@org.eclipse.xtext.service.SingletonBinding(eager = true)
+	public Class<? extends org.eclipse.escriptmonkey.scripting.ui.expression.xtext.validation.CoreExpressionValidator> bindCoreExpressionValidator() {
 		return org.eclipse.escriptmonkey.scripting.ui.expression.xtext.validation.CoreExpressionValidator.class;
 	}
 
