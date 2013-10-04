@@ -1,7 +1,7 @@
 #
-# Menu: Examples > Modeling > GMF > Display Element in Papyrus
+# Menu: Examples > Modeling > Papyrus > Display Element in Papyrus
 # Kudos: Arthur Daussy
-# Description: Dispay the semantic object selected
+# Description: Display the semantic object selected in a MDT Papyrus Diagram
 #EnableWen::[With activeEditor {
 #    Equal "org.eclipse.papyrus.infra.core.papyrusEditor"
 #}]::

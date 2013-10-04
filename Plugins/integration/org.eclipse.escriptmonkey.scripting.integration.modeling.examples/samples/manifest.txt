@@ -1,2 +1,3 @@
 scripts/DisplaySelectedGMFSemanticObject.py
+scripts/FillModel.py
 
