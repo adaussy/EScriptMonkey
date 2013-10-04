@@ -44,7 +44,7 @@ public class ExpressionToExpressionCoreSwitch extends CoreexpressionSwitch<Expre
 	public Expression caseAndExpression(AndExpression object) {
 		org.eclipse.core.internal.expressions.AndExpression andExpression = new org.eclipse.core.internal.expressions.AndExpression();
 		composeSubExpressions(object, andExpression);
-		return super.caseAndExpression(object);
+		return andExpression;
 	}
 
 	@Override
