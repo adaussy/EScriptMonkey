@@ -10,11 +10,8 @@
  *******************************************************************************/
 package org.eclipse.escriptmonkey.scripting.integration.modeling.selector;
 
-import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.core.runtime.IAdapterManager;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.IGraphicalEditPart;
-import org.eclipse.ui.PlatformUI;
 
 
 /**
@@ -23,24 +20,19 @@ import org.eclipse.ui.PlatformUI;
  * @author adaussy
  * 
  */
-public class GMFSemanticSeletor extends AbstractModelingSelector {
+public class GMFSemanticSeletor extends ModelingSelector {
+
+	public static final String SELECTOR_ID = "GMFSemanticSeletor";
 
 	public GMFSemanticSeletor() {
 	}
 
 	@Override
 	protected EObject getEObject(Object in) {
-		if(in instanceof EObject) {
-			return (EObject)in;
-		} else if(in instanceof IGraphicalEditPart) {
+		if(in instanceof IGraphicalEditPart) {
 			return ((IGraphicalEditPart)in).resolveSemanticElement();
-		} else if(in instanceof IAdaptable) {
-			return (EObject)((IAdaptable)in).getAdapter(EObject.class);
-		} else {
-			IAdapterManager adapterService = (IAdapterManager)PlatformUI.getWorkbench().getService(IAdapterManager.class);
-			return (EObject)adapterService.getAdapter(in, EObject.class);
-
 		}
+		return super.getEObject(in);
 	}
 
 }

@@ -10,12 +10,9 @@
  *******************************************************************************/
 package org.eclipse.escriptmonkey.scripting.integration.modeling.selector;
 
-import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.core.runtime.IAdapterManager;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.IGraphicalEditPart;
 import org.eclipse.gmf.runtime.notation.View;
-import org.eclipse.ui.PlatformUI;
 
 
 /**
@@ -24,7 +21,9 @@ import org.eclipse.ui.PlatformUI;
  * @author adaussy
  * 
  */
-public class GMFNotationSelector extends AbstractModelingSelector {
+public class GMFNotationSelector extends ModelingSelector {
+
+	public static final String SELECTOR_ID = "GMFNotationSelector";
 
 	@Override
 	protected EObject getEObject(Object in) {
@@ -33,11 +32,8 @@ public class GMFNotationSelector extends AbstractModelingSelector {
 			result = (View)in;
 		} else if(in instanceof IGraphicalEditPart) {
 			result = (EObject)((IGraphicalEditPart)in).getModel();
-		} else if(in instanceof IAdaptable) {
-			result = (EObject)((IAdaptable)in).getAdapter(EObject.class);
 		} else {
-			IAdapterManager adapterService = (IAdapterManager)PlatformUI.getWorkbench().getService(IAdapterManager.class);
-			result = adapterService.getAdapter(in, View.class);
+			result = super.getEObject(in);
 		}
 		if(result instanceof View) {
 			return (View)result;

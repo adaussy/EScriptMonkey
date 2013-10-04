@@ -14,5 +14,14 @@
             priority="45">
       </Selector>
    </extension>
+   <extension
+         point="org.eclipse.escriptmonkey.scripting.language">
+      <module
+            class="org.eclipse.escriptmonkey.scripting.integration.modeling.EcoreModule"
+            documentation="true"
+            name="EcoreModule"
+            visible="true">
+      </module>
+   </extension>
 
 </plugin>
