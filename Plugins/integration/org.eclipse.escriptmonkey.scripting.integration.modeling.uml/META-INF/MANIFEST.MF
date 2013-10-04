@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Integration Uml
+Bundle-SymbolicName: org.eclipse.escriptmonkey.scripting.integration.modeling.uml;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.eclipse.escriptmonkey.scripting.integration.modeling.uml.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.escriptmonkey.scripting;bundle-version="1.0.0",
+ org.eclipse.escriptmonkey.scripting.integration.modeling.examples;bundle-version="1.0.0",
+ org.eclipse.escriptmonkey.scripting.integration.modeling,
+ org.eclipse.uml2.uml;bundle-version="4.1.0",
+ org.eclipse.emf.edit,
+ org.eclipse.escriptmonkey.scripting.module.platform;bundle-version="1.0.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
