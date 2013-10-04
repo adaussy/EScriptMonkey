@@ -2,7 +2,7 @@
 # Menu: Examples > Modeling > Papyrus > Display Element in Papyrus
 # Kudos: Arthur Daussy
 # Description: Display the semantic object selected in a MDT Papyrus Diagram
-#EnableWen::[With activeEditor {
+#EnableWhen::[With activeEditor {
 #    Equal "org.eclipse.papyrus.infra.core.papyrusEditor"
 #}]::
 # License: EPL 1.0

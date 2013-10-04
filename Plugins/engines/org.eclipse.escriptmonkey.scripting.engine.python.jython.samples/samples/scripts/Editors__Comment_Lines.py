@@ -2,7 +2,7 @@
 # Thread: UI
 # Menu: Examples > Editors > Comment Lines
 # Kudos: Jose Fonseca & Paul Colton & Arthur Daussy
-#EnableWen::[With selection {
+#EnableWhen::[With selection {
 #        InstanceOf "org.eclipse.jface.text.TextSelection"{
 #            }
 #}]::

@@ -2,7 +2,7 @@
 # Menu: Examples > EnableWhen > Display Files Location
 # Kudos: Arthur Daussy
 # Description: You can use this script to open the Web View.
-#EnableWen::[With selection {
+#EnableWhen::[With selection {
 #    Iterable {
 #        InstanceOf "org.eclipse.core.resources.IFile"
 #    }

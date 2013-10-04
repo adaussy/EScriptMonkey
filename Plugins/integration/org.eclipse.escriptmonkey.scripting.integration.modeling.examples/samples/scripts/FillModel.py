@@ -3,7 +3,7 @@
 # Menu: Examples > Modeling > Fill a UML model
 # Kudos: Arthur Daussy
 # Description: Fill an UML model when UML class is selected
-# EnableWen::[And {
+# EnableWhen::[And {
 #   With activeEditor {
 #        Equal "org.eclipse.papyrus.infra.core.papyrusEditor"
 #    },

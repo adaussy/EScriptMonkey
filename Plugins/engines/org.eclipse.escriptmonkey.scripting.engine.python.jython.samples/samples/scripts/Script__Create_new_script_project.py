@@ -4,7 +4,7 @@
 # Kudos: Arthur Daussy.
 # License: EPL 1.0
 # Description : This script is used to show an example for Workspace basic manipulation
-# EnableWen::[With activePartId {
+# EnableWhen::[With activePartId {
 #	Equal "org.eclipse.ui.navigator.ProjectExplorer"
 #}]::
 

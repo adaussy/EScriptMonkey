@@ -1,7 +1,7 @@
 /*
  * Menu: Examples > Modeling > UML > Count elements
  * License: EPL 1.0
- * EnableWen::[And {
+ * EnableWhen::[And {
  *   With activeEditor {
  *        Equal "org.eclipse.papyrus.infra.core.papyrusEditor"
  *    },

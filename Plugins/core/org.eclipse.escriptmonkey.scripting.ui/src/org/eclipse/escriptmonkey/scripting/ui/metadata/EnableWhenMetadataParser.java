@@ -18,15 +18,16 @@ import org.eclipse.escriptmonkey.scripting.storedscript.metada.AbstractRegexMeta
 
 /**
  * Used to parse Enable When metadata
+ * 
  * @author adaussy
- *
+ * 
  */
 public class EnableWhenMetadataParser extends AbstractRegexMetadataParser {
 
 
 	@Override
 	protected Pattern createPattern() {
-		return Pattern.compile("EnableWen::(.*)::", Pattern.DOTALL);
+		return Pattern.compile("EnableWhen::(.*)::", Pattern.DOTALL);
 	}
 
 	@Override

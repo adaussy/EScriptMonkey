@@ -1,7 +1,7 @@
 /*
  * Menu: Examples > Modeling > UML > Set element name from file
  * License: EPL 1.0
- * EnableWen::[And {
+ * EnableWhen::[And {
  *   With activeEditor {
  *        Equal "org.eclipse.papyrus.infra.core.papyrusEditor"
  *    },
