@@ -10,8 +10,10 @@
  *******************************************************************************/
 package org.eclipse.escriptmonkey.scripting.module.platform.modules;
 
+import org.eclipse.escriptmonkey.scripting.common.RunnableWithResult;
 import org.eclipse.escriptmonkey.scripting.modules.AbstractScriptModule;
 import org.eclipse.escriptmonkey.scripting.modules.WrapToScript;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbench;
@@ -24,11 +26,8 @@ public class WorkbenchModule extends AbstractScriptModule {
 
 
 	public WorkbenchModule() {
-		WINDOW = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 	}
 
-	@WrapToScript
-	public static IWorkbenchWindow WINDOW = null;
 
 	@WrapToScript
 	public IWorkbench getActiveWorkbench() {
@@ -37,7 +36,22 @@ public class WorkbenchModule extends AbstractScriptModule {
 
 	@WrapToScript
 	public IWorkbenchWindow getActiveWindow() {
-		return getActiveWorkbench().getActiveWorkbenchWindow();
+		RunnableWithResult<IWorkbenchWindow> runnable = new RunnableWithResult<IWorkbenchWindow>() {
+
+			private IWorkbenchWindow result;
+
+			@Override
+			public void run() {
+				this.result = getActiveWorkbench().getActiveWorkbenchWindow();
+			}
+
+			@Override
+			public IWorkbenchWindow getResult() {
+				return result;
+			}
+		};
+		Display.getDefault().syncExec(runnable);
+		return runnable.getResult();
 	}
 
 	@WrapToScript

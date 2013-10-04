@@ -10,8 +10,11 @@
  *******************************************************************************/
 package org.eclipse.escriptmonkey.scripting.module.platform.modules;
 
+import org.eclipse.escriptmonkey.scripting.common.RunnableWithResult;
+import org.eclipse.escriptmonkey.scripting.debug.Logger;
 import org.eclipse.escriptmonkey.scripting.modules.AbstractScriptModule;
 import org.eclipse.escriptmonkey.scripting.modules.WrapToScript;
+import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Display;
@@ -31,25 +34,34 @@ public class DialogModule extends AbstractScriptModule {
 	}
 
 	@WrapToScript
-	public Shell getActiveShel() {
+	public static Shell getActiveShel() {
 		return Display.getDefault().getActiveShell();
 	}
 
 	@WrapToScript
-	public void openDialog(final Window window) {
-		Display.getDefault().asyncExec(new Runnable() {
+	public static int openDialog(final Window window) {
+		RunnableWithResult<Integer> run = new RunnableWithResult<Integer>() {
+
+			private int result;
 
 			@Override
 			public void run() {
-				window.open();
+				this.result = window.open();
 
 			}
-		});
+
+			@Override
+			public Integer getResult() {
+				return result;
+			}
+		};
+		Display.getDefault().syncExec(run);
+		return run.getResult();
 	}
 
 	@WrapToScript
-	public void openInformationDialog(final String message) {
-		Display.getDefault().asyncExec(new Runnable() {
+	public static void info(final String message) {
+		Display.getDefault().syncExec(new Runnable() {
 
 			@Override
 			public void run() {
@@ -59,16 +71,70 @@ public class DialogModule extends AbstractScriptModule {
 
 	}
 
-	public void openWindow(final Window window) {
+	@WrapToScript
+	public static boolean confirm(final String title, final String message) {
+		RunnableWithResult<Boolean> runnable = new RunnableWithResult<Boolean>() {
+
+			private boolean result;
+
+			@Override
+			public void run() {
+				this.result = MessageDialog.openConfirm(Display.getDefault().getActiveShell(), title, message);
+			}
+
+			@Override
+			public Boolean getResult() {
+				return result;
+			}
+		};
+		Display.getDefault().syncExec(runnable);
+		return runnable.getResult();
+
+	}
+
+	@WrapToScript
+	public static boolean question(final String title, final String message) {
+		RunnableWithResult<Boolean> runnable = new RunnableWithResult<Boolean>() {
+
+			private boolean result;
+
+			@Override
+			public void run() {
+				this.result = MessageDialog.openQuestion(Display.getDefault().getActiveShell(), title, message);
+			}
+
+			@Override
+			public Boolean getResult() {
+				return result;
+			}
+		};
+		Display.getDefault().syncExec(runnable);
+		return runnable.getResult();
+
+	}
+
+
+	@WrapToScript
+	public static void error(final String message) {
+		Display.getDefault().syncExec(new Runnable() {
+
+			@Override
+			public void run() {
+				ErrorDialog.openError(Display.getDefault().getActiveShell(), "Error", message, Logger.createErrorStatus(message, org.eclipse.escriptmonkey.scripting.module.platform.Activator.PLUGIN_ID));
+			}
+		});
+
+	}
+
+	public static void openWindow(final Window window) {
 		Runnable runnable = new Runnable() {
 
 			@Override
 			public void run() {
-				System.out.println("tete");
 				window.open();
 			}
 		};
-		Display.getDefault().asyncExec(runnable);
+		Display.getDefault().syncExec(runnable);
 	}
 
 

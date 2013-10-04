@@ -32,8 +32,9 @@ import com.google.common.collect.TreeMultimap;
 /**
  * This service provide selection using {@link ISelector} register by extension point.
  * It's aim is to be able to retrieve custom selection using specific selector
+ * 
  * @author adaussy
- *
+ * 
  */
 public class SelectorService {
 
@@ -57,7 +58,8 @@ public class SelectorService {
 	}
 
 	/**
-	 * Retreive the custom selection using the {@link ISelector} sorted by priority and that Core Expression that match the context
+	 * Retrieve the custom selection using the {@link ISelector} sorted by priority and that Core Expression that match the context
+	 * 
 	 * @param in
 	 * @param context
 	 * @return
@@ -92,6 +94,7 @@ public class SelectorService {
 
 	/**
 	 * Return a custom selection using {@link ISelector} using the {@link ISelector} define the id passed as parameter
+	 * 
 	 * @param in
 	 * @param id
 	 * @return
@@ -106,6 +109,7 @@ public class SelectorService {
 
 	/**
 	 * Retrieve a custom selection using only priority of the registered {@link ISelector}
+	 * 
 	 * @param in
 	 * @return
 	 */

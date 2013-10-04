@@ -4,9 +4,15 @@
    <extension
          point="org.eclipse.escriptmonkey.scripting.language">
       <module
-            class="org.eclipse.escriptmonkey.scripting.modules.interaction.UserInputModule"
+            class="org.eclipse.escriptmonkey.scripting.modules.interaction.InputModule"
             documentation="true"
             name="InputModule"
+            visible="true">
+      </module>
+      <module
+            class="org.eclipse.escriptmonkey.scripting.modules.interaction.OutputModule"
+            documentation="true"
+            name="OutputModule"
             visible="true">
       </module>
    </extension>

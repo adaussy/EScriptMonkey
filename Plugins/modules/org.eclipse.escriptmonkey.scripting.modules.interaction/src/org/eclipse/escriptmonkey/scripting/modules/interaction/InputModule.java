@@ -19,16 +19,18 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.escriptmonkey.scripting.module.platform.modules.DialogModule;
 import org.eclipse.escriptmonkey.scripting.modules.AbstractScriptModule;
 import org.eclipse.escriptmonkey.scripting.modules.WrapToScript;
 import org.eclipse.jface.dialogs.InputDialog;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ContainerSelectionDialog;
 import org.eclipse.ui.dialogs.ResourceSelectionDialog;
 
-public class UserInputModule extends AbstractScriptModule {
+public class InputModule extends AbstractScriptModule {
 
 	/**
 	 * Opens a simple dialog box to ask the user a simple string.
@@ -44,7 +46,7 @@ public class UserInputModule extends AbstractScriptModule {
 	@WrapToScript
 	public String askSimpleString(String title, String message, String defaultValue) {
 		InputDialog dlg = new InputDialog(getShell(), title, message, defaultValue, null);
-		int result = dlg.open();
+		int result = DialogModule.openDialog(dlg);
 		if(result == InputDialog.OK) {
 			return dlg.getValue();
 		} else {
@@ -101,7 +103,7 @@ public class UserInputModule extends AbstractScriptModule {
 	 */
 	@WrapToScript
 	public boolean askConfirmation(String title, String question) {
-		return MessageDialog.openConfirm(getShell(), title, question);
+		return DialogModule.confirm(title, question);
 	}
 
 	/**
@@ -115,7 +117,7 @@ public class UserInputModule extends AbstractScriptModule {
 	 */
 	@WrapToScript
 	public boolean askQuestion(String title, String question) {
-		return MessageDialog.openQuestion(getShell(), title, question);
+		return DialogModule.question(title, question);
 	}
 
 	/**
@@ -132,9 +134,11 @@ public class UserInputModule extends AbstractScriptModule {
 		ContainerSelectionDialog dialog = new ContainerSelectionDialog(getShell(), null, true, title);
 		dialog.setTitle(title);
 		dialog.setMessage(message);
-		dialog.open();
-		Object[] result = dialog.getResult();
-		return result;
+		if(DialogModule.openDialog(dialog) == ContainerSelectionDialog.OK) {
+			Object[] result = dialog.getResult();
+			return result;
+		}
+		return null;
 	}
 
 	/**
@@ -150,8 +154,10 @@ public class UserInputModule extends AbstractScriptModule {
 	public Object selectResource(String title, String message) {
 		ResourceSelectionDialog dialog = new ResourceSelectionDialog(getShell(), ResourcesPlugin.getWorkspace().getRoot(), message);
 		dialog.setTitle(title);
-		dialog.open();
-		return dialog.getResult();
+		if(DialogModule.openDialog(dialog) == ResourceSelectionDialog.OK) {
+			return dialog.getResult();
+		}
+		return null;
 	}
 
 	/**
@@ -240,7 +246,14 @@ public class UserInputModule extends AbstractScriptModule {
 	}
 
 	private Shell getShell() {
-		return PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+		IWorkbench workbench = PlatformUI.getWorkbench();
+		if(workbench != null) {
+			IWorkbenchWindow activeWorkbenchWindow = workbench.getActiveWorkbenchWindow();
+			if(activeWorkbenchWindow != null) {
+				return activeWorkbenchWindow.getShell();
+			}
+		}
+		return null;
 	}
 
 }

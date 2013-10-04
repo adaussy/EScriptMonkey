@@ -53,11 +53,10 @@ public class SelectionModule extends AbstractScriptModule {
 		IEvaluationService esrvc = (IEvaluationService)PlatformUI.getWorkbench().getService(IEvaluationService.class);
 
 		Object customSelection = SelectorService.getInstance().getSelectionFromContext(selection, esrvc.getCurrentState());
-		if(customSelection == null) {
-			String message = "Unable to retreive custom selection service";
-			ErrorDialog.openError(Display.getDefault().getActiveShell(), "Custom Selection Service", message, Logger.createErrorStatus(message, org.eclipse.escriptmonkey.scripting.module.platform.Activator.PLUGIN_ID));
+		if(customSelection != null) {
+			return customSelection;
 		}
-		return customSelection;
+		return selection;
 	}
 
 	@WrapToScript
@@ -98,6 +97,9 @@ public class SelectionModule extends AbstractScriptModule {
 			ISelectionService selectionService = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getSelectionService();
 			if(selectionService != null) {
 				this.selection = selectionService.getSelection();
+				if(selection == null) {
+					Logger.logError("Unable to find a selection from the workbench");
+				}
 			}
 		}
 
