@@ -24,7 +24,7 @@ function main() {
       }
     }
   }
-  WINDOW.getActivePage().showView("org.eclipse.ui.views.TaskList");
+  getActivePage().showView("org.eclipse.ui.views.TaskList");
 }
 
 main()
