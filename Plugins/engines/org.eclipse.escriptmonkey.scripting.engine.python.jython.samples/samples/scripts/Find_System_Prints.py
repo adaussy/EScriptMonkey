@@ -19,4 +19,4 @@ for file in files:
 		if line.getString().find('System.out.print') != -1:
 			line.addMyTask(line.getString().strip())
 #This constant come from the WorkbenchModule and is declare as static
-WINDOW.getActivePage().showView('org.eclipse.ui.views.TaskList')
+getActivePage().showView('org.eclipse.ui.views.TaskList')

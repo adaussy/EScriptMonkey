@@ -4,7 +4,7 @@
 # Kudos: Arthur Daussy.
 # License: EPL 1.0
 # Description : This script is used to convert the select IProject to script project
-#EnableWen::[With selection {
+# EnableWen::[With selection {
 #    Iterable {
 #        InstanceOf "org.eclipse.core.resources.IProject"
 #    }
@@ -13,7 +13,6 @@
 import org.eclipse.core.resources.IProject
 
 loadModule("WorkspaceResourceModule")
-input = loadModule("InputModule")
 selectionHelper = loadModule("SelectionModule")
 selection = selectionHelper.getIterableSelection()
 print selection

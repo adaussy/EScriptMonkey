@@ -4,6 +4,9 @@
 # Kudos: Arthur Daussy.
 # License: EPL 1.0
 # Description : This script is used to show an example for Workspace basic manipulation
+# EnableWen::[With activePartId {
+#	Equal "org.eclipse.ui.navigator.ProjectExplorer"
+#}]::
 
 
 
@@ -42,9 +45,9 @@ def main() :
 		openFile(sourceFile);
 
 	else :
-		displayMessage("Script aborted",
-				"No project was created, script aborted.");
+		dialog.error("Script aborted","No project was created, script aborted.");
 
 loadModule("WorkspaceResourceModule");
+dialog = loadModule("DialogModule")
 input = loadModule("InputModule");
 main()
