@@ -11,9 +11,12 @@
 package org.eclipse.escriptmonkey.scripting.engine.javascript.rhino;
 
 
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.escriptmonkey.scripting.storedscript.metada.AbstractEndStartDelimiterHeaderParser;
+import org.eclipse.escriptmonkey.scripting.storedscript.storedscript.IStoredScript;
 
 
 /**
@@ -26,10 +29,24 @@ public class JavascriptHeaderParser extends AbstractEndStartDelimiterHeaderParse
 
 	private static final Pattern headerPattern = Pattern.compile("^\\s*\\/\\*.*?\\*\\/", Pattern.DOTALL);
 
+	private static final Pattern startLine = Pattern.compile("$\\s*\\*", Pattern.MULTILINE);
+
 
 	@Override
 	protected Pattern getPattern() {
 		return headerPattern;
+	}
+
+	@Override
+	public String getHeader(IStoredScript storeScript) throws CoreException {
+		String header = super.getHeader(storeScript);
+		Matcher matcher = Pattern.compile("$(\\s*\\*)", Pattern.MULTILINE).matcher(header);
+		if(matcher.find()) {
+			header = matcher.replaceAll("\n");
+		}
+		//		while(matcher.find()){
+		//		}
+		return header;
 	}
 
 }

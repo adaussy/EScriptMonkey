@@ -17,13 +17,16 @@ import org.eclipse.escriptmonkey.scripting.storedscript.metada.AbstractRegexMeta
 
 /**
  * Use to parse description metadata
+ * 
  * @author adaussy
- *
+ * 
  */
 public class DescriptionMetadataParser extends AbstractRegexMetadataParser {
 
+
 	@Override
 	protected Pattern createPattern() {
-		return Pattern.compile("Description:\\s*(.*)");
+		return Pattern.compile("Description:.*\\{(.*)\\}", Pattern.DOTALL);
 	}
+
 }
