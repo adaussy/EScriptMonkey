@@ -22,12 +22,8 @@ public class AbstractMetadataUtils {
 			EList<ScriptMetadata> metas = script.getMetadatas();
 			for(ScriptMetadata s : metas) {
 				if(key.equals(s.getKey())) {
-					EList<String> v = s.getValue();
-					if(!v.isEmpty()) {
-						return v.get(0);
-					} else {
-						return null;
-					}
+					String v = s.getValue();
+					return v;
 				}
 			}
 		}

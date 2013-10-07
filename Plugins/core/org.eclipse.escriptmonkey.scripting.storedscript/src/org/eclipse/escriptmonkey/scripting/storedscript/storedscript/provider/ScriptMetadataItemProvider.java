@@ -12,7 +12,6 @@ package org.eclipse.escriptmonkey.scripting.storedscript.storedscript.provider;
 
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
@@ -124,14 +123,7 @@ public class ScriptMetadataItemProvider extends ItemProviderAdapter implements I
 		ScriptMetadata scriptMetadata = (ScriptMetadata)object;
 		StringBuilder builder = new StringBuilder("Meta [");
 		builder.append(scriptMetadata.getKey()).append(" , {");
-		Iterator<String> ite = scriptMetadata.getValue().iterator();
-		while(ite.hasNext()) {
-			String string = (String)ite.next();
-			builder.append(string);
-			if(ite.hasNext()) {
-				builder.append(" , ");
-			}
-		}
+		builder.append(scriptMetadata.getValue());
 		builder.append("}]");
 		return builder.toString();
 	}

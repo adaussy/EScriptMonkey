@@ -76,6 +76,7 @@ public class ScriptDeltaResourceVisitor implements IResourceDeltaVisitor {
 				StoredScriptService.getInstance().processNewOrChangedScript(URIScriptUtils.createPlatformString(delta.getFullPath()));
 			}
 			if((delta.getFlags() & IResourceDelta.CONTENT) != 0) {
+
 				//TODO Notify change only if metadata has changed
 				//				IScriptMetadata newMetadata = MetadaParserService.getInstance().parseMetadata(StoredScriptService.getInstance().getStoreScript(delta.getFullPath()));
 				//				delta.getResource()

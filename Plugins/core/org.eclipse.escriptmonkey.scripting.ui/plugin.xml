@@ -306,5 +306,9 @@
             impl="org.eclipse.escriptmonkey.scripting.ui.metadata.ThreadMetadataParser"
             name="Thread">
       </metadata>
+      <metadata
+            impl="org.eclipse.escriptmonkey.scripting.ui.metadata.AvailableFromMetadataParser"
+            name="AvailableFrom">
+      </metadata>
   </extension>
 </plugin>

@@ -320,7 +320,7 @@ public interface StoredscriptPackage extends EPackage {
 	int SCRIPT_METADATA__KEY = 0;
 
 	/**
-	 * The feature id for the '<em><b>Value</b></em>' attribute list.
+	 * The feature id for the '<em><b>Value</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -579,10 +579,10 @@ public interface StoredscriptPackage extends EPackage {
 	EAttribute getScriptMetadata_Key();
 
 	/**
-	 * Returns the meta object for the attribute list '{@link org.eclipse.escriptmonkey.scripting.storedscript.storedscript.ScriptMetadata#getValue <em>Value</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.escriptmonkey.scripting.storedscript.storedscript.ScriptMetadata#getValue <em>Value</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute list '<em>Value</em>'.
+	 * @return the meta object for the attribute '<em>Value</em>'.
 	 * @see org.eclipse.escriptmonkey.scripting.storedscript.storedscript.ScriptMetadata#getValue()
 	 * @see #getScriptMetadata()
 	 * @generated
@@ -803,7 +803,7 @@ public interface StoredscriptPackage extends EPackage {
 		EAttribute SCRIPT_METADATA__KEY = eINSTANCE.getScriptMetadata_Key();
 
 		/**
-		 * The meta object literal for the '<em><b>Value</b></em>' attribute list feature.
+		 * The meta object literal for the '<em><b>Value</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated

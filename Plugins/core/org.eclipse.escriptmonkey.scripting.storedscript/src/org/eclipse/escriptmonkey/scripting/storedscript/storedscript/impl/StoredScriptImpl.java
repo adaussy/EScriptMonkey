@@ -44,13 +44,13 @@ import org.eclipse.escriptmonkey.scripting.storedscript.utils.Utilities;
  * <p>
  * The following features are implemented:
  * <ul>
- * <li>{@link org.eclipse.escriptmonkey.scripting.storedscript.storedscript.impl.StoredScriptImpl#getUri <em>Uri</em>}</li>
- * <li>{@link org.eclipse.escriptmonkey.scripting.storedscript.storedscript.impl.StoredScriptImpl#getMetadatas <em>Metadatas</em>}</li>
- * <li>{@link org.eclipse.escriptmonkey.scripting.storedscript.storedscript.impl.StoredScriptImpl#getScriptType <em>Script Type</em>}</li>
- * <li>{@link org.eclipse.escriptmonkey.scripting.storedscript.storedscript.impl.StoredScriptImpl#getRegistry <em>Registry</em>}</li>
+ *   <li>{@link org.eclipse.escriptmonkey.scripting.storedscript.storedscript.impl.StoredScriptImpl#getUri <em>Uri</em>}</li>
+ *   <li>{@link org.eclipse.escriptmonkey.scripting.storedscript.storedscript.impl.StoredScriptImpl#getMetadatas <em>Metadatas</em>}</li>
+ *   <li>{@link org.eclipse.escriptmonkey.scripting.storedscript.storedscript.impl.StoredScriptImpl#getScriptType <em>Script Type</em>}</li>
+ *   <li>{@link org.eclipse.escriptmonkey.scripting.storedscript.storedscript.impl.StoredScriptImpl#getRegistry <em>Registry</em>}</li>
  * </ul>
  * </p>
- * 
+ *
  * @generated
  */
 public class StoredScriptImpl extends MinimalEObjectImpl.Container implements StoredScript {
@@ -58,7 +58,6 @@ public class StoredScriptImpl extends MinimalEObjectImpl.Container implements St
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public static final String copyright = "  Copyright (c) 2013 Atos\r\n  All rights reserved. This program and the accompanying materials\r\n  are made available under the terms of the Eclipse Public License v1.0\r\n  which accompanies this distribution, and is available at\r\n  http://www.eclipse.org/legal/epl-v10.html\r\n \r\n  Contributors:\r\n     Arthur Daussy - initial implementation";
@@ -67,7 +66,6 @@ public class StoredScriptImpl extends MinimalEObjectImpl.Container implements St
 	 * The default value of the '{@link #getUri() <em>Uri</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getUri()
 	 * @generated
 	 * @ordered
@@ -78,7 +76,6 @@ public class StoredScriptImpl extends MinimalEObjectImpl.Container implements St
 	 * The cached value of the '{@link #getUri() <em>Uri</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getUri()
 	 * @generated
 	 * @ordered
@@ -89,7 +86,6 @@ public class StoredScriptImpl extends MinimalEObjectImpl.Container implements St
 	 * The cached value of the '{@link #getMetadatas() <em>Metadatas</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getMetadatas()
 	 * @generated
 	 * @ordered
@@ -100,7 +96,6 @@ public class StoredScriptImpl extends MinimalEObjectImpl.Container implements St
 	 * The cached value of the '{@link #getScriptType() <em>Script Type</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getScriptType()
 	 * @generated
 	 * @ordered
@@ -110,7 +105,6 @@ public class StoredScriptImpl extends MinimalEObjectImpl.Container implements St
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	protected StoredScriptImpl() {
@@ -120,7 +114,6 @@ public class StoredScriptImpl extends MinimalEObjectImpl.Container implements St
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -131,7 +124,6 @@ public class StoredScriptImpl extends MinimalEObjectImpl.Container implements St
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public String getUri() {
@@ -141,24 +133,22 @@ public class StoredScriptImpl extends MinimalEObjectImpl.Container implements St
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public void setUri(String newUri) {
 		String oldUri = uri;
 		uri = newUri;
-		if(eNotificationRequired())
+		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, StoredscriptPackage.STORED_SCRIPT__URI, oldUri, uri));
 	}
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public EList<ScriptMetadata> getMetadatas() {
-		if(metadatas == null) {
+		if (metadatas == null) {
 			metadatas = new EObjectContainmentWithInverseEList<ScriptMetadata>(ScriptMetadata.class, this, StoredscriptPackage.STORED_SCRIPT__METADATAS, StoredscriptPackage.SCRIPT_METADATA__SCRIPT);
 		}
 		return metadatas;
@@ -167,15 +157,14 @@ public class StoredScriptImpl extends MinimalEObjectImpl.Container implements St
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public ScriptType getScriptType() {
-		if(scriptType != null && scriptType.eIsProxy()) {
+		if (scriptType != null && scriptType.eIsProxy()) {
 			InternalEObject oldScriptType = (InternalEObject)scriptType;
 			scriptType = (ScriptType)eResolveProxy(oldScriptType);
-			if(scriptType != oldScriptType) {
-				if(eNotificationRequired())
+			if (scriptType != oldScriptType) {
+				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE, StoredscriptPackage.STORED_SCRIPT__SCRIPT_TYPE, oldScriptType, scriptType));
 			}
 		}
@@ -185,7 +174,6 @@ public class StoredScriptImpl extends MinimalEObjectImpl.Container implements St
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public ScriptType basicGetScriptType() {
@@ -195,32 +183,28 @@ public class StoredScriptImpl extends MinimalEObjectImpl.Container implements St
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public void setScriptType(ScriptType newScriptType) {
 		ScriptType oldScriptType = scriptType;
 		scriptType = newScriptType;
-		if(eNotificationRequired())
+		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, StoredscriptPackage.STORED_SCRIPT__SCRIPT_TYPE, oldScriptType, scriptType));
 	}
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public StoredScriptRegistry getRegistry() {
-		if(eContainerFeatureID() != StoredscriptPackage.STORED_SCRIPT__REGISTRY)
-			return null;
+		if (eContainerFeatureID() != StoredscriptPackage.STORED_SCRIPT__REGISTRY) return null;
 		return (StoredScriptRegistry)eInternalContainer();
 	}
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetRegistry(StoredScriptRegistry newRegistry, NotificationChain msgs) {
@@ -231,22 +215,21 @@ public class StoredScriptImpl extends MinimalEObjectImpl.Container implements St
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public void setRegistry(StoredScriptRegistry newRegistry) {
-		if(newRegistry != eInternalContainer() || (eContainerFeatureID() != StoredscriptPackage.STORED_SCRIPT__REGISTRY && newRegistry != null)) {
-			if(EcoreUtil.isAncestor(this, newRegistry))
+		if (newRegistry != eInternalContainer() || (eContainerFeatureID() != StoredscriptPackage.STORED_SCRIPT__REGISTRY && newRegistry != null)) {
+			if (EcoreUtil.isAncestor(this, newRegistry))
 				throw new IllegalArgumentException("Recursive containment not allowed for " + toString());
 			NotificationChain msgs = null;
-			if(eInternalContainer() != null)
+			if (eInternalContainer() != null)
 				msgs = eBasicRemoveFromContainer(msgs);
-			if(newRegistry != null)
+			if (newRegistry != null)
 				msgs = ((InternalEObject)newRegistry).eInverseAdd(this, StoredscriptPackage.STORED_SCRIPT_REGISTRY__SCRIPTS, StoredScriptRegistry.class, msgs);
 			msgs = basicSetRegistry(newRegistry, msgs);
-			if(msgs != null)
-				msgs.dispatch();
-		} else if(eNotificationRequired())
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, StoredscriptPackage.STORED_SCRIPT__REGISTRY, newRegistry, newRegistry));
 	}
 
@@ -273,19 +256,18 @@ public class StoredScriptImpl extends MinimalEObjectImpl.Container implements St
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-		switch(featureID) {
-		case StoredscriptPackage.STORED_SCRIPT__METADATAS:
-			return ((InternalEList<InternalEObject>)(InternalEList<?>)getMetadatas()).basicAdd(otherEnd, msgs);
-		case StoredscriptPackage.STORED_SCRIPT__REGISTRY:
-			if(eInternalContainer() != null)
-				msgs = eBasicRemoveFromContainer(msgs);
-			return basicSetRegistry((StoredScriptRegistry)otherEnd, msgs);
+		switch (featureID) {
+			case StoredscriptPackage.STORED_SCRIPT__METADATAS:
+				return ((InternalEList<InternalEObject>)(InternalEList<?>)getMetadatas()).basicAdd(otherEnd, msgs);
+			case StoredscriptPackage.STORED_SCRIPT__REGISTRY:
+				if (eInternalContainer() != null)
+					msgs = eBasicRemoveFromContainer(msgs);
+				return basicSetRegistry((StoredScriptRegistry)otherEnd, msgs);
 		}
 		return super.eInverseAdd(otherEnd, featureID, msgs);
 	}
@@ -293,16 +275,15 @@ public class StoredScriptImpl extends MinimalEObjectImpl.Container implements St
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-		switch(featureID) {
-		case StoredscriptPackage.STORED_SCRIPT__METADATAS:
-			return ((InternalEList<?>)getMetadatas()).basicRemove(otherEnd, msgs);
-		case StoredscriptPackage.STORED_SCRIPT__REGISTRY:
-			return basicSetRegistry(null, msgs);
+		switch (featureID) {
+			case StoredscriptPackage.STORED_SCRIPT__METADATAS:
+				return ((InternalEList<?>)getMetadatas()).basicRemove(otherEnd, msgs);
+			case StoredscriptPackage.STORED_SCRIPT__REGISTRY:
+				return basicSetRegistry(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -310,14 +291,13 @@ public class StoredScriptImpl extends MinimalEObjectImpl.Container implements St
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
 	public NotificationChain eBasicRemoveFromContainerFeature(NotificationChain msgs) {
-		switch(eContainerFeatureID()) {
-		case StoredscriptPackage.STORED_SCRIPT__REGISTRY:
-			return eInternalContainer().eInverseRemove(this, StoredscriptPackage.STORED_SCRIPT_REGISTRY__SCRIPTS, StoredScriptRegistry.class, msgs);
+		switch (eContainerFeatureID()) {
+			case StoredscriptPackage.STORED_SCRIPT__REGISTRY:
+				return eInternalContainer().eInverseRemove(this, StoredscriptPackage.STORED_SCRIPT_REGISTRY__SCRIPTS, StoredScriptRegistry.class, msgs);
 		}
 		return super.eBasicRemoveFromContainerFeature(msgs);
 	}
@@ -325,22 +305,20 @@ public class StoredScriptImpl extends MinimalEObjectImpl.Container implements St
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
-		switch(featureID) {
-		case StoredscriptPackage.STORED_SCRIPT__URI:
-			return getUri();
-		case StoredscriptPackage.STORED_SCRIPT__METADATAS:
-			return getMetadatas();
-		case StoredscriptPackage.STORED_SCRIPT__SCRIPT_TYPE:
-			if(resolve)
-				return getScriptType();
-			return basicGetScriptType();
-		case StoredscriptPackage.STORED_SCRIPT__REGISTRY:
-			return getRegistry();
+		switch (featureID) {
+			case StoredscriptPackage.STORED_SCRIPT__URI:
+				return getUri();
+			case StoredscriptPackage.STORED_SCRIPT__METADATAS:
+				return getMetadatas();
+			case StoredscriptPackage.STORED_SCRIPT__SCRIPT_TYPE:
+				if (resolve) return getScriptType();
+				return basicGetScriptType();
+			case StoredscriptPackage.STORED_SCRIPT__REGISTRY:
+				return getRegistry();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -348,26 +326,25 @@ public class StoredScriptImpl extends MinimalEObjectImpl.Container implements St
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
-		switch(featureID) {
-		case StoredscriptPackage.STORED_SCRIPT__URI:
-			setUri((String)newValue);
-			return;
-		case StoredscriptPackage.STORED_SCRIPT__METADATAS:
-			getMetadatas().clear();
-			getMetadatas().addAll((Collection<? extends ScriptMetadata>)newValue);
-			return;
-		case StoredscriptPackage.STORED_SCRIPT__SCRIPT_TYPE:
-			setScriptType((ScriptType)newValue);
-			return;
-		case StoredscriptPackage.STORED_SCRIPT__REGISTRY:
-			setRegistry((StoredScriptRegistry)newValue);
-			return;
+		switch (featureID) {
+			case StoredscriptPackage.STORED_SCRIPT__URI:
+				setUri((String)newValue);
+				return;
+			case StoredscriptPackage.STORED_SCRIPT__METADATAS:
+				getMetadatas().clear();
+				getMetadatas().addAll((Collection<? extends ScriptMetadata>)newValue);
+				return;
+			case StoredscriptPackage.STORED_SCRIPT__SCRIPT_TYPE:
+				setScriptType((ScriptType)newValue);
+				return;
+			case StoredscriptPackage.STORED_SCRIPT__REGISTRY:
+				setRegistry((StoredScriptRegistry)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -375,24 +352,23 @@ public class StoredScriptImpl extends MinimalEObjectImpl.Container implements St
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
 	public void eUnset(int featureID) {
-		switch(featureID) {
-		case StoredscriptPackage.STORED_SCRIPT__URI:
-			setUri(URI_EDEFAULT);
-			return;
-		case StoredscriptPackage.STORED_SCRIPT__METADATAS:
-			getMetadatas().clear();
-			return;
-		case StoredscriptPackage.STORED_SCRIPT__SCRIPT_TYPE:
-			setScriptType((ScriptType)null);
-			return;
-		case StoredscriptPackage.STORED_SCRIPT__REGISTRY:
-			setRegistry((StoredScriptRegistry)null);
-			return;
+		switch (featureID) {
+			case StoredscriptPackage.STORED_SCRIPT__URI:
+				setUri(URI_EDEFAULT);
+				return;
+			case StoredscriptPackage.STORED_SCRIPT__METADATAS:
+				getMetadatas().clear();
+				return;
+			case StoredscriptPackage.STORED_SCRIPT__SCRIPT_TYPE:
+				setScriptType((ScriptType)null);
+				return;
+			case StoredscriptPackage.STORED_SCRIPT__REGISTRY:
+				setRegistry((StoredScriptRegistry)null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -400,20 +376,19 @@ public class StoredScriptImpl extends MinimalEObjectImpl.Container implements St
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
 	public boolean eIsSet(int featureID) {
-		switch(featureID) {
-		case StoredscriptPackage.STORED_SCRIPT__URI:
-			return URI_EDEFAULT == null ? uri != null : !URI_EDEFAULT.equals(uri);
-		case StoredscriptPackage.STORED_SCRIPT__METADATAS:
-			return metadatas != null && !metadatas.isEmpty();
-		case StoredscriptPackage.STORED_SCRIPT__SCRIPT_TYPE:
-			return scriptType != null;
-		case StoredscriptPackage.STORED_SCRIPT__REGISTRY:
-			return getRegistry() != null;
+		switch (featureID) {
+			case StoredscriptPackage.STORED_SCRIPT__URI:
+				return URI_EDEFAULT == null ? uri != null : !URI_EDEFAULT.equals(uri);
+			case StoredscriptPackage.STORED_SCRIPT__METADATAS:
+				return metadatas != null && !metadatas.isEmpty();
+			case StoredscriptPackage.STORED_SCRIPT__SCRIPT_TYPE:
+				return scriptType != null;
+			case StoredscriptPackage.STORED_SCRIPT__REGISTRY:
+				return getRegistry() != null;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -421,14 +396,13 @@ public class StoredScriptImpl extends MinimalEObjectImpl.Container implements St
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
 	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
-		switch(operationID) {
-		case StoredscriptPackage.STORED_SCRIPT___GET_METADATA__STRING:
-			return getMetadata((String)arguments.get(0));
+		switch (operationID) {
+			case StoredscriptPackage.STORED_SCRIPT___GET_METADATA__STRING:
+				return getMetadata((String)arguments.get(0));
 		}
 		return super.eInvoke(operationID, arguments);
 	}
@@ -436,13 +410,11 @@ public class StoredScriptImpl extends MinimalEObjectImpl.Container implements St
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
 	public String toString() {
-		if(eIsProxy())
-			return super.toString();
+		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (uri: ");

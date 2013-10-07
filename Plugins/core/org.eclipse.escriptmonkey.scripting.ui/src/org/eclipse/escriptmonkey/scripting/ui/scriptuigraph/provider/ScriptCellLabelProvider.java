@@ -17,6 +17,7 @@ import org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.StoredScriptUI;
 import org.eclipse.jface.viewers.CellLabelProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ViewerCell;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 
 /**
@@ -25,7 +26,7 @@ import org.eclipse.swt.graphics.Point;
  * @author adaussy
  * 
  */
-public class ScriptCellLabelProvider extends CellLabelProvider {
+public class ScriptCellLabelProvider extends CellLabelProvider implements org.eclipse.jface.viewers.ILabelProvider {
 
 	ILabelProvider adapter = new AdapterFactoryLabelProvider(new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE));
 
@@ -59,6 +60,16 @@ public class ScriptCellLabelProvider extends CellLabelProvider {
 		cell.setText(adapter.getText(element));
 		cell.setImage(adapter.getImage(element));
 
+	}
+
+	@Override
+	public Image getImage(Object element) {
+		return adapter.getImage(element);
+	}
+
+	@Override
+	public String getText(Object element) {
+		return adapter.getText(element);
 	}
 
 }

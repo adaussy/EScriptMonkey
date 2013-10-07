@@ -448,7 +448,7 @@ public class StoredscriptPackageImpl extends EPackageImpl implements Storedscrip
 
 		initEClass(scriptMetadataEClass, ScriptMetadata.class, "ScriptMetadata", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getScriptMetadata_Key(), ecorePackage.getEString(), "key", null, 1, 1, ScriptMetadata.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getScriptMetadata_Value(), ecorePackage.getEString(), "value", null, 0, -1, ScriptMetadata.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getScriptMetadata_Value(), ecorePackage.getEString(), "value", null, 1, 1, ScriptMetadata.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getScriptMetadata_Script(), this.getIStoredScript(), this.getIStoredScript_Metadatas(), "script", null, 1, 1, ScriptMetadata.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(scriptTypeEClass, ScriptType.class, "ScriptType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

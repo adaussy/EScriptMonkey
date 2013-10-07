@@ -10,9 +10,11 @@
  *******************************************************************************/
 package org.eclipse.escriptmonkey.scripting.storedscript.service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
@@ -77,18 +79,39 @@ public class MetadaParserService {
 		metadata.clear();
 		String header = parser.getHeader(storedScript);
 		if(header != null) {
+			List<String> listOfModifedMetadata = new ArrayList<String>();
 			for(Metadata metaDef : getMetadatas()) {
 				List<String> metas = metaDef.parse(header);
 				if(metas != null) {
 					ListIterator<String> ite = metas.listIterator();
 					while(ite.hasNext()) {
 						String data = (String)ite.next();
-						ScriptMetadata meta = StoredscriptFactory.eINSTANCE.createScriptMetadata();
-						metadata.add(meta);
-						meta.setKey(metaDef.getName());
-						meta.getValue().add(data);
+						String metaName = metaDef.getName();
+
+						ScriptMetadata meta = storedScript.getMetadata(metaName);
+						if(meta == null) {
+							meta = StoredscriptFactory.eINSTANCE.createScriptMetadata();
+							metadata.add(meta);
+							meta.setKey(metaName);
+							meta.setValue(data);
+						} else {
+							String value = meta.getValue();
+							if(value != null && !value.equals(data)) {
+								meta.setValue(data);
+							}
+						}
+						listOfModifedMetadata.add(metaName);
 					}
+
 				}
+			}
+			Iterator<ScriptMetadata> metaIte = metadata.iterator();
+			while(metaIte.hasNext()) {
+				ScriptMetadata scriptMetadata = (ScriptMetadata)metaIte.next();
+				if(!listOfModifedMetadata.contains(scriptMetadata.getKey())) {
+					metaIte.remove();
+				}
+
 			}
 		}
 		return metadata;

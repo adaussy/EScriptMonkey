@@ -7,6 +7,7 @@ import org.eclipse.escriptmonkey.scripting.ui.ScriptGraphService;
 import org.eclipse.escriptmonkey.scripting.ui.actions.EditScriptAction;
 import org.eclipse.escriptmonkey.scripting.ui.actions.RefreshStoredScriptAction;
 import org.eclipse.escriptmonkey.scripting.ui.actions.RunScriptAction;
+import org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.Node;
 import org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.StoredScriptUI;
 import org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.provider.ScriptCellLabelProvider;
 import org.eclipse.jface.action.IMenuManager;
@@ -19,11 +20,14 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Tree;
+import org.eclipse.ui.dialogs.FilteredTree;
+import org.eclipse.ui.dialogs.PatternFilter;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.wb.swt.ResourceManager;
@@ -53,11 +57,12 @@ public class ScriptEplorerView extends ViewPart {
 	 */
 	@Override
 	public void createPartControl(Composite parent) {
-		Composite container = toolkit.createComposite(parent, SWT.NONE);
-		toolkit.paintBordersFor(container);
-		container.setLayout(new FillLayout(SWT.HORIZONTAL));
 		{
-			treeViewer = new TreeViewer(container, SWT.BORDER);
+			PatternFilter patternFilter = new PatternFilter();
+			//Composite, int, PatternFilter, boolean
+			final FilteredTree filter = new FilteredTree(parent, SWT.NONE, patternFilter, true);
+			//			viewer = ;
+			treeViewer = filter.getViewer();
 			ColumnViewerToolTipSupport.enableFor(treeViewer);
 			Tree tree = treeViewer.getTree();
 			toolkit.paintBordersFor(tree);
@@ -100,6 +105,16 @@ public class ScriptEplorerView extends ViewPart {
 				}
 			});
 		}
+		treeViewer.setComparator(new ViewerComparator() {
+
+			@Override
+			public int compare(Viewer viewer, Object e1, Object e2) {
+				if(e1 instanceof Node && e2 instanceof Node) {
+					return ((Node)e1).getName().compareTo(((Node)e2).getName());
+				}
+				return super.compare(viewer, e1, e2);
+			}
+		});
 
 		createActions();
 		initializeToolBar();

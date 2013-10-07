@@ -10,21 +10,12 @@
  */
 package org.eclipse.escriptmonkey.scripting.storedscript.storedscript.impl;
 
-import java.util.Collection;
-
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.common.notify.NotificationChain;
-import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
-
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
-import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
-
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.escriptmonkey.scripting.storedscript.storedscript.IStoredScript;
 import org.eclipse.escriptmonkey.scripting.storedscript.storedscript.ScriptMetadata;
@@ -74,14 +65,24 @@ public class ScriptMetadataImpl extends MinimalEObjectImpl.Container implements 
 	protected String key = KEY_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getValue() <em>Value</em>}' attribute list.
+	 * The default value of the '{@link #getValue() <em>Value</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getValue()
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<String> value;
+	protected static final String VALUE_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getValue() <em>Value</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getValue()
+	 * @generated
+	 * @ordered
+	 */
+	protected String value = VALUE_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -128,11 +129,20 @@ public class ScriptMetadataImpl extends MinimalEObjectImpl.Container implements 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EList<String> getValue() {
-		if (value == null) {
-			value = new EDataTypeUniqueEList<String>(String.class, this, StoredscriptPackage.SCRIPT_METADATA__VALUE);
-		}
+	public String getValue() {
 		return value;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setValue(String newValue) {
+		String oldValue = value;
+		value = newValue;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, StoredscriptPackage.SCRIPT_METADATA__VALUE, oldValue, value));
 	}
 
 	/**
@@ -251,8 +261,7 @@ public class ScriptMetadataImpl extends MinimalEObjectImpl.Container implements 
 				setKey((String)newValue);
 				return;
 			case StoredscriptPackage.SCRIPT_METADATA__VALUE:
-				getValue().clear();
-				getValue().addAll((Collection<? extends String>)newValue);
+				setValue((String)newValue);
 				return;
 			case StoredscriptPackage.SCRIPT_METADATA__SCRIPT:
 				setScript((IStoredScript)newValue);
@@ -273,7 +282,7 @@ public class ScriptMetadataImpl extends MinimalEObjectImpl.Container implements 
 				setKey(KEY_EDEFAULT);
 				return;
 			case StoredscriptPackage.SCRIPT_METADATA__VALUE:
-				getValue().clear();
+				setValue(VALUE_EDEFAULT);
 				return;
 			case StoredscriptPackage.SCRIPT_METADATA__SCRIPT:
 				setScript((IStoredScript)null);
@@ -293,7 +302,7 @@ public class ScriptMetadataImpl extends MinimalEObjectImpl.Container implements 
 			case StoredscriptPackage.SCRIPT_METADATA__KEY:
 				return KEY_EDEFAULT == null ? key != null : !KEY_EDEFAULT.equals(key);
 			case StoredscriptPackage.SCRIPT_METADATA__VALUE:
-				return value != null && !value.isEmpty();
+				return VALUE_EDEFAULT == null ? value != null : !VALUE_EDEFAULT.equals(value);
 			case StoredscriptPackage.SCRIPT_METADATA__SCRIPT:
 				return getScript() != null;
 		}

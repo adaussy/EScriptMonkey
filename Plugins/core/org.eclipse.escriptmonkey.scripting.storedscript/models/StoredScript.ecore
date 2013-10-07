@@ -37,8 +37,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="StoredScript" eSuperTypes="#//IStoredScript"/>
   <eClassifiers xsi:type="ecore:EClass" name="ScriptMetadata">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="key" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" upperBound="-1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="script" lowerBound="1"
         eType="#//IStoredScript" eOpposite="#//IStoredScript/metadatas"/>
   </eClassifiers>
