@@ -12,7 +12,7 @@
 #        }
 #    } 
 #}]::
-# Description: This script change the font of a selected node (From GMF editor) to Tahoma
+# Description: {Demonstrate how to modify the Notation model from a GMF Editor using NotationModule. In this script will we change the font of a selected node (From GMF editor) to Tahoma.}
 #
 
 from java.lang import Runnable

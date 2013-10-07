@@ -13,11 +13,10 @@
  *        }
  *    }
  *}]::
- * Description: This script create a new UML class in the current package. A package must be
+ * Description: {This script create a new UML class in the current package. A package must be
  * selected in the current UML editor. It illustrates how to create new
  * elements. It creates a new class, sets its name, and adds it
- * into the specified package. The uml object provides some other helpers, but
- * it is also possible to to use uml.getFactory() to create any UML element.
+ * into the specified package.}
  */
 
 function main() {

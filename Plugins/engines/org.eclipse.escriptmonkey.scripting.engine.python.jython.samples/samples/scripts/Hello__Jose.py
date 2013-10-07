@@ -2,7 +2,7 @@
 # Thread: UI
 # Menu: Examples >Hello > Jose
 # Kudos: Ward Cunningham & Bjorn Freeman-Benson
-# Description: You can use this script to display a message into a dialog box.
+# Description: {You can use this script to display a message into a dialog box. This script only use Java classes.}
 # License: EPL 1.0
 #
 

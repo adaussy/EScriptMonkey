@@ -1,7 +1,7 @@
 #
 # Menu: Examples > EnableWhen > Display Selection
 # Kudos: Arthur Daussy
-# Description: You can use this script to open the Web View.
+# Description: {Use this script to display the current selection}.
 #EnableWhen::[With selection {
 #        InstanceOf "org.eclipse.jface.viewers.ISelection"{
 #            }

@@ -1,7 +1,8 @@
 /*
  * Menu: Examples > Hello > JS > Bjorn
  * Kudos: Ward Cunningham & Bjorn Freeman-Benson & arthur daussy
- * Description: You can use this script to display a message into a dialog box.
+ * Description: {You can use this script to display a message into a dialog box.
+ * This example only use modules to display the dialog. So it does not need to be run into the UI Thread}
  * License: EPL 1.0
  */
  function main(){

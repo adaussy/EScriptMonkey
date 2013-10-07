@@ -3,7 +3,7 @@
 # Menu: ScriptUtils > [PY] Create new Script Project
 # Kudos: Arthur Daussy.
 # License: EPL 1.0
-# Description : This script is used to show an example for Workspace basic manipulation
+# Description : {This script is used to show an example for Workspace basic manipulation.}
 # EnableWhen::[With activePartId {
 #	Equal "org.eclipse.ui.navigator.ProjectExplorer"
 #}]::

@@ -13,8 +13,8 @@
  *        }
  *    }
  *}]::
- * Description: This script expects a NamedElement to be selected, and asks the user for a new new to use.
- * This illustrates how a script can modify an existing model element when literal values can be used.
+ * Description: {This script expects a NamedElement to be selected, and asks the user for a new new to use.
+ * This illustrates how a script can modify an existing model element when literal values can be used.}
  */
 
 function main() {

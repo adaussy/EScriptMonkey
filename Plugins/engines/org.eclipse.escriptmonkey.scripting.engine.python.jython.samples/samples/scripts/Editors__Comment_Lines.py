@@ -6,7 +6,7 @@
 #        InstanceOf "org.eclipse.jface.text.TextSelection"{
 #            }
 #}]::
-# Description: You can use this script to comment a line in the current active editor.(Only work with text editor)
+# Description: {You can use this script to comment a line in the current active editor.(Only work in text editor with a text selection)}
 # License: EPL 1.0
 #
 

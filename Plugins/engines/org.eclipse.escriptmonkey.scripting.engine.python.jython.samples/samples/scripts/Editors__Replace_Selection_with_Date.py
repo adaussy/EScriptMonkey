@@ -6,7 +6,7 @@
 #        InstanceOf "org.eclipse.jface.text.TextSelection"{
 #            }
 #}]::
-# Description: You can use this script to replace the current selection of the active text editorwith the current date
+# Description: {You can use this script to replace the current selection of the active text editor with the current date.}
 # License: EPL 1.0
 # 
 

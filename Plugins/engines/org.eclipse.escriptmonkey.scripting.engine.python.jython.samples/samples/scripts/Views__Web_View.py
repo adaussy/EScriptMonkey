@@ -1,7 +1,7 @@
 #
 # Menu: Examples > Views > Google Web View
 # Kudos: Paul Colton
-# Description: You can use this script to open the Web View.
+# Description: {You can use this script to open the Web View.}
 # License: EPL 1.0
 #
 

@@ -1,7 +1,7 @@
 #
-# Menu: Examples > Modeling > Papyrus > Display Element in Papyrus
+# Menu: Examples > Modeling > Papyrus > Display Selection in MDT Papyrus
 # Kudos: Arthur Daussy
-# Description: Display the semantic object selected in a MDT Papyrus Diagram
+# Description: {Demonstrate the use of Selection Modules  while selecting an element in MDT Papyrus.}
 #EnableWhen::[With activeEditor {
 #    Equal "org.eclipse.papyrus.infra.core.papyrusEditor"
 #}]::

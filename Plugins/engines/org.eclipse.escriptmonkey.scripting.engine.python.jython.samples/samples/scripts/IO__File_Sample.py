@@ -2,7 +2,7 @@
 # Thread:UI
 # Menu: Examples > IO > File Sample
 # Kudos: Paul Colton, Aptana, Inc.
-# Description: You can use this script to display into a dialog box the current date.
+# Description: {You can use this script to display into a dialog box the current date.}
 # License: EPL 1.0
 #
 

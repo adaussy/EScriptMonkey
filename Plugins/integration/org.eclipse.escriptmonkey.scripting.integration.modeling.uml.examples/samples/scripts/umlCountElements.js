@@ -13,7 +13,7 @@
  *        }
  *    }
  *}]::
- * Description: This script shows how to navigate inside a model. It asks the user for a type
+ * Description: {This script shows how to navigate inside a model. It asks the user for a type
  * of element to look for (defaulting to "Class"), and starting from the current
  * selected element, counts all the elements of this type contained inside the
  * current selected element (directly or not). The result is shown to the user
@@ -21,7 +21,7 @@
  * 
  * This script also shows how it is possible to create auxiliary JavaScript
  * functions (here countElement()) which can be called from the script body (the
- * main() function).
+ * main() function).}
  */
 
 

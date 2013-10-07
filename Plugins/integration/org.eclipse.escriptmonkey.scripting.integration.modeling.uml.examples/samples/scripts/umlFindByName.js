@@ -13,10 +13,10 @@
  *        }
  *    }
  *}]::
- * Description: This script searches inside a model (starting from the current selection) for
+ * Description: {This script searches inside a model (starting from the current selection) for
  * all the elements whose name matches a string (or regular expression) provided
  * by the user. It reports the element it found on the Topcased Scripting
- * console.
+ * console.}
  */
 
 function main() {

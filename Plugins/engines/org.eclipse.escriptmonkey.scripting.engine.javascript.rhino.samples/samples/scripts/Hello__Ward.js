@@ -2,7 +2,8 @@
  * Thread: UI
  * Menu: Examples > Hello > JS > Ward
  * Kudos: Ward Cunningham & Bjorn Freeman-Benson
- * Description: You can use this script to display a message into a dialog box.
+ * Description: {You can use this script to display a message into a dialog box. Display dialog message using java classes.
+ * This script need to be run into the UI (see Thread metadata).}
  * License: EPL 1.0
  */
 loadModule("WorkbenchModule")

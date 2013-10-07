@@ -3,7 +3,7 @@
 # Menu: ScriptUtils > Resource > Convert to scripting project
 # Kudos: Arthur Daussy.
 # License: EPL 1.0
-# Description : This script is used to convert the select IProject to script project
+# Description : {This script is used to convert the selected IProject to script project.}
 # EnableWhen::[With selection {
 #    Iterable {
 #        InstanceOf "org.eclipse.core.resources.IProject"

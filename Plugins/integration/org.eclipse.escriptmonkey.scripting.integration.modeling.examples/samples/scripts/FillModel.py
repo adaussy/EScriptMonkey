@@ -2,7 +2,7 @@
 # Thread: UI
 # Menu: Examples > Modeling > Fill a UML model
 # Kudos: Arthur Daussy
-# Description: Fill an UML model when UML class is selected
+# Description: { Demonstrate how to fill a model using EcoreModule. For this example we are filling an UML model.}
 # EnableWhen::[And {
 #   With activeEditor {
 #        Equal "org.eclipse.papyrus.infra.core.papyrusEditor"

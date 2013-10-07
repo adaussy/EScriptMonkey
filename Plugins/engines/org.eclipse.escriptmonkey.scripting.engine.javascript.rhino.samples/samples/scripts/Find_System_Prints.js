@@ -1,10 +1,9 @@
 /*
  * Thread: UI
  * Menu: Examples > Workbench >Find System Prints
- * Kudos: Bjorn Freeman-Benson & Ward Cunningham
- * Description: Look into all java file in your workspace to find System.out.println or System.out.print call. And display task into the task view to remove it
+ * Kudos: Bjorn Freeman-Benson & Ward Cunningham & Arthur Daussy
+ * Description: {Look into all java file in your workspace to find System.out.println or System.out.print call. And display task into the task view to remove it}
  * License: EPL 1.0
- * DOM: http://download.eclipse.org/technology/dash/update/org.eclipse.eclipsemonkey.lang.javascript
  */
   
 function main() {

@@ -1,7 +1,7 @@
 #
 # Menu: Examples > EnableWhen > Display Files Location
 # Kudos: Arthur Daussy
-# Description: You can use this script to open the Web View.
+# Description: {This script can be use to display the location of script into the workspace.}
 #EnableWhen::[With selection {
 #    Iterable {
 #        InstanceOf "org.eclipse.core.resources.IFile"
@@ -13,4 +13,4 @@
 selectionModule = loadModule("SelectionModule")
 
 for file in selectionModule.getIterableSelection():
-    print file.getFullPath()
+    print file.getLocation()

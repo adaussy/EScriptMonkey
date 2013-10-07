@@ -13,8 +13,8 @@
  *        }
  *    }
  *}]::
- * Description: This script creates a new UML class (in the currently selected package) which
- * initially contains a user-specified number of attributes.
+ * Description: {This script creates a new UML class (in the currently selected package) which
+ * initially contains a user-specified number of attributes.}
  */
 
 function main() {

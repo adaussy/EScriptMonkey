@@ -2,7 +2,7 @@
 # Thread:UI
 # Menu: Examples > Find System Prints
 # Kudos: Bjorn Freeman-Benson & Ward Cunningham
-# Description: Look into all java file in your workspace to find System.out.println or System.out.print call. And display task into the task view to remove it
+# Description: {Look into all java file in your workspace to find System.out.println or System.out.print call. And display task into the task view to remove it}
 # License: EPL 1.0
 #
 
