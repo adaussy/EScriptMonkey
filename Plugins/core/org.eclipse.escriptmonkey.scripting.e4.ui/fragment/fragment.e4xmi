@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="ASCII"?>
+<fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:commands="http://www.eclipse.org/ui/2010/UIModel/application/commands" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_ywOoEB-rEeO28vZlMfgAmw">
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_0cUWcB-rEeO28vZlMfgAmw" featurename="commands" parentElementId="org.eclipse.e4.legacy.ide.application">
+    <elements xsi:type="commands:Command" xmi:id="_Ds7ZwB-sEeO28vZlMfgAmw" elementId="org.eclipse.escriptmonkey.scripting.e4.ui.command.executeScript" commandName="Execute Script">
+      <parameters xmi:id="_HJMsUB-sEeO28vZlMfgAmw" elementId="org.eclipse.escriptmonkey.scripting.e4.ui.commandparameter.storedScript" name="script" optional="false"/>
+    </elements>
+  </fragments>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_Ko2DAB-sEeO28vZlMfgAmw" featurename="handlers" parentElementId="org.eclipse.e4.legacy.ide.application">
+    <elements xsi:type="commands:Handler" xmi:id="_f7AZEB-sEeO28vZlMfgAmw" elementId="org.eclipse.escriptmonkey.scripting.e4.ui.handler.executeScript" contributionURI="bundleclass://org.eclipse.escriptmonkey.scripting.e4.ui/org.eclipse.escriptmonkey.scripting.e4.ui.handler.ExecuteScriptHandler" command="_Ds7ZwB-sEeO28vZlMfgAmw"/>
+  </fragments>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_zIjMAB-sEeO28vZlMfgAmw" featurename="menuContributions" parentElementId="org.eclipse.e4.legacy.ide.application">
+    <elements xsi:type="menu:MenuContribution" xmi:id="_8FD0AB-sEeO28vZlMfgAmw" elementId="org.eclipse.escriptmonkey.scripting.e4.ui.menucontribution.executeScript" parentId="popup">
+      <children xsi:type="menu:Menu" xmi:id="_AevKAB-tEeO28vZlMfgAmw" elementId="org.eclipse.escriptmonkey.scripting.e4.ui.menu.executeScript" label="Scripts">
+        <children xsi:type="menu:DynamicMenuContribution" xmi:id="_HJgY4B-tEeO28vZlMfgAmw" elementId="org.eclipse.escriptmonkey.scripting.e4.ui.dynamicmenucontribution.0" label="Dynamique Menu Constribution" contributionURI="bundleclass://org.eclipse.escriptmonkey.scripting.e4.ui/org.eclipse.escriptmonkey.scripting.e4.ui.ScriptDynamicContribution"/>
+      </children>
+    </elements>
+  </fragments>
+</fragment:ModelFragments>
