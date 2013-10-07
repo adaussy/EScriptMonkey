@@ -1,3 +1,4 @@
 scripts/DisplaySelectedGMFSemanticObject.py
 scripts/FillModel.py
+scripts/umlChangeFontPapyrus.py
 
