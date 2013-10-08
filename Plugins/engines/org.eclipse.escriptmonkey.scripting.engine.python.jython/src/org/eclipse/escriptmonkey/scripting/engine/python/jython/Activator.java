@@ -10,7 +10,10 @@
  *******************************************************************************/
 package org.eclipse.escriptmonkey.scripting.engine.python.jython;
 
+import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import org.eclipse.core.runtime.FileLocator;
@@ -37,23 +40,24 @@ public class Activator extends AbstractUIPlugin {
 		super.start(context);
 
 		mInstance = this;
-		Properties preProperties = System.getProperties();
+		//		Properties preProperties = System.getProperties();
+		Properties preProperties = PySystemState.getBaseProperties();
 
 		Properties postProperties = new Properties();
 		postProperties.put("python.home", getPluginRootDir());
+		postProperties.put("python.modules.builtin", "errno");
 
+		PySystemState.initialize(preProperties, postProperties, new String[0]);
 
-		PythonClassLoader classLoader = new PythonClassLoader();
-		PySystemState.initialize(preProperties, postProperties, new String[0], classLoader);
+		//				PyObject load = org.python.core.imp.
+		//		System.out.println(load);
 
-		PySystemState.initialize(preProperties, postProperties, new String[0], Activator.getDefault().getClass().getClassLoader());
-		Bundle[] bundles = context.getBundles();
-		for(int i = 0; i < bundles.length; ++i) {
-			classLoader.addBundle(bundles[i]);
-		}
+		// set packageManager AFTER initialization as init will set it, too
+		// FIXME for now caching is disabled. We need to track how the cache destination is calculated
+		PySystemState.packageManager = new JythonPackageManager(null, PySystemState.registry);
 	}
 
-	private String getPluginRootDir() {
+	private static String getPluginRootDir() {
 		try {
 			Bundle bundle = Platform.getBundle("org.jython");
 			URL fileURL = FileLocator.find(bundle, new Path("."), null);
@@ -70,4 +74,15 @@ public class Activator extends AbstractUIPlugin {
 		super.stop(context);
 	}
 
+	public static List<File> getLibraryFolders() {
+		ArrayList<File> folders = new ArrayList<File>();
+
+		File rootFolder = new File(getPluginRootDir());
+		java.nio.file.Path path = rootFolder.toPath();
+		File libFolder = path.resolve("Lib").toFile();
+		if(libFolder.exists())
+			folders.add(libFolder);
+
+		return folders;
+	}
 }

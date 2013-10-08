@@ -12,39 +12,50 @@
 package org.eclipse.escriptmonkey.scripting.engine.python.jython;
 
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.escriptmonkey.scripting.AbstractScriptEngine;
 import org.eclipse.escriptmonkey.scripting.IModifiableScriptEngine;
 import org.eclipse.escriptmonkey.scripting.Script;
 import org.eclipse.escriptmonkey.scripting.engine.python.jython.preferences.IPreferenceConstants;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.osgi.framework.Bundle;
-import org.python.core.PyCode;
+import org.python.core.CompileMode;
+import org.python.core.CompilerFlags;
+import org.python.core.Py;
+import org.python.core.PyBoolean;
+import org.python.core.PyFloat;
 import org.python.core.PyIgnoreMethodTag;
+import org.python.core.PyInteger;
 import org.python.core.PyList;
+import org.python.core.PyLong;
+import org.python.core.PyNone;
+import org.python.core.PyObject;
+import org.python.core.PyObjectDerived;
 import org.python.core.PyString;
-import org.python.util.PythonInterpreter;
+import org.python.util.InteractiveInterpreter;
 
 public class JythonScriptEngine extends AbstractScriptEngine implements IModifiableScriptEngine {
 
-	private PythonInterpreter mEngine;
+	private InteractiveInterpreter mEngine;
+
+	private PyObject mResult;
+
+	private class DisplayHook extends PyObject {
+
+		private static final long serialVersionUID = -6793040471701923706L;
+
+		@Override
+		public PyObject __call__(final PyObject arg0) {
+			mResult = arg0;
+			return Py.None;
+		}
+	}
 
 	public JythonScriptEngine() {
 		super("Jython");
-	}
-
-	@Override
-	public Object getExecutedFile() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
@@ -59,7 +70,17 @@ public class JythonScriptEngine extends AbstractScriptEngine implements IModifia
 
 	@Override
 	protected boolean setupEngine() {
-		mEngine = new PythonInterpreter();
+		mEngine = new InteractiveInterpreter();
+
+		// register display callback method to extract execution result
+		DisplayHook displayHook = new DisplayHook();
+		mEngine.getSystemState().__displayhook__ = displayHook;
+		mEngine.getSystemState().__dict__.__setitem__("displayhook", displayHook);
+
+		mEngine.getSystemState().__setattr__("_jy_interpreter", Py.java2py(mEngine));
+		//		imp.load("site");
+		mEngine.getSystemState().path.insert(0, Py.EmptyString);
+
 		setOutputStream(getOutputStream());
 		setInputStream(getInputStream());
 		setErrorStream(getErrorStream());
@@ -68,8 +89,8 @@ public class JythonScriptEngine extends AbstractScriptEngine implements IModifia
 		 * Not optimized for now.
 		 * This should done at a Python System level
 		 */
-		for(String libraryPath : getPythonLibrairies()) {
-			if(libraryPath != null && !libraryPath.isEmpty()) {
+		for(String libraryPath : getPythonLibraries()) {
+			if((libraryPath != null) && !libraryPath.isEmpty()) {
 				PyString element = new PyString(libraryPath);
 				PyList systemPath = mEngine.getSystemState().path;
 				if(!systemPath.contains(element)) {
@@ -78,17 +99,10 @@ public class JythonScriptEngine extends AbstractScriptEngine implements IModifia
 			}
 		}
 
-		return true;
-	}
+		mEngine.getSystemState().settrace(new JythonTracer());
 
-	private String getPluginRootDir() {
-		try {
-			Bundle bundle = Activator.getDefault().getBundle();
-			URL fileURL = FileLocator.find(bundle, new Path("."), null);
-			return FileLocator.toFileURL(fileURL).getFile();
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+		// FIXME ev we need to set the system path to make jython aware of the changes
+		return true;
 	}
 
 	@Override
@@ -98,9 +112,41 @@ public class JythonScriptEngine extends AbstractScriptEngine implements IModifia
 
 	@Override
 	protected Object execute(final Script script, final Object reference, final String fileName) throws Exception {
-		PyCode pyCode = mEngine.compile(new InputStreamReader(script.getCodeStream()));
-		mEngine.exec(pyCode);
-		return null;
+		mResult = Py.None;
+		PyObject code = Py.compile_command_flags(script.getCode(), "(none)", CompileMode.exec, new CompilerFlags(), true);
+		if(code == Py.None)
+			throw new RuntimeException("Could not compile code");
+
+		Py.exec(code, mEngine.getLocals(), null);
+		return toJava(mResult);
+	}
+
+	private static Object toJava(final PyObject result) {
+		if(result instanceof PyNone)
+			return null;
+
+		if(result instanceof PyObjectDerived)
+			return result.__tojava__(Object.class);
+
+		if(result instanceof PyBoolean)
+			return ((PyBoolean)result).getBooleanValue();
+
+		if(result instanceof PyInteger)
+			return ((PyInteger)result).getValue();
+
+		if(result instanceof PyFloat)
+			return ((PyFloat)result).getValue();
+
+		if(result instanceof PyLong)
+			return ((PyLong)result).getValue();
+
+		if(result instanceof PyString)
+			return ((PyString)result).getString();
+
+		if(result instanceof PyInteger)
+			return ((PyInteger)result).getValue();
+
+		return result;
 	}
 
 	@Override
@@ -128,17 +174,16 @@ public class JythonScriptEngine extends AbstractScriptEngine implements IModifia
 	}
 
 	@Override
-	public void setVariable(String name, Object content) {
+	public void setVariable(final String name, final Object content) {
 		mEngine.set(name, content);
-
 	}
 
 	@Override
-	public Object getVariable(String name) {
+	public Object getVariable(final String name) {
 		return mEngine.get(name);
 	}
 
-	protected Collection<String> getPythonLibrairies() {
+	protected Collection<String> getPythonLibraries() {
 		List<String> result = new ArrayList<String>();
 		IPreferenceStore preferences = Activator.getDefault().getPreferenceStore();
 		String libraries = preferences.getString(IPreferenceConstants.PYTHON_LIBRARIES);
@@ -148,6 +193,5 @@ public class JythonScriptEngine extends AbstractScriptEngine implements IModifia
 		}
 		return result;
 	}
-
 
 }

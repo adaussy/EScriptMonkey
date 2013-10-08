@@ -1,46 +1,48 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target includeMode="feature" name="SysBox" sequenceNumber="35">
+<?pde version="3.8"?><target includeMode="feature" name="SysBox" sequenceNumber="36">
 <locations>
-<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.emf.workspace.feature.group" version="1.7.0.201306111400"/>
-<unit id="org.eclipse.equinox.p2.extras.feature.feature.group" version="1.2.0.v20130604-2046"/>
-<unit id="org.eclipse.e4.rcp.feature.group" version="1.2.0.v20130605-1738"/>
-<unit id="org.eclipse.e4.rcp.source.feature.group" version="1.2.0.v20130605-1738"/>
-<unit id="org.eclipse.help.feature.group" version="2.0.0.v20130605-2000"/>
-<unit id="org.eclipse.jdt.feature.group" version="3.9.0.v20130605-2000"/>
-<unit id="org.eclipse.equinox.p2.user.ui.source.feature.group" version="2.2.0.v20130604-2046"/>
-<unit id="org.eclipse.platform.feature.group" version="4.3.0.v20130605-2000"/>
-<unit id="org.eclipse.platform.source.feature.group" version="4.3.0.v20130605-2000"/>
-<unit id="org.eclipse.pde.feature.group" version="3.9.0.v20130605-2000"/>
-<unit id="org.eclipse.rcp.feature.group" version="4.3.0.v20130605-2000"/>
-<unit id="org.eclipse.rcp.source.feature.group" version="4.3.0.v20130605-2000"/>
-<unit id="org.eclipse.wst.web_ui.feature.feature.group" version="3.5.0.v201209252144-7O7QG-6EMkBQ3Bg_peduj80T4Kg8QYEUELicbYyf"/>
-<unit id="org.eclipse.wst.xml_ui.feature.feature.group" version="3.5.0.v201301022000-7H7IFisDxumVt037ridXmVSgs8DdRZKtSyS6PL"/>
-<unit id="org.eclipse.emf.ecore.feature.group" version="2.9.0.v20130528-0742"/>
-<unit id="org.eclipse.emf.common.feature.group" version="2.9.0.v20130528-0742"/>
-<unit id="org.eclipse.emf.edit.feature.group" version="2.9.0.v20130610-0406"/>
-<unit id="org.eclipse.emf.edit.ui.feature.group" version="2.9.0.v20130610-0406"/>
-<unit id="org.eclipse.equinox.p2.core.feature.feature.group" version="1.2.0.v20130604-2046"/>
-<unit id="org.eclipse.equinox.p2.core.feature.source.feature.group" version="1.2.0.v20130604-2046"/>
-<unit id="org.eclipse.equinox.p2.user.ui.feature.group" version="2.2.0.v20130604-2046"/>
-<unit id="org.eclipse.equinox.p2.extras.feature.source.feature.group" version="1.2.0.v20130604-2046"/>
-<unit id="org.eclipse.equinox.p2.rcp.feature.feature.group" version="1.2.0.v20130604-2046"/>
-<unit id="org.eclipse.equinox.p2.rcp.feature.source.feature.group" version="1.2.0.v20130604-2046"/>
-<unit id="org.eclipse.draw2d.feature.group" version="3.9.0.201305060205"/>
-<unit id="org.eclipse.gef.feature.group" version="3.9.0.201305060205"/>
-<unit id="org.eclipse.wst.jsdt.feature.feature.group" version="1.5.0.v201301022000-7H7DFhZFC7sReqSz-frflXk"/>
-<unit id="org.eclipse.wst.common_core.feature.feature.group" version="3.5.0.v201303130500-7B7EFShF7RZHOoIrQwQ4NJ"/>
-<unit id="org.eclipse.wst.common_ui.feature.feature.group" version="3.5.0.v201303130500-7C7BFeDEdhOawkYhCnQfypJsRxR5OK"/>
-<unit id="org.eclipse.wst.server_core.feature.feature.group" version="3.3.201.v20130412_1040-34Et8s73573C4Da2815"/>
-<unit id="org.eclipse.wst.server_ui.feature.feature.group" version="3.3.203.v20130413_1400-7B7AFO9AtNdu_xdIf1JkOkC8EAB"/>
-<unit id="org.eclipse.wst.web_core.feature.feature.group" version="3.5.0.v201209252144-7E7KFYxAJz0mwD584sMRRsRid0oqjcal"/>
-<unit id="org.eclipse.wst.xml_core.feature.feature.group" version="3.5.0.v201209252144-7C7OFvSF7RZHQWIhO6PwRi"/>
-<repository location="http://download.eclipse.org/releases/kepler"/>
-</location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="com.google.guava" version="12.0.0.v201212092141"/>
 <unit id="com.google.guava.source" version="12.0.0.v201212092141"/>
 <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/S20130724151342/repository/"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.emf.common.feature.group" version="2.9.0.v20130528-0742"/>
+<unit id="org.eclipse.wst.xml_core.feature.feature.group" version="3.5.0.v201209252144-7C7OFvSF7RZHQWIhO6PwRi"/>
+<unit id="org.eclipse.equinox.p2.rcp.feature.source.feature.group" version="1.2.0.v20130604-2046"/>
+<unit id="org.eclipse.gef.feature.group" version="3.9.0.201305060205"/>
+<unit id="org.eclipse.wst.server_core.feature.feature.group" version="3.3.201.v20130412_1040-34Et8s73573C4Da2815"/>
+<unit id="org.eclipse.wst.common_core.feature.feature.group" version="3.5.0.v201303130500-7B7EFShF7RZHOoIrQwQ4NJ"/>
+<unit id="org.eclipse.xtext.runtime.feature.group" version="2.4.2.v201306120542"/>
+<unit id="org.eclipse.draw2d.feature.group" version="3.9.0.201305060205"/>
+<unit id="org.eclipse.equinox.p2.core.feature.feature.group" version="1.2.0.v20130604-2046"/>
+<unit id="org.eclipse.e4.rcp.source.feature.group" version="1.2.0.v20130605-1738"/>
+<unit id="org.eclipse.equinox.p2.user.ui.source.feature.group" version="2.2.0.v20130604-2046"/>
+<unit id="org.eclipse.rcp.source.feature.group" version="4.3.0.v20130605-2000"/>
+<unit id="org.eclipse.emf.workspace.feature.group" version="1.7.0.201306111400"/>
+<unit id="org.eclipse.wst.jsdt.feature.feature.group" version="1.5.0.v201301022000-7H7DFhZFC7sReqSz-frflXk"/>
+<unit id="org.eclipse.emf.edit.feature.group" version="2.9.0.v20130610-0406"/>
+<unit id="org.eclipse.equinox.p2.user.ui.feature.group" version="2.2.0.v20130604-2046"/>
+<unit id="org.eclipse.emf.edit.ui.feature.group" version="2.9.0.v20130610-0406"/>
+<unit id="org.eclipse.platform.source.feature.group" version="4.3.0.v20130605-2000"/>
+<unit id="org.eclipse.wst.server_ui.feature.feature.group" version="3.3.203.v20130413_1400-7B7AFO9AtNdu_xdIf1JkOkC8EAB"/>
+<unit id="org.eclipse.equinox.p2.extras.feature.feature.group" version="1.2.0.v20130604-2046"/>
+<unit id="org.eclipse.wst.xml_ui.feature.feature.group" version="3.5.0.v201301022000-7H7IFisDxumVt037ridXmVSgs8DdRZKtSyS6PL"/>
+<unit id="org.eclipse.wst.web_core.feature.feature.group" version="3.5.0.v201209252144-7E7KFYxAJz0mwD584sMRRsRid0oqjcal"/>
+<unit id="org.eclipse.emf.ecore.feature.group" version="2.9.0.v20130528-0742"/>
+<unit id="org.eclipse.rcp.feature.group" version="4.3.0.v20130605-2000"/>
+<unit id="org.eclipse.wst.common_ui.feature.feature.group" version="3.5.0.v201303130500-7C7BFeDEdhOawkYhCnQfypJsRxR5OK"/>
+<unit id="org.eclipse.equinox.p2.extras.feature.source.feature.group" version="1.2.0.v20130604-2046"/>
+<unit id="org.eclipse.xtext.sdk.feature.group" version="2.4.2.v201306120542"/>
+<unit id="org.eclipse.wst.web_ui.feature.feature.group" version="3.5.0.v201209252144-7O7QG-6EMkBQ3Bg_peduj80T4Kg8QYEUELicbYyf"/>
+<unit id="org.eclipse.e4.rcp.feature.group" version="1.2.0.v20130605-1738"/>
+<unit id="org.eclipse.platform.feature.group" version="4.3.0.v20130605-2000"/>
+<unit id="org.eclipse.help.feature.group" version="2.0.0.v20130605-2000"/>
+<unit id="org.eclipse.equinox.p2.core.feature.source.feature.group" version="1.2.0.v20130604-2046"/>
+<unit id="org.eclipse.jdt.feature.group" version="3.9.0.v20130605-2000"/>
+<unit id="org.eclipse.equinox.p2.rcp.feature.feature.group" version="1.2.0.v20130604-2046"/>
+<unit id="org.eclipse.pde.feature.group" version="3.9.0.v20130605-2000"/>
+<repository location="http://download.eclipse.org/releases/kepler"/>
 </location>
 </locations>
 </target>

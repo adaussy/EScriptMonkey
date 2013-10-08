@@ -11,4 +11,5 @@ Require-Bundle: org.eclipse.escriptmonkey.scripting,
  org.eclipse.core.resources;bundle-version="3.8.100",
  org.eclipse.ui;bundle-version="3.105.0",
  org.eclipse.jface.text;bundle-version="3.8.100",
- org.eclipse.escriptmonkey.scripting.storedscript;bundle-version="1.0.0"
+ org.eclipse.escriptmonkey.scripting.storedscript;bundle-version="1.0.0",
+ org.eclipse.ui.editors;bundle-version="3.8.100"
