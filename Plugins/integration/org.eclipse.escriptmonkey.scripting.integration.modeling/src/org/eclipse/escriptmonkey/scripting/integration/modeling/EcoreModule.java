@@ -11,15 +11,22 @@
  *******************************************************************************/
 package org.eclipse.escriptmonkey.scripting.integration.modeling;
 
+import java.util.List;
+
+import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.command.AbstractCommand;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.EditingDomain;
+import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.escriptmonkey.scripting.common.RunnableWithResult;
 import org.eclipse.escriptmonkey.scripting.debug.Logger;
 import org.eclipse.escriptmonkey.scripting.integration.modeling.selector.GMFSemanticSeletor;
@@ -30,6 +37,8 @@ import org.eclipse.escriptmonkey.scripting.modules.AbstractScriptModule;
 import org.eclipse.escriptmonkey.scripting.modules.BootStrapper;
 import org.eclipse.escriptmonkey.scripting.modules.IModuleWrapper;
 import org.eclipse.escriptmonkey.scripting.modules.WrapToScript;
+import org.eclipse.gmf.runtime.common.core.command.CommandResult;
+import org.eclipse.gmf.runtime.emf.commands.core.command.AbstractTransactionalCommand;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorPart;
@@ -262,6 +271,14 @@ public class EcoreModule extends AbstractScriptModule {
 		return null;
 	}
 
+	protected ResourceSet getResourceSet() {
+		EditingDomain editingDomain = getEditingDomain();
+		if(editingDomain != null) {
+			return editingDomain.getResourceSet();
+		}
+		return null;
+	}
+
 	/**
 	 * Run an operation in the current editor's command stack
 	 * 
@@ -273,39 +290,71 @@ public class EcoreModule extends AbstractScriptModule {
 	@WrapToScript
 	public void runOperation(final Runnable operation, String operationName) {
 		EditingDomain domain = getEditingDomain();
-		if(domain != null) {
+
+		if(domain instanceof TransactionalEditingDomain) {
+			((TransactionalEditingDomain)domain).getCommandStack().execute(new GMFtoEMFCommandWrapper(new RunnableTransactionalCommandWrapper((TransactionalEditingDomain)domain, operationName, null, operation)));
+			//			((EditingDomain)domain).getCommandStack().undo();
+		} else if(domain != null) {
 			// execute the operation in a command
-			((EditingDomain)domain).getCommandStack().execute(new AbstractCommand(operationName) {
-
-				/**
-				 * Execute the operation
-				 */
-				@Override
-				public void execute() {
-					operation.run();
-				}
-
-				/**
-				 * Execute the operation
-				 */
-				@Override
-				public void redo() {
-					execute();
-				}
-
-				/**
-				 * Return true
-				 */
-				@Override
-				protected boolean prepare() {
-					return true;
-				}
-
-			});
+			((EditingDomain)domain).getCommandStack().execute(new RunnableCommandWrapper(operation));
 		} else {
 			// try simply running the operation
 			operation.run();
 		}
+	}
+
+	private class RunnableCommandWrapper extends AbstractCommand {
+
+		private Runnable operation;
+
+
+
+		public RunnableCommandWrapper(Runnable operation) {
+			super();
+			this.operation = operation;
+		}
+
+		/**
+		 * Execute the operation
+		 */
+		@Override
+		public void execute() {
+			operation.run();
+		}
+
+		/**
+		 * Execute the operation
+		 */
+		@Override
+		public void redo() {
+			execute();
+		}
+
+		/**
+		 * Return true
+		 */
+		@Override
+		protected boolean prepare() {
+			return true;
+		}
+	}
+
+	private class RunnableTransactionalCommandWrapper extends AbstractTransactionalCommand {
+
+		public RunnableTransactionalCommandWrapper(TransactionalEditingDomain domain, String label, List affectedFiles, Runnable operation) {
+			super(domain, label, affectedFiles);
+			this.operation = operation;
+		}
+
+		private Runnable operation;
+
+		@Override
+		protected CommandResult doExecuteWithResult(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
+			operation.run();
+			return CommandResult.newOKCommandResult();
+		}
+
+
 	}
 
 	public IModuleWrapper getWrapper() {
