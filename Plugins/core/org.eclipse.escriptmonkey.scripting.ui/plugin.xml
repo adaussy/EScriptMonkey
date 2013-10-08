@@ -311,4 +311,12 @@
             name="AvailableFrom">
       </metadata>
   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            description="Run the script selected in the Script Explorer View"
+            id="org.eclipse.escriptmonkey.scripting.ui.runSelectedScript"
+            name="Run Selected Script">
+      </command>
+   </extension>
 </plugin>

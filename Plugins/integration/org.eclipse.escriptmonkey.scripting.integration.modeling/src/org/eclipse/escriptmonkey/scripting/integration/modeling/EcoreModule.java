@@ -27,6 +27,8 @@ import org.eclipse.escriptmonkey.scripting.integration.modeling.ui.UriSelectionD
 import org.eclipse.escriptmonkey.scripting.module.platform.modules.DialogModule;
 import org.eclipse.escriptmonkey.scripting.module.platform.modules.SelectionModule;
 import org.eclipse.escriptmonkey.scripting.modules.AbstractScriptModule;
+import org.eclipse.escriptmonkey.scripting.modules.BootStrapper;
+import org.eclipse.escriptmonkey.scripting.modules.IModuleWrapper;
 import org.eclipse.escriptmonkey.scripting.modules.WrapToScript;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -304,6 +306,10 @@ public class EcoreModule extends AbstractScriptModule {
 			// try simply running the operation
 			operation.run();
 		}
+	}
+
+	public IModuleWrapper getWrapper() {
+		return BootStrapper.getWrapper(getScriptEngine().getID());
 	}
 
 }

@@ -10,6 +10,7 @@ import org.eclipse.escriptmonkey.scripting.ui.actions.RunScriptAction;
 import org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.Node;
 import org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.StoredScriptUI;
 import org.eclipse.escriptmonkey.scripting.ui.scriptuigraph.provider.ScriptCellLabelProvider;
+import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
@@ -46,6 +47,10 @@ public class ScriptEplorerView extends ViewPart {
 	private RefreshStoredScriptAction refreshStoreAction;
 
 	private EditScriptAction editScriptAction;
+
+	private Action expandAllAction;
+
+	private Action collapseAll;
 
 	public ScriptEplorerView() {
 	}
@@ -181,6 +186,28 @@ public class ScriptEplorerView extends ViewPart {
 			refreshStoreAction.setImageDescriptor(ResourceManager.getPluginImageDescriptor("org.eclipse.escriptmonkey.scripting.ui", "images/refresh.gif"));
 			refreshStoreAction.setEnabled(true);
 		}
+		{
+			expandAllAction = new Action("Expand ALl") {
+
+				@Override
+				public void run() {
+					treeViewer.expandAll();
+					super.run();
+				}
+			};
+			expandAllAction.setImageDescriptor(ResourceManager.getPluginImageDescriptor("org.eclipse.escriptmonkey.scripting.ui", "icons/full/obj16/expandall.gif"));
+		}
+		{
+			collapseAll = new Action("Collapse All") {
+
+				@Override
+				public void run() {
+					treeViewer.collapseAll();
+					super.run();
+				}
+			};
+			collapseAll.setImageDescriptor(ResourceManager.getPluginImageDescriptor("org.eclipse.escriptmonkey.scripting.ui", "icons/full/obj16/collapseall-1.gif"));
+		}
 	}
 
 	/**
@@ -188,6 +215,8 @@ public class ScriptEplorerView extends ViewPart {
 	 */
 	private void initializeToolBar() {
 		IToolBarManager tbm = getViewSite().getActionBars().getToolBarManager();
+		tbm.add(expandAllAction);
+		tbm.add(collapseAll);
 		tbm.add(playScriptAction);
 		tbm.add(editScriptAction);
 		tbm.add(refreshStoreAction);
