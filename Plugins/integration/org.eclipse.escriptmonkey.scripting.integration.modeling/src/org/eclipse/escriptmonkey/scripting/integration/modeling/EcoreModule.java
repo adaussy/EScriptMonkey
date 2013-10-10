@@ -8,9 +8,13 @@
  * Contributors:
  *    Pierre-Charles David (Obeo) - initial API and implementation
  *    Vincent Hemery (Atos Origin) - removing modeler dependencies
+ *    Arthur Daussy (Atos) - Update to be use in EASE
  *******************************************************************************/
 package org.eclipse.escriptmonkey.scripting.integration.modeling;
 
+import java.lang.reflect.Method;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.core.commands.ExecutionException;
@@ -24,11 +28,17 @@ import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EStructuralFeature.Setting;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
 import org.eclipse.emf.edit.domain.EditingDomain;
+import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
+import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.escriptmonkey.scripting.common.RunnableWithResult;
 import org.eclipse.escriptmonkey.scripting.debug.Logger;
+import org.eclipse.escriptmonkey.scripting.injection.CodeInjectorUtils;
 import org.eclipse.escriptmonkey.scripting.integration.modeling.selector.GMFSemanticSeletor;
 import org.eclipse.escriptmonkey.scripting.integration.modeling.ui.UriSelectionDialog;
 import org.eclipse.escriptmonkey.scripting.module.platform.modules.DialogModule;
@@ -46,6 +56,10 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
+import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
+
 /**
  * A base class which provides access to meta-model independent objects and services for Modeling scripts. This class is
  * not exposed directly as a DOM in this plug-in. It is made to be extended and customized by meta-model specific DOMs
@@ -58,7 +72,7 @@ public class EcoreModule extends AbstractScriptModule {
 
 	protected SelectionModule selectionModule = new SelectionModule();
 
-	protected String uri;
+	private String uri;
 
 
 	/**
@@ -80,6 +94,29 @@ public class EcoreModule extends AbstractScriptModule {
 
 	}
 
+	
+	/**
+	 * Return if the current instance is a instance of an EClass define by its name.
+	 * 
+	 * @param in
+	 * @param typeName
+	 * @return
+	 */
+	@WrapToScript
+	public boolean eInstanceOf(EObject in, String typeName) {
+		EClassifier classifier = getEPackage().getEClassifier(typeName);
+		if(classifier == null) {
+			DialogModule.error("Unable to find EClass named :" + typeName);
+		}
+		return classifier.isInstance(classifier);
+	}
+
+	protected String getUri() {
+		return uri;
+	}
+
+
+
 	/**
 	 * Returns the currently selected model element in the current UML editor if it is an instance of the named
 	 * meta-class (or a sub-class).
@@ -99,9 +136,34 @@ public class EcoreModule extends AbstractScriptModule {
 		}
 	}
 
+	protected String getFactoryVariableName() {
+		return "__" + getEPackage().getName().toUpperCase() + "__FACTORY";
+	}
+
+	/**
+	 * Filter used to match all create method from the factory
+	 */
+	protected static Predicate<Method> createMethodFilter = new Predicate<Method>() {
+
+		@Override
+		public boolean apply(Method arg0) {
+			if(arg0 != null) {
+				return arg0.getName().startsWith("create");
+			}
+			return false;
+		}
+	};
+
+
 	@WrapToScript
 	public void initEPackage(String uri) {
 		this.uri = uri;
+		EFactory factory = getFactory();
+		if(factory != null) {
+			String factoryName = getFactoryVariableName();
+			CodeInjectorUtils.injectJavaVariable(factoryName, factory, getScriptEngine());
+			CodeInjectorUtils.injectClass(factory.getClass(), createMethodFilter, CodeInjectorUtils.NO_FIELD_PREDICATE, null, null, factoryName, getScriptEngine());
+		}
 	}
 
 	@WrapToScript
@@ -271,6 +333,50 @@ public class EcoreModule extends AbstractScriptModule {
 		return null;
 	}
 
+	/**
+	 * Return all object referencing this EObject.
+	 * The return value is a collection of Array of size 2.
+	 * Result[0] = EStructual feature linking the two object
+	 * Result[1] = The referencing object
+	 * 
+	 * @param source
+	 * @return
+	 */
+	@WrapToScript
+	public static Collection<Object[]> getUsages(EObject source) {
+		if(source == null) {
+			return Collections.emptyList();
+		}
+
+		ECrossReferenceAdapter crossReferencer = ECrossReferenceAdapter.getCrossReferenceAdapter(source);
+		if(crossReferencer == null) {
+			// try to register a cross referencer at the highest level
+			crossReferencer = new ECrossReferenceAdapter();
+			if(source.eResource() != null) {
+				if(source.eResource().getResourceSet() != null) {
+					crossReferencer.setTarget(source.eResource().getResourceSet());
+				} else {
+					crossReferencer.setTarget(source.eResource());
+				}
+			} else {
+				crossReferencer.setTarget(source);
+			}
+		}
+
+		Collection<Setting> result = crossReferencer.getInverseReferences(source, true);
+		return Collections2.transform(result, new Function<Setting, Object[]>() {
+
+			@Override
+			public Object[] apply(Setting arg0) {
+				Object[] setting = new Object[2];
+				setting[1] = arg0.getEStructuralFeature();
+				setting[0] = arg0.getEObject();
+
+				return setting;
+			}
+		});
+	}
+
 	protected ResourceSet getResourceSet() {
 		EditingDomain editingDomain = getEditingDomain();
 		if(editingDomain != null) {
@@ -303,7 +409,7 @@ public class EcoreModule extends AbstractScriptModule {
 		}
 	}
 
-	private class RunnableCommandWrapper extends AbstractCommand {
+	protected static class RunnableCommandWrapper extends AbstractCommand {
 
 		private Runnable operation;
 
@@ -339,7 +445,19 @@ public class EcoreModule extends AbstractScriptModule {
 		}
 	}
 
-	private class RunnableTransactionalCommandWrapper extends AbstractTransactionalCommand {
+	private static ComposedAdapterFactory adapter = new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE);
+
+	@WrapToScript
+	public String ePrint(EObject target) {
+		IItemLabelProvider labelProvider = (IItemLabelProvider)adapter.adapt(target, IItemLabelProvider.class);
+		if(labelProvider != null) {
+			return labelProvider.getText(target);
+		}
+		return "[ERRO] Unable to print this EObject";
+	}
+
+
+	protected static class RunnableTransactionalCommandWrapper extends AbstractTransactionalCommand {
 
 		public RunnableTransactionalCommandWrapper(TransactionalEditingDomain domain, String label, List affectedFiles, Runnable operation) {
 			super(domain, label, affectedFiles);
@@ -360,5 +478,8 @@ public class EcoreModule extends AbstractScriptModule {
 	public IModuleWrapper getWrapper() {
 		return BootStrapper.getWrapper(getScriptEngine().getID());
 	}
+
+
+
 
 }

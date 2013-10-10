@@ -17,6 +17,7 @@ Export-Package: org.eclipse.escriptmonkey.scripting,
  org.eclipse.escriptmonkey.scripting.common,
  org.eclipse.escriptmonkey.scripting.debugging,
  org.eclipse.escriptmonkey.scripting.debugging.events,
+ org.eclipse.escriptmonkey.scripting.injection,
  org.eclipse.escriptmonkey.scripting.modules,
  org.eclipse.escriptmonkey.scripting.service
 Bundle-ActivationPolicy: lazy

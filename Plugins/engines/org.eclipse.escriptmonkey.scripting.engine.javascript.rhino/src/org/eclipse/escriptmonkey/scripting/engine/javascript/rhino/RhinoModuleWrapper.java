@@ -36,7 +36,9 @@ public class RhinoModuleWrapper implements IModuleWrapper {
 		StringBuffer body = new StringBuffer();
 
 		// insert hooked pre execution code
-		body.append(preExecutionCode);
+		if(preExecutionCode != null) {
+			body.append(preExecutionCode);
+		}
 
 		// create parameter string
 		final StringBuilder parameters = new StringBuilder();
@@ -59,7 +61,9 @@ public class RhinoModuleWrapper implements IModuleWrapper {
 		body.append(");\n");
 
 		// insert hooked post execution code
-		body.append(postExecutionCode);
+		if(postExecutionCode != null) {
+			body.append(postExecutionCode);
+		}
 
 		// insert return statement
 		body.append("\treturn ");

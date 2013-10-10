@@ -25,7 +25,7 @@ import org.eclipse.gmf.runtime.notation.NotationPackage;
 public class NotationModule extends EcoreModule {
 
 	public NotationModule() {
-		uri = NotationPackage.eNS_URI;
+		initEPackage(NotationPackage.eNS_URI);
 	}
 
 	@Override

@@ -22,7 +22,7 @@ import org.eclipse.uml2.uml.UMLPackage;
 public class UMLModule extends EcoreModule {
 
 	public UMLModule() {
-		uri = UMLPackage.eNS_URI;
+		initEPackage(UMLPackage.eNS_URI);
 	}
 
 	/**
