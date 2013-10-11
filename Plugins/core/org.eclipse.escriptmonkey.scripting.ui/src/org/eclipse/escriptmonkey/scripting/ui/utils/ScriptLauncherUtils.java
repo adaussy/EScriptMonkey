@@ -30,6 +30,9 @@ public class ScriptLauncherUtils {
 		if(UIMetadataUtils.hasToBeLaunchInUI(script)) {
 			engine.setIsUI(true);
 		}
+		if(UIMetadataUtils.generateCodeInjectionFile(script)) {
+			engine.addExecutionListener(new EffectiveScriptGenerator());
+		}
 		ScriptConsole console = ScriptConsole.create(engine.getName() + ": " + script.getUri(), engine);
 		engine.setOutputStream(console.getOutputStream());
 		engine.setErrorStream(console.getErrorStream());

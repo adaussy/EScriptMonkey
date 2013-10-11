@@ -45,5 +45,10 @@ public interface IUIMetadata {
 	 */
 	public static final String AVAILABLE_FROM = "AvailableFrom";
 
+	/**
+	 * Metadata use to generate the effective script during execution
+	 */
+	public static final String GENERATE_CODE_INJECTION_FILE_METADA = "GenerateInjectedCodeFile";
+
 
 }

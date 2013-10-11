@@ -32,6 +32,14 @@ public class UIMetadataUtils extends AbstractMetadataUtils {
 
 	}
 
+	public static boolean generateCodeInjectionFile(IStoredScript script) {
+		String effective = getUniqueMeta(script, IUIMetadata.GENERATE_CODE_INJECTION_FILE_METADA);
+		if("true".equals(effective)) {
+			return true;
+		}
+		return false;
+	}
+
 	public static List<String> getMenu(IStoredScript script) {
 		String menuList = getUniqueMeta(script, IUIMetadata.MENU_METADATA);
 		if(menuList == null) {

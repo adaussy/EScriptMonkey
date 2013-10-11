@@ -102,7 +102,7 @@ public class CodeInjectorUtils {
 	 * @param reload
 	 *        Set to true if the class has already been loaded
 	 */
-	public static void injectClass(Class<?> classToInject, Predicate<Method> methodToInjectPredicate, Predicate<Field> fieldToInjectPredicate, Function<Method, String> preExceutionCode, Function<Method, String> postExceutionCode, String injectedVariableName, IScriptEngine engine) {
+	public static void injectClass(Class<?> classToInject, Predicate<Method> methodToInjectPredicate, Predicate<Field> fieldToInjectPredicate, Function<Method, String> preExceutionCode, Function<Method, String> postExceutionCode, String injectedVariableName, IScriptEngine engine, String injectionName) {
 		// script code to inject
 		StringBuffer scriptCode = new StringBuffer();
 		Collection<Method> methodToInject = Collections2.filter(Lists.newArrayList(classToInject.getMethods()), methodToInjectPredicate);
@@ -146,7 +146,7 @@ public class CodeInjectorUtils {
 		if(ITracingConstant.ENVIRONEMENT_MODULE_WRAPPER_TRACING) {
 			Tracer.logInfo("[Class injection] Injecting code:\n" + codeToInject);
 		}
-		engine.inject(new Script("Class injected" + classToInject.getName(), scriptCode.toString()));
+		engine.inject(new Script(injectionName, scriptCode.toString()));
 	}
 
 	/**
@@ -184,7 +184,7 @@ public class CodeInjectorUtils {
 				return Modifier.isStatic(arg0.getModifiers()) && arg0.getAnnotation(WrapToScript.class) != null;
 			}
 		};
-		injectClass(module.getClass(), methodSelector, fieldSelector, null, null, EnvironmentModule.getRegisteredModuleName(module.getModuleName()), engine);
+		injectClass(module.getClass(), methodSelector, fieldSelector, null, null, EnvironmentModule.getRegisteredModuleName(module.getModuleName()), engine, "Injecting module " + module.getModuleName());
 	}
 
 
