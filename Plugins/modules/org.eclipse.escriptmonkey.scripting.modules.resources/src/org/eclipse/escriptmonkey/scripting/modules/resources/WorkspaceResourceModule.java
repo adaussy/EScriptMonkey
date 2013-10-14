@@ -32,6 +32,7 @@ import org.eclipse.ui.IEditorDescriptor;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.editors.text.EditorsUI;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.wizards.IWizardDescriptor;
 import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
@@ -193,7 +194,11 @@ public class WorkspaceResourceModule extends AbstractScriptModule {
 			public void run() {
 				try {
 					IEditorDescriptor editor = PlatformUI.getWorkbench().getEditorRegistry().getDefaultEditor(file.getName());
-					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().openEditor(new FileEditorInput(file), editor.getId());
+					if(editor == null)
+						editor = PlatformUI.getWorkbench().getEditorRegistry().findEditor(EditorsUI.DEFAULT_TEXT_EDITOR_ID);
+
+					if(editor != null)
+						PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().openEditor(new FileEditorInput(file), editor.getId());
 				} catch (PartInitException e) {
 				}
 			}

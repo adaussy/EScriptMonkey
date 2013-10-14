@@ -38,6 +38,9 @@ public class PythonEnvironementBootStrapper implements IScriptEngineLaunchExtens
 			}
 			engine.executeAsync(stringBuilder.toString());
 		}
+
+		// register java top level package
+		engine.executeAsync("import java");
 	}
 
 	public static IModuleWrapper getWrapper(final String engineID) {
