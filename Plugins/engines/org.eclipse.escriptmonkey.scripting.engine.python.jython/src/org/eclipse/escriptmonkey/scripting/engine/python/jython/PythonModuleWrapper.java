@@ -10,19 +10,25 @@
  *******************************************************************************/
 package org.eclipse.escriptmonkey.scripting.engine.python.jython;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import org.eclipse.escriptmonkey.scripting.Activator;
 import org.eclipse.escriptmonkey.scripting.debug.Logger;
+import org.eclipse.escriptmonkey.scripting.modules.AbstractModuleWrapper;
 import org.eclipse.escriptmonkey.scripting.modules.EnvironmentModule;
-import org.eclipse.escriptmonkey.scripting.modules.IModuleWrapper;
+import org.eclipse.escriptmonkey.scripting.modules.OptionalParameter;
 
 
-public class PythonModuleWrapper implements IModuleWrapper {
+public class PythonModuleWrapper extends AbstractModuleWrapper {
+
+	private static final String NULL_IN_PYHTON = "None";
 
 	public PythonModuleWrapper() {
 	}
@@ -34,9 +40,7 @@ public class PythonModuleWrapper implements IModuleWrapper {
 
 	@Override
 	public String createFunctionWrapper(String moduleVariable, Method method, Set<String> functionNames, String resultName, String preExecutionCode, String postExecutionCode) {
-		StringBuilder pythonScriptCode = new StringBuilder();
-
-		// use reflection to access methods
+		StringBuilder engineCode = new StringBuilder();
 
 		// create body
 		StringBuffer body = new StringBuffer("\t");
@@ -46,24 +50,8 @@ public class PythonModuleWrapper implements IModuleWrapper {
 			body.append(preExecutionCode);
 		}
 
-		// create parameter string
-		final StringBuilder parameters = new StringBuilder();
-		for(int i = 0; i < method.getParameterTypes().length; i++) {
-			parameters.append(", ");
-			parameters.append((char)('a' + i));
-		}
-		if(parameters.length() > 0)
-			parameters.replace(0, 2, "");
-
 		// insert method call
-		body.append(resultName);
-		body.append(" = ");
-		body.append(moduleVariable);
-		body.append(".");
-		body.append(method.getName());
-		body.append("(");
-		body.append(parameters);
-		body.append(")\n");
+		body.append(generateCallMethodOnDefinedVariableInfo(moduleVariable, method.getName(), resultName, generateParameterCall(method)));
 
 		// insert hooked post execution code
 		if(postExecutionCode != null) {
@@ -71,9 +59,7 @@ public class PythonModuleWrapper implements IModuleWrapper {
 		}
 
 		// insert return statement
-		body.append("\treturn ");
-		body.append(resultName);
-		body.append("\n");
+		body.append(generateReturnStatement(resultName));
 
 		for(String name : functionNames) {
 			if(!isCorrectMethodName(name)) {
@@ -81,16 +67,104 @@ public class PythonModuleWrapper implements IModuleWrapper {
 				return "";
 			}
 			if(!name.isEmpty()) {
-				pythonScriptCode.append("def ");
-				pythonScriptCode.append(name);
-				pythonScriptCode.append("(");
-				pythonScriptCode.append(parameters);
-				pythonScriptCode.append(") :\n");
-				pythonScriptCode.append(body);
+				engineCode.append(generateMethodDefinition(body, generateParameterSignature(method), name));
 			}
 		}
 
-		return pythonScriptCode.toString();
+		return engineCode.toString();
+	}
+
+
+	protected CharSequence generateMethodDefinition(StringBuffer body, CharSequence parametersSignature, String name) {
+		StringBuilder methodDef = new StringBuilder();
+		methodDef.append("def ");
+		methodDef.append(name);
+		methodDef.append("(");
+		methodDef.append(parametersSignature);
+		methodDef.append(") :\n");
+		methodDef.append(body);
+		return methodDef.toString();
+	}
+
+	protected CharSequence generateCallMethodOnDefinedVariableInfo(String moduleVariable, String methodName, String resultName, CharSequence parameters) {
+		StringBuilder body = new StringBuilder();
+		body.append(resultName);
+		body.append(" = ");
+		body.append(moduleVariable);
+		body.append(".");
+		body.append(methodName);
+		body.append("(");
+		body.append(parameters);
+		body.append(")\n");
+		return body;
+	}
+
+	protected CharSequence generateParameterSignature(Method method) {
+		StringBuilder parametersSignature = new StringBuilder();
+		Annotation[][] parameterAnnotations = method.getParameterAnnotations();
+		Class<?>[] parametersTypes = method.getParameterTypes();
+		for(int parameterIndex = 0; parameterIndex < parametersTypes.length; parameterIndex++) {
+			Annotation[] annots = parameterAnnotations[parameterIndex];
+			String parameterName = getParameterName(annots);
+			if(parameterName == null) {
+				parameterName = "a" + parameterIndex;
+			}
+			Class<?> type = parametersTypes[parameterIndex];
+			parametersSignature.append(parameterName);
+			if(annots.length > 0) {
+				for(Annotation a : annots) {
+					if(a instanceof OptionalParameter) {
+						parametersSignature.append(setOptionalParameterValue(type, (OptionalParameter)a));
+					}
+				}
+			}
+			if(parameterIndex != parametersTypes.length - 1) {
+				parametersSignature.append(", ");
+			}
+		}
+		return parametersSignature;
+	}
+
+	protected CharSequence generateParameterCall(Method method) {
+		StringBuilder parameters = new StringBuilder();
+		Annotation[][] parameterAnnotations = method.getParameterAnnotations();
+		Class<?>[] parametersTypes = method.getParameterTypes();
+		for(int parameterIndex = 0; parameterIndex < parametersTypes.length; parameterIndex++) {
+			Annotation[] annots = parameterAnnotations[parameterIndex];
+			String parameterName = getParameterName(annots);
+			if(parameterName == null) {
+				parameterName = "a" + parameterIndex;
+			}
+			parameters.append(parameterName);
+			if(parameterIndex != parametersTypes.length - 1) {
+				parameters.append(", ");
+			}
+		}
+		return parameters;
+	}
+
+
+	/**
+	 * Set the default value of an optional parameter
+	 * 
+	 * @param parametersSignature
+	 * @param type
+	 * @param a
+	 */
+	protected CharSequence setOptionalParameterValue(Class<?> type, OptionalParameter a) {
+		Object defaultValue = OptionalParameter.OptionalParameterHelper.getDefaultValue(a, type);
+		StringBuilder parametersSignature = new StringBuilder();
+		parametersSignature.append("=");
+		if(defaultValue != null) {
+			if(defaultValue instanceof String) {
+				parametersSignature.append("\"" + defaultValue + "\"");
+			} else {
+				parametersSignature.append(defaultValue.toString());
+			}
+		} else {
+			parametersSignature.append(getNullVariableName());
+		}
+		return parametersSignature;
 	}
 
 
@@ -106,7 +180,7 @@ public class PythonModuleWrapper implements IModuleWrapper {
 
 	@Override
 	public String getVariableDefinition(String name, String content) {
-		return getSaveName(name) + " = " + content + ";";
+		return getSaveName(name) + " = " + content + "\n";
 	}
 
 	@Override
@@ -131,7 +205,7 @@ public class PythonModuleWrapper implements IModuleWrapper {
 		return code.toString();
 	}
 
-	private static String getSaveName(final String identifier) {
+	private String getSaveName(final String identifier) {
 		// check if name is already valid
 		if(isSaveName(identifier))
 			return identifier;
@@ -159,11 +233,11 @@ public class PythonModuleWrapper implements IModuleWrapper {
 		return buffer.toString();
 	}
 
-	public static boolean isCorrectMethodName(String methodName) {
+	public boolean isCorrectMethodName(String methodName) {
 		return isSaveName(methodName) && !forbidenKeywork.contains(methodName);
 	}
 
-	public static boolean isSaveName(final String identifier) {
+	public boolean isSaveName(final String identifier) {
 		return Pattern.matches("[a-zA-Z_$][a-zA-Z0-9_$]*", identifier);
 	}
 
@@ -174,6 +248,39 @@ public class PythonModuleWrapper implements IModuleWrapper {
 		forbidenKeywork.add("for");
 		forbidenKeywork.add("while");
 		//Complete this list
+	}
+
+	protected String generateReturnStatement(String resultName) {
+		StringBuilder returnStatment = new StringBuilder();
+		returnStatment.append("\treturn ");
+		returnStatment.append(resultName);
+		returnStatment.append("\n");
+		return returnStatment.toString();
+	}
+
+	protected CharSequence generateClass(String className, List<? extends CharSequence> extendsClass, CharSequence body) {
+		StringBuilder classDef = new StringBuilder();
+		classDef.append("class ").append(className);
+		if(extendsClass != null && !extendsClass.isEmpty()) {
+			classDef.append("(");
+			ListIterator<? extends CharSequence> ite = extendsClass.listIterator();
+			while(ite.hasNext()) {
+				CharSequence extend = (CharSequence)ite.next();
+				classDef.append(extend);
+				if(ite.hasNext()) {
+					classDef.append(",");
+				}
+			}
+			classDef.append(")");
+		}
+		classDef.append(":\n\t");
+		String newBody = Pattern.compile("\n").matcher(body).replaceAll("\n\t");
+		classDef.append(newBody);
+		return classDef.toString();
+	}
+
+	protected String getNullVariableName() {
+		return NULL_IN_PYHTON;
 	}
 
 }

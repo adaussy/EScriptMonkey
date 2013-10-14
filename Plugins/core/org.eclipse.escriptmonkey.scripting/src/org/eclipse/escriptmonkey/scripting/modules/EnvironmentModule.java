@@ -64,10 +64,13 @@ public class EnvironmentModule extends AbstractScriptModule implements IScriptMo
 	 * 
 	 * @param name
 	 *        name of module to load
+	 * @param injectCode
+	 *        Default value is true. If set to true the load module will only inject a java varaible into the script but will no wrap the script into
+	 *        the Script engine language.
 	 * @return loaded module instance
 	 */
 	@WrapToScript
-	public final IScriptModule loadModule(final String moduleIdentifier) {
+	public final IScriptModule loadModule(@NamedParameter(name = "moduleName") final String moduleIdentifier) {
 		boolean reLoaded = false;
 		IScriptModule module = findModule(moduleIdentifier);
 		if(module == null) {
@@ -132,7 +135,7 @@ public class EnvironmentModule extends AbstractScriptModule implements IScriptMo
 			addModule(module);
 		}
 
-		// create functino wrappers
+		// create function wrappers
 		createWrappers(module, reLoaded);
 
 		// notify listeners

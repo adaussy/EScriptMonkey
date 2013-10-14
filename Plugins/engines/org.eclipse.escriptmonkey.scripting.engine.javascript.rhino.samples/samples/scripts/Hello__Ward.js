@@ -13,7 +13,7 @@ text += "The quick brown fox jumped over the lazy dog's back.";
 text += "Now is the time for all good men to come to the aid of their country."
 
 Packages.org.eclipse.jface.dialogs.MessageDialog.openInformation( 	
-	WINDOW.getShell(), 	
+	org.eclipse.swt.widgets.Display.getDefault().getActiveShell(), 	
 	"Monkey Dialog", 
 	text	
 	)

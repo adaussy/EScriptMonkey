@@ -7,18 +7,28 @@
  *
  * Contributors:
  *     Christian Pontesegger - initial API and implementation
+ *     Arthur Daussy - Allow optional parameter
  *******************************************************************************/
 package org.eclipse.escriptmonkey.scripting.engine.javascript.rhino;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import org.eclipse.escriptmonkey.scripting.Activator;
+import org.eclipse.escriptmonkey.scripting.debug.Logger;
+import org.eclipse.escriptmonkey.scripting.modules.AbstractModuleWrapper;
 import org.eclipse.escriptmonkey.scripting.modules.EnvironmentModule;
-import org.eclipse.escriptmonkey.scripting.modules.IModuleWrapper;
+import org.eclipse.escriptmonkey.scripting.modules.OptionalParameter;
 
-public class RhinoModuleWrapper implements IModuleWrapper {
+public class RhinoModuleWrapper extends AbstractModuleWrapper {
+
+	private static final String UNDIFINED_KEYWORD = "undifined";
+
 
 	@Override
 	public String getSaveVariableName(final String variableName) {
@@ -29,8 +39,6 @@ public class RhinoModuleWrapper implements IModuleWrapper {
 	public String createFunctionWrapper(final String moduleVariable, final Method method, final Set<String> functionNames, final String resultName, final String preExecutionCode, final String postExecutionCode) {
 
 		StringBuilder javaScriptCode = new StringBuilder();
-
-		// use reflection to access methods
 
 		// create body
 		StringBuffer body = new StringBuffer();
@@ -50,15 +58,9 @@ public class RhinoModuleWrapper implements IModuleWrapper {
 			parameters.replace(0, 2, "");
 
 		// insert method call
-		body.append("\tvar ");
-		body.append(resultName);
-		body.append(" = ");
-		body.append(moduleVariable);
-		body.append(".");
-		body.append(method.getName());
-		body.append("(");
-		body.append(parameters);
-		body.append(");\n");
+		CharSequence generateParameterCall = generateParameterCall(method);
+		body.append(generateOptionalParamterBodyPart(method));
+		body.append(generateCallMethodOnDefinedVariableInfo(moduleVariable, method.getName(), resultName, generateParameterCall));
 
 		// insert hooked post execution code
 		if(postExecutionCode != null) {
@@ -66,23 +68,159 @@ public class RhinoModuleWrapper implements IModuleWrapper {
 		}
 
 		// insert return statement
-		body.append("\treturn ");
-		body.append(resultName);
-		body.append(";\n");
+		body.append(generateReturnStatement(resultName));
 
 		for(String name : functionNames) {
+			if(!isCorrectMethodName(name)) {
+				Logger.logError("The method name " + name + " from the module " + moduleVariable + "can not be used because it's name is not correct", Activator.PLUGIN_ID);
+				return "";
+			}
 			if(!name.isEmpty()) {
-				javaScriptCode.append("function ");
-				javaScriptCode.append(name);
-				javaScriptCode.append("(");
-				javaScriptCode.append(parameters);
-				javaScriptCode.append(") {\n");
-				javaScriptCode.append(body);
-				javaScriptCode.append("}\n");
+				javaScriptCode.append(generateMethodDefinition(body, generateParameterCall, name));
 			}
 		}
 
 		return javaScriptCode.toString();
+	}
+
+	/**
+	 * Generate a part of a the body which handle optional argument.
+	 * It will generate for example
+	 * function name(a,b,c){
+	 * a = a || null;
+	 * b = b || "defaultStringValue";
+	 * c = c || 16
+	 * ...
+	 * body
+	 * ...
+	 * }
+	 * 
+	 * @param method
+	 * @return
+	 */
+	protected CharSequence generateOptionalParamterBodyPart(Method method) {
+		StringBuilder defaultValueParameters = new StringBuilder();
+		Annotation[][] parameterAnnotations = method.getParameterAnnotations();
+		Class<?>[] parametersTypes = method.getParameterTypes();
+		for(int parameterIndex = 0; parameterIndex < parametersTypes.length; parameterIndex++) {
+			Annotation[] annots = parameterAnnotations[parameterIndex];
+			String parameterName = getParameterName(annots);
+			if(parameterName == null) {
+				parameterName = "a" + parameterIndex;
+			}
+			Class<?> type = parametersTypes[parameterIndex];
+			if(annots.length > 0) {
+				for(Annotation a : annots) {
+					if(a instanceof OptionalParameter) {
+						defaultValueParameters.append("\tvar ");
+						defaultValueParameters.append(parameterName);
+						defaultValueParameters.append(" = ");
+						defaultValueParameters.append(parameterName);
+						defaultValueParameters.append(" || ");
+						CharSequence setOptionalParameterValue = setOptionalParameterValue(type, (OptionalParameter)a);
+						if(setOptionalParameterValue != null) {
+							defaultValueParameters.append(setOptionalParameterValue);
+						} else {
+							defaultValueParameters.append("null");
+						}
+						defaultValueParameters.append(";\n");
+					}
+				}
+			}
+		}
+		return defaultValueParameters;
+	}
+
+	/**
+	 * Generate code for optional parameter (and handle default value)
+	 * 
+	 * @param type
+	 * @param a
+	 * @return
+	 */
+	protected CharSequence setOptionalParameterValue(Class<?> type, OptionalParameter a) {
+		Object defaultValue = OptionalParameter.OptionalParameterHelper.getDefaultValue(a, type);
+		StringBuilder parametersSignature = new StringBuilder();
+		parametersSignature.append("=");
+		if(defaultValue != null) {
+			if(defaultValue instanceof String) {
+				parametersSignature.append("\"" + defaultValue + "\"");
+			} else {
+				parametersSignature.append(defaultValue.toString());
+			}
+		}
+		return null;
+	}
+
+	protected String getNullVariableName() {
+		return UNDIFINED_KEYWORD;
+	}
+
+	public static List<String> forbidenKeywork = new ArrayList<String>();
+
+
+	public boolean isCorrectMethodName(String methodName) {
+		return isSaveName(methodName) && !forbidenKeywork.contains(methodName);
+	}
+
+
+	static {
+		forbidenKeywork.add("for");
+		forbidenKeywork.add("while");
+		//Complete this list
+	}
+
+
+
+	/**
+	 * Generate method definition.
+	 * function name (parametersSignature){
+	 * ...
+	 * body
+	 * ...
+	 * }
+	 * 
+	 * @param body
+	 *        the body
+	 * @param parametersSignature
+	 *        the parameters signature
+	 * @param name
+	 *        the name
+	 * @return the char sequence
+	 */
+	protected CharSequence generateMethodDefinition(CharSequence body, CharSequence parametersSignature, String name) {
+		StringBuilder methodDef = new StringBuilder();
+		methodDef.append("function ");
+		methodDef.append(name);
+		methodDef.append("(");
+		methodDef.append(parametersSignature);
+		methodDef.append(") {\n");
+		methodDef.append(body);
+		methodDef.append("}\n");
+		return methodDef.toString();
+	}
+
+
+	/**
+	 * @param method
+	 * @return
+	 */
+	protected CharSequence generateParameterCall(Method method) {
+		StringBuilder parameters = new StringBuilder();
+		Annotation[][] parameterAnnotations = method.getParameterAnnotations();
+		Class<?>[] parametersTypes = method.getParameterTypes();
+		for(int parameterIndex = 0; parameterIndex < parametersTypes.length; parameterIndex++) {
+			Annotation[] annots = parameterAnnotations[parameterIndex];
+			String parameterName = getParameterName(annots);
+			if(parameterName == null) {
+				parameterName = "a" + parameterIndex;
+			}
+			parameters.append(parameterName);
+			if(parameterIndex != parametersTypes.length - 1) {
+				parameters.append(", ");
+			}
+		}
+		return parameters;
 	}
 
 	@Override
@@ -153,6 +291,28 @@ public class RhinoModuleWrapper implements IModuleWrapper {
 
 	public static boolean isSaveName(final String identifier) {
 		return Pattern.matches("[a-zA-Z_$][a-zA-Z0-9_$]*", identifier);
+	}
+
+	protected String generateReturnStatement(String resultName) {
+		StringBuilder returnStatment = new StringBuilder();
+		returnStatment.append("\treturn ");
+		returnStatment.append(resultName);
+		returnStatment.append(";\n");
+		return returnStatment.toString();
+	}
+
+	protected CharSequence generateCallMethodOnDefinedVariableInfo(String moduleVariable, String methodName, String resultName, CharSequence parameters) {
+		StringBuilder body = new StringBuilder();
+		body.append("\tvar ");
+		body.append(resultName);
+		body.append(" = ");
+		body.append(moduleVariable);
+		body.append(".");
+		body.append(methodName);
+		body.append("(");
+		body.append(parameters);
+		body.append(");\n");
+		return body;
 	}
 
 }

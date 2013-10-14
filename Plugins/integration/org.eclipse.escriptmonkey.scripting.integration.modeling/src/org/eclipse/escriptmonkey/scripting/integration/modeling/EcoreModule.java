@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.escriptmonkey.scripting.integration.modeling;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Collections;
@@ -37,7 +38,6 @@ import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.escriptmonkey.scripting.common.RunnableWithResult;
-import org.eclipse.escriptmonkey.scripting.debug.Logger;
 import org.eclipse.escriptmonkey.scripting.injection.CodeInjectorUtils;
 import org.eclipse.escriptmonkey.scripting.integration.modeling.selector.GMFSemanticSeletor;
 import org.eclipse.escriptmonkey.scripting.integration.modeling.ui.UriSelectionDialog;
@@ -46,6 +46,8 @@ import org.eclipse.escriptmonkey.scripting.module.platform.modules.SelectionModu
 import org.eclipse.escriptmonkey.scripting.modules.AbstractScriptModule;
 import org.eclipse.escriptmonkey.scripting.modules.BootStrapper;
 import org.eclipse.escriptmonkey.scripting.modules.IModuleWrapper;
+import org.eclipse.escriptmonkey.scripting.modules.NamedParameter;
+import org.eclipse.escriptmonkey.scripting.modules.OptionalParameter;
 import org.eclipse.escriptmonkey.scripting.modules.WrapToScript;
 import org.eclipse.gmf.runtime.common.core.command.CommandResult;
 import org.eclipse.gmf.runtime.emf.commands.core.command.AbstractTransactionalCommand;
@@ -81,7 +83,6 @@ public class EcoreModule extends AbstractScriptModule {
 	 * 
 	 * @return the currently selected model element.
 	 */
-	@WrapToScript
 	public EObject getSelection() {
 		Object selection = selectionModule.getCustomSelectionFromSelector(GMFSemanticSeletor.SELECTOR_ID);
 		if(selection instanceof EObject) {
@@ -94,21 +95,21 @@ public class EcoreModule extends AbstractScriptModule {
 
 	}
 
-	
+
 	/**
 	 * Return if the current instance is a instance of an EClass define by its name.
 	 * 
-	 * @param in
+	 * @param eObject
 	 * @param typeName
 	 * @return
 	 */
 	@WrapToScript
-	public boolean eInstanceOf(EObject in, String typeName) {
+	public boolean eInstanceOf(@NamedParameter(name = "eObject") EObject eObject, @NamedParameter(name = "type") String typeName) {
 		EClassifier classifier = getEPackage().getEClassifier(typeName);
 		if(classifier == null) {
 			DialogModule.error("Unable to find EClass named :" + typeName);
 		}
-		return classifier.isInstance(classifier);
+		return classifier.isInstance(eObject);
 	}
 
 	protected String getUri() {
@@ -127,13 +128,16 @@ public class EcoreModule extends AbstractScriptModule {
 	 *         meta-class or a sub-class of it.
 	 */
 	@WrapToScript
-	public EObject getSelectionFromType(String umlTypeName) {
+	public EObject getSelection(@NamedParameter(name = "type") @OptionalParameter String umlTypeName) {
 		EObject selection = getSelection();
-		if(isA(selection, umlTypeName)) {
-			return selection;
-		} else {
-			return null;
+		if(umlTypeName != null) {
+			if(eInstanceOf(selection, umlTypeName)) {
+				return selection;
+			} else {
+				return null;
+			}
 		}
+		return selection;
 	}
 
 	protected String getFactoryVariableName() {
@@ -156,16 +160,39 @@ public class EcoreModule extends AbstractScriptModule {
 
 
 	@WrapToScript
-	public void initEPackage(String uri) {
-		this.uri = uri;
+	public void initEPackage(@NamedParameter(name = "uri") String uri) {
+		if(uri == null) {
+			initEPackageFromDialog();
+		} else {
+			this.uri = uri;
+		}
 		EFactory factory = getFactory();
 		if(factory != null) {
 			String factoryName = getFactoryVariableName();
 			CodeInjectorUtils.injectJavaVariable(factoryName, factory, getScriptEngine());
-			CodeInjectorUtils.injectClass(factory.getClass(), createMethodFilter, CodeInjectorUtils.NO_FIELD_PREDICATE, null, null, factoryName, getScriptEngine());
+			CodeInjectorUtils.injectClass(factory.getClass(), createMethodFilter, CodeInjectorUtils.NO_FIELD_PREDICATE, null, null, factoryName, getScriptEngine(), "[UML Module] Injecting class " + factory.getClass().getName());
 		}
 	}
 
+	/*
+	 * TODO Finish this
+	 */
+	@WrapToScript
+	public Resource createResource(String modelName, String path) {
+		ResourceSet resourceSet = getResourceSet();
+		if(resourceSet == null) {
+			DialogModule.error("Unable to retreive a resource set");
+			return null;
+		}
+		return null;
+	}
+
+
+	/**
+	 * Get the factory of selected meta model.
+	 * 
+	 * @return
+	 */
 	@WrapToScript
 	public EFactory getFactory() {
 		if(this.uri == null) {
@@ -203,7 +230,7 @@ public class EcoreModule extends AbstractScriptModule {
 	 * @throws CoreException
 	 */
 	@WrapToScript
-	public void addErrorMarker(EObject toLog, String message) throws CoreException {
+	public void addErrorMarker(@NamedParameter(name = "eObject") EObject toLog, @NamedParameter(name = "message") String message) throws CoreException {
 		EMFMarkerUtil.addMarkerFor(toLog, message, IMarker.SEVERITY_ERROR);
 
 	}
@@ -216,7 +243,7 @@ public class EcoreModule extends AbstractScriptModule {
 	 * @throws CoreException
 	 */
 	@WrapToScript
-	public void addInfoMarker(EObject toLog, String message) throws CoreException {
+	public void addInfoMarker(@NamedParameter(name = "eObject") EObject toLog, @NamedParameter(name = "message") String message) throws CoreException {
 		EMFMarkerUtil.addMarkerFor(toLog, message, IMarker.SEVERITY_INFO);
 	}
 
@@ -228,7 +255,7 @@ public class EcoreModule extends AbstractScriptModule {
 	 * @throws CoreException
 	 */
 	@WrapToScript
-	public void addWarningMarker(EObject toLog, String message) throws CoreException {
+	public void addWarningMarker(@NamedParameter(name = "eObject") EObject toLog, @NamedParameter(name = "message") String message) throws CoreException {
 		EMFMarkerUtil.addMarkerFor(toLog, message, IMarker.SEVERITY_WARNING);
 	}
 
@@ -277,36 +304,33 @@ public class EcoreModule extends AbstractScriptModule {
 	}
 
 	/**
-	 * Test whether the specified object is an instance of the named UML meta-class (or a sub-class).
+	 * Save:
+	 * The current editor if no eObject is passed in argument
+	 * The resource containing the eObject passed in argument
 	 * 
-	 * @param element
-	 *        the object to test
-	 * @param typeName
-	 *        the name of a UML meta-class (e.g. "Class" or "Property").
-	 * @return <code>true</code> iff the element is an instance of the named class or a sub-class.
+	 * @param eObject
 	 */
 	@WrapToScript
-	public boolean isA(Object element, String typeName) {
-		EClassifier type = getEPackage().getEClassifier(typeName);
-		if(type == null) {
-			Logger.logError("Unable to get a classifier for type named " + typeName);
-			return false;
+	public void save(@NamedParameter(name = "eObject") @OptionalParameter EObject eObject) {
+		if(eObject == null) {
+			save();
 		} else {
-			return element != null && type.isInstance(element);
+			try {
+				eObject.eResource().save(null);
+			} catch (IOException e) {
+				e.printStackTrace();
+				DialogModule.error(e.getMessage());
+			}
 		}
 	}
 
-	/**
-	 * Save the current editor
-	 */
-	@WrapToScript
 	public void save() {
 		getCurrentEditorPart().doSave(new NullProgressMonitor());
 	}
 
 	@WrapToScript
 	protected Shell getShell() {
-		RunnableWithResult getShellRunnable = new RunnableWithResult() {
+		RunnableWithResult<Shell> getShellRunnable = new RunnableWithResult<Shell>() {
 
 			private Shell activeShell;
 
@@ -317,7 +341,7 @@ public class EcoreModule extends AbstractScriptModule {
 			}
 
 			@Override
-			public Object getResult() {
+			public Shell getResult() {
 				return activeShell;
 			}
 		};
@@ -343,7 +367,7 @@ public class EcoreModule extends AbstractScriptModule {
 	 * @return
 	 */
 	@WrapToScript
-	public static Collection<Object[]> getUsages(EObject source) {
+	public static Collection<Object[]> getUsages(@NamedParameter(name = "eObject") EObject source) {
 		if(source == null) {
 			return Collections.emptyList();
 		}
@@ -385,6 +409,11 @@ public class EcoreModule extends AbstractScriptModule {
 		return null;
 	}
 
+	public void runOperation(@NamedParameter(name = "operation") final Runnable operation) {
+		runOperation(operation, "Script Operation");
+	}
+
+
 	/**
 	 * Run an operation in the current editor's command stack
 	 * 
@@ -394,7 +423,7 @@ public class EcoreModule extends AbstractScriptModule {
 	 *        the name to give to the operation execution
 	 */
 	@WrapToScript
-	public void runOperation(final Runnable operation, String operationName) {
+	public void runOperation(@NamedParameter(name = "operation") final Runnable operation, @NamedParameter(name = "name") @OptionalParameter(defaultValue = "Script Operation") String operationName) {
 		EditingDomain domain = getEditingDomain();
 
 		if(domain instanceof TransactionalEditingDomain) {

@@ -4,6 +4,10 @@
  * Kudos: Paul Colton (Aptana, Inc.) & Arthur Daussy
  * Description: {You can use this script to replace the current selection of the active text editor with the current date}
  * License: EPL 1.0
+ * EnableWhen::[With selection {
+ *        InstanceOf "org.eclipse.jface.text.TextSelection"{
+ *            }
+ * }]::
  */
  
 function main() {

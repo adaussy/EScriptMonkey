@@ -310,6 +310,10 @@
             impl="org.eclipse.escriptmonkey.scripting.ui.metadata.AvailableFromMetadataParser"
             name="AvailableFrom">
       </metadata>
+      <metadata
+            impl="org.eclipse.escriptmonkey.scripting.ui.metadata.EffectiveScriptGenerationMetadata"
+            name="GenerateInjectedCodeFile">
+      </metadata>
   </extension>
    <extension
          point="org.eclipse.ui.commands">
