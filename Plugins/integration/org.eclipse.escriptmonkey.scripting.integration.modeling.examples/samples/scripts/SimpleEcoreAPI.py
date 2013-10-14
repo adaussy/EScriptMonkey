@@ -1,16 +1,12 @@
 #
 # Thread: UI
-# Menu: Examples > Modeling > Fill a UML model
+# Menu: Examples > Modeling > Simple EMF API
 # Kudos: Arthur Daussy
-# Description: { Demonstrate how to fill a model using EcoreModule. For this example we are filling an UML model.}
+# Description: { Demonstrate how to a simple API for any generated EMF metamodel}
 # EnableWhen::[And {
-#   With activeEditor {
-#        Equal "org.eclipse.papyrus.infra.core.papyrusEditor"
-#    },
-#    With selection {
+# With selection {
 #        Iterable {
 #            AdaptTo "org.eclipse.emf.ecore.EObject"{
-#                InstanceOf "org.eclipse.uml2.uml.Class"
 #            }
 #        }
 #    }
@@ -31,7 +27,10 @@ class MyRunnable(Runnable) :
         print "Creating class in "+currentParent.getName()
         clazz = getFactory().createClass()
         clazz.setName(name)
-        currentParent.getNestedClassifiers().add(clazz)
+        if eInstanceOf(currentParent,"Model"):
+            currentParent.getPackagedElements().add(clazz)
+        else:
+            currentParent.getNestedClassifiers().add(clazz)
         return clazz
     
     def run(self):
@@ -53,8 +52,8 @@ initEPackage("http://www.eclipse.org/uml2/4.0.0/UML")
 # Get the selected EObject
 print "Get selection using priority order of the Custom Selector Service\n"
 selection =  getCustomSelection()
-if (not isinstance(selection,Clazz)):
-    print "Please select a class"
+if (not eInstanceOf(selection,"Model")):
+    raise Exception("Please select a class") 
 op = MyRunnable()
 runOperation(op,"Run modification in a transaction")
 save()

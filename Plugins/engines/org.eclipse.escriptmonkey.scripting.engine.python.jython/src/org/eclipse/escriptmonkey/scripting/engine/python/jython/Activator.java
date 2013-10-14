@@ -22,6 +22,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
+import org.python.core.Py;
 import org.python.core.PySystemState;
 
 
@@ -46,7 +47,7 @@ public class Activator extends AbstractUIPlugin {
 		Properties postProperties = new Properties();
 		postProperties.put("python.home", getPluginRootDir());
 		postProperties.put("python.modules.builtin", "errno");
-
+		Py.getSystemState().setClassLoader(this.getClass().getClassLoader());
 		PySystemState.initialize(preProperties, postProperties, new String[0]);
 
 		//				PyObject load = org.python.core.imp.
