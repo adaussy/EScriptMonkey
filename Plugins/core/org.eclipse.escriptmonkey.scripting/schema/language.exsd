@@ -228,6 +228,53 @@
       </complexType>
    </element>
 
+   <element name="engineDescriptor">
+      <complexType>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The name of the engine
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  The id of the engine (should be the same of the id register in engine extension point)
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="description" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="licenses" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="featureID" type="string">
+            <annotation>
+               <documentation>
+                  The id of the feature to install to get this engine
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="UpdateSiteURL" type="string">
+            <annotation>
+               <documentation>
+                  URL of the update where this engine can be installed
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
    <annotation>
       <appinfo>
          <meta.section type="since"/>

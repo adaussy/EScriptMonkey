@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+<extension
+         point="org.eclipse.ui.newWizards">
+    <wizard
+          category="org.eclipse.ui.Examples/org.eclipse.eclipsemonkey.newsamplecategory"
+          class="org.eclipse.escriptmonkey.scripting.integration.modeling.papyrus.examples.PapyrusScriptSamples"
+          id="org.eclipse.escriptmonkey.scripting.integration.modeling.papyrus.examples.PapyrusScriptSamples"
+          name="Papyrus integration into EASE">
+    </wizard>
+   </extension>
+</plugin>
