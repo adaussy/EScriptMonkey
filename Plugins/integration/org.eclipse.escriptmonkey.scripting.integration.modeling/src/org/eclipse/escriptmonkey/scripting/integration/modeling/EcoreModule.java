@@ -20,11 +20,14 @@ import java.util.List;
 
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.command.AbstractCommand;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.emf.ecore.EObject;
@@ -32,12 +35,14 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.escriptmonkey.scripting.common.RunnableWithResult;
+import org.eclipse.escriptmonkey.scripting.debug.Logger;
 import org.eclipse.escriptmonkey.scripting.injection.CodeInjectorUtils;
 import org.eclipse.escriptmonkey.scripting.integration.modeling.selector.GMFSemanticSeletor;
 import org.eclipse.escriptmonkey.scripting.integration.modeling.ui.UriSelectionDialog;
@@ -49,6 +54,8 @@ import org.eclipse.escriptmonkey.scripting.modules.IModuleWrapper;
 import org.eclipse.escriptmonkey.scripting.modules.NamedParameter;
 import org.eclipse.escriptmonkey.scripting.modules.OptionalParameter;
 import org.eclipse.escriptmonkey.scripting.modules.WrapToScript;
+import org.eclipse.escriptmonkey.scripting.modules.interaction.InputModule;
+import org.eclipse.escriptmonkey.scripting.modules.interaction.OutputModule;
 import org.eclipse.gmf.runtime.common.core.command.CommandResult;
 import org.eclipse.gmf.runtime.emf.commands.core.command.AbstractTransactionalCommand;
 import org.eclipse.swt.widgets.Display;
@@ -57,6 +64,7 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.dialogs.ContainerSelectionDialog;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
@@ -73,6 +81,10 @@ import com.google.common.collect.Collections2;
 public class EcoreModule extends AbstractScriptModule {
 
 	protected SelectionModule selectionModule = new SelectionModule();
+
+	protected OutputModule output = new OutputModule();
+
+	protected InputModule input = new InputModule();
 
 	private String uri;
 
@@ -174,17 +186,69 @@ public class EcoreModule extends AbstractScriptModule {
 		}
 	}
 
-	/*
-	 * TODO Finish this
+
+
+	/**
+	 * Create a new resource
+	 * 
+	 * @param modelName
+	 *        Name of the resource or null is set dynamically
+	 * @param containerURI
+	 *        URI locating the container
+	 * @return
 	 */
 	@WrapToScript
-	public Resource createResource(String modelName, String path) {
+	public Resource createResource(@OptionalParameter @NamedParameter(name = "name") String modelName, @NamedParameter(name = "uri") @OptionalParameter String containerURI) {
 		ResourceSet resourceSet = getResourceSet();
 		if(resourceSet == null) {
-			DialogModule.error("Unable to retreive a resource set");
-			return null;
+			Logger.logWarning("Unable to get the current resourceSet. Creating a new one...");
+			resourceSet = new ResourceSetImpl();
 		}
-		return null;
+		URI resourceURI = createURI(containerURI, modelName);
+		Resource resource = null;
+		try {
+			resource = resourceSet.getResource(resourceURI, true);
+		} catch (Exception e) {
+			resource = resourceSet.createResource(resourceURI);
+		}
+		return resource;
+	}
+
+	/**
+	 * Create a new URI. This URI is use to create of located a resource.
+	 * 
+	 * @param containerURI
+	 *        path of the container of the new resource. Optional
+	 * @param fileName
+	 *        name of the new resource. Optional
+	 * @return
+	 */
+	@WrapToScript
+	public URI createURI(@NamedParameter(name = "containerURI") @OptionalParameter String containerURI, @NamedParameter(name = "fileName") @OptionalParameter String fileName) {
+		URI container = null;
+		if(containerURI == null) {
+			//Launch dialog to get an URI
+			ContainerSelectionDialog dialog = new ContainerSelectionDialog(getShell(), ResourcesPlugin.getWorkspace().getRoot(), false, "Select where you want to add your resource");
+			if(dialog.open() != ContainerSelectionDialog.OK) {
+				return null;
+			}
+			Object[] result = dialog.getResult();
+			if(result == null || result.length == 0) {
+				output.error("Unable to retreive a container for the new resource from your selestion");
+				return null;
+			}
+			IPath containerPath = (IPath)result[0];
+			container = URI.createPlatformResourceURI(containerPath.toString(), true);
+		} else {
+			container = URI.createURI(containerURI);
+		}
+		if(fileName == null) {
+			//Launch input dialog
+			fileName = input.ask("Give the resource name (With it's extension)");
+		}
+
+		container = container.appendSegment(fileName);
+		return container;
 	}
 
 
@@ -311,16 +375,24 @@ public class EcoreModule extends AbstractScriptModule {
 	 * @param eObject
 	 */
 	@WrapToScript
-	public void save(@NamedParameter(name = "eObject") @OptionalParameter EObject eObject) {
-		if(eObject == null) {
-			save();
-		} else {
+	public void save(@NamedParameter(name = "target") @OptionalParameter Object object) {
+		Resource toSave = null;
+		if(object instanceof EObject) {
+			EObject eObject = (EObject)object;
+			toSave = eObject.eResource();
+		} else if(object instanceof Resource) {
+			toSave = (Resource)object;
+		}
+		if(toSave != null) {
 			try {
-				eObject.eResource().save(null);
+				toSave.save(null);
 			} catch (IOException e) {
 				e.printStackTrace();
-				DialogModule.error(e.getMessage());
+				output.error(e.getMessage());
+				return;
 			}
+		} else {
+			save();
 		}
 	}
 

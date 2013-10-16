@@ -26,8 +26,25 @@ public class Logger {
 	}
 
 	public static IStatus createErrorStatus(String message, String pluginID) {
-		return new Status(Status.ERROR, pluginID, message);
+		return createStatus(Status.ERROR, pluginID, message);
 	}
+
+	public static IStatus createStatus(int statusError, String message, String pluginID) {
+		return new Status(statusError, pluginID, message);
+	}
+
+	public static IStatus createWarningStatus(String message, String pluginID) {
+		return createStatus(Status.WARNING, pluginID, message);
+	}
+
+	public static void logWarning(String message) {
+		logWarning(message, Activator.PLUGIN_ID);
+	}
+
+	public static void logWarning(String message, String pluginID) {
+		Activator.getDefault().getLog().log(createWarningStatus(message, pluginID));
+	}
+
 
 
 }

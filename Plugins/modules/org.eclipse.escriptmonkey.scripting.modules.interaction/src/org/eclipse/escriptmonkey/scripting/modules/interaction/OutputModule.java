@@ -115,5 +115,16 @@ public class OutputModule extends AbstractScriptModule {
 		getScriptEngine().getOutputStream().println(message);
 	}
 
+	/**
+	 * Generate and error message in the console
+	 * 
+	 * @param message
+	 *        the message to append to the console.
+	 */
+	@WrapToScript
+	public void error(String message) {
+		getScriptEngine().getErrorStream().println(message);
+	}
+
 
 }
