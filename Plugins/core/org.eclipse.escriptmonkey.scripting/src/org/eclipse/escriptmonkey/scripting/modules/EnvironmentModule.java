@@ -22,6 +22,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -552,10 +553,12 @@ public class EnvironmentModule extends AbstractScriptModule implements IScriptMo
 
 	void addModule(final IScriptModule module) {
 		// check if a module with same name is already registered
-		for(IScriptModule mod : mModules) {
+		ListIterator<IScriptModule> modulesIterator = mModules.listIterator();
+		while(modulesIterator.hasNext()) {
+			IScriptModule mod = (IScriptModule)modulesIterator.next();
 			if(mod.getModuleName().equals(module.getModuleName())) {
 				// found, remove module as it gets replaced
-				mModules.remove(mod);
+				modulesIterator.remove();
 			}
 		}
 
