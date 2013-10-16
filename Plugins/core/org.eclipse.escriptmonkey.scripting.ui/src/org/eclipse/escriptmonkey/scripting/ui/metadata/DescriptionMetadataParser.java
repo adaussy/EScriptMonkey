@@ -26,7 +26,7 @@ public class DescriptionMetadataParser extends AbstractRegexMetadataParser {
 
 	@Override
 	protected Pattern createPattern() {
-		return Pattern.compile("Description:.*\\{(.*)\\}", Pattern.DOTALL);
+		return Pattern.compile("Description:\\s*\\{(.*?)\\}", Pattern.DOTALL);
 	}
 
 }
