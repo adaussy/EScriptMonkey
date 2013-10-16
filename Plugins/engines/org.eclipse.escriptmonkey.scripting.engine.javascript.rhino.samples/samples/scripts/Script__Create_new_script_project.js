@@ -15,7 +15,7 @@ function addToHeader(metadata, value) {
 
 function createHeader(scriptName) {
 	var scriptMenu = input.askSimpleString("Create a new script","Give me the menu path (Separator = >)","Category1 > Category1.1 > "+scriptName);
-	var scriptDescription = input.askSimpleString("Create a new script","Give me a description","Put a descript here");
+	var scriptDescription = input.askSimpleString("Create a new script","Give me a description","Put a description here");
 	var header = "/*\n";
 	header += addToHeader("Menu", scriptMenu);
 	header += addToHeader("Description", scriptDescription);

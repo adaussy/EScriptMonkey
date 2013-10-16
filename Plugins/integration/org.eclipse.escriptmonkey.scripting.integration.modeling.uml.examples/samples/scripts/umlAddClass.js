@@ -34,7 +34,7 @@ function main() {
  */
 function run() {
 	var name;
-	var parentPackage = uml.getSelectionFromType("Package");
+	var parentPackage = uml.getSelection("Package");
 	if (parentPackage == null) {
 		dialog.error("A Package must be selected in the current UML editor to run this script.");
 		return;

@@ -24,8 +24,8 @@ numberOfElement=100
 class MyRunnable(Runnable) :
     
     def createClass(self,currentParent,name):
-        print "Creating class in "+currentParent.getName()
-        clazz = getFactory().createClass()
+        print "Creating class in "+str(currentParent.getName())
+        clazz = getFactory().createClass() # or use directly createClass()
         clazz.setName(name)
         if eInstanceOf(currentParent,"Model"):
             currentParent.getPackagedElements().add(clazz)
@@ -37,7 +37,7 @@ class MyRunnable(Runnable) :
         print 'Init UML Metamodel'
         parent = selection
         for i in range(depth) :
-             text = parent.getName()+"_"
+             text = str(parent.getName())+"_"
              text+= str(i)
              child = self.createClass(parent,text)
              for j in range(numberOfElement):

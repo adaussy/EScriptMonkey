@@ -360,7 +360,6 @@ public class EcoreModule extends AbstractScriptModule {
 					} else {
 						shell = new Shell();
 					}
-					DialogModule.error("There is no active editor.");
 				}
 			}
 		});
@@ -422,9 +421,14 @@ public class EcoreModule extends AbstractScriptModule {
 	}
 
 	protected EditingDomain getEditingDomain() {
-		Object domain = getCurrentEditorPart().getAdapter(EditingDomain.class);
-		if(domain instanceof EditingDomain) {
-			return (EditingDomain)domain;
+		IEditorPart currentEditorPart = getCurrentEditorPart();
+		if(currentEditorPart != null) {
+			Object domain = currentEditorPart.getAdapter(EditingDomain.class);
+			if(domain instanceof EditingDomain) {
+				return (EditingDomain)domain;
+			}
+		} else {
+			Logger.logWarning("Unable to retreive editing domain. There is not opened editor");
 		}
 		return null;
 	}

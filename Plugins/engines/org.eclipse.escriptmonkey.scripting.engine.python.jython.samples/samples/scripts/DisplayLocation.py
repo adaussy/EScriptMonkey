@@ -11,6 +11,6 @@
 #
 
 selectionModule = loadModule("SelectionModule")
-
+print "Selected files location:\n"
 for file in selectionModule.getIterableSelection():
     print file.getLocation()

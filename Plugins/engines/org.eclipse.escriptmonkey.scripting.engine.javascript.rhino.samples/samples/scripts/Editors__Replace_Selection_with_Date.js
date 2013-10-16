@@ -32,9 +32,7 @@ function main() {
 			
 			var text = new Date();
 			
-			// apply edit and reveal in editor
 			sourceEditor.applyEdit(offset, deleteLength, text);
-			sourceEditor.selectAndReveal(offset, text.length);
 
 	}
 }

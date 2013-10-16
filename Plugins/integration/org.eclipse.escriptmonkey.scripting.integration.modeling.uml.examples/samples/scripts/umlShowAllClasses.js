@@ -29,7 +29,7 @@ function main()
 }
 
 function run() {
-  var start = uml.getSelectionFromType("Namespace");
+  var start = uml.getSelection("Namespace");
   print("Searching for all classes inside " + start.getName());
   showClasses(start);
 }
@@ -38,11 +38,11 @@ function showClasses(elt)
 {
 	var members;
 	
-	if (uml.isA(elt, "Class")) {
+	if (uml.eInstanceOf(elt, "Class")) {
 		print(elt.getName());
 	}
 	
-	if (uml.isA(elt, "Namespace")) {
+	if (uml.eInstanceOf(elt, "Namespace")) {
 		members = elt.getMembers();
 		for (var i = 0; i < members.size(); i++) {
 			showClasses(members.get(i));

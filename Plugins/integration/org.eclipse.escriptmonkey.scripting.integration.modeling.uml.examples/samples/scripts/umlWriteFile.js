@@ -1,7 +1,7 @@
 /*
  * Menu: Examples > Modeling > UML > Write element name to file
  * License: EPL 1.0
- * Description : This script illustrates how to write the result of a script into a text file.
+ * Description : {This script illustrates how to write the result of a script into a text file.}
  * EnableWhen::[And {
  *   With activeEditor {
  *        Equal "org.eclipse.papyrus.infra.core.papyrusEditor"
@@ -33,7 +33,7 @@ function main()
  * Run the script itself
  */
 function run() {
-  var elt = uml.getSelectionFromType("NamedElement");
+  var elt = uml.getSelection("NamedElement");
   if (elt == null) {
 	  dialog.error("The selection must be a NamedElement");
 	  return;

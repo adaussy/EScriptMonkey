@@ -62,7 +62,7 @@ function find(elt, matcher) {
 	var children;
 	var i;
 	
-	if (uml.isA(elt, "NamedElement") && matcher(elt)) {
+	if (uml.eInstanceOf(elt, "NamedElement") && matcher(elt)) {
 		result.push(elt);
 	}
 	children = elt.getOwnedElements();

@@ -1,5 +1,4 @@
 scripts/DisplaySelectedGMFSemanticObject.py
 scripts/SimpleEcoreAPI.py
-scripts/umlChangeFontPapyrus.py
 scripts/ReferencingObject.py
 scripts/CreateResource.py

@@ -27,7 +27,7 @@ function main() {
 }
 
 function run() {
-	var elt = uml.getSelectionFromType("NamedElement");
+	var elt = uml.getSelection("NamedElement");
 	if (elt == null) {
 		output.error("The selection must be a NamedElement.");
 		return;

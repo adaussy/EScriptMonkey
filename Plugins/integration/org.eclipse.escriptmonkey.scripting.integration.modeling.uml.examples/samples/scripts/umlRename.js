@@ -30,7 +30,7 @@ function main() {
  * Run the script itself
  */
 function run() {
-	var elt = uml.getSelectionFromType("NamedElement");
+	var elt = uml.getSelection("NamedElement");
 	if (elt == null) {
 		output.error("A NamedElement must be selected.");
 	}

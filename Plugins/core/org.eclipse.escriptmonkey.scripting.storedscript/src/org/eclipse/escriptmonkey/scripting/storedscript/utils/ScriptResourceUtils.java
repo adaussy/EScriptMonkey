@@ -32,7 +32,7 @@ public class ScriptResourceUtils {
 	}
 
 	public static boolean isEclipseMonkeyProject(IProject project) {
-		if(project != null && project.exists()) {
+		if(project != null && project.isAccessible()) {
 			try {
 				return project.hasNature(EScriptMonkeyMonkeyProjectNature.ESCRIPT_MONKEY_NATURE);
 			} catch (CoreException e) {

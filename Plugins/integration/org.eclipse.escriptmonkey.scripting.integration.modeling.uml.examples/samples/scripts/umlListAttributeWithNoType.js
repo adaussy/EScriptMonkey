@@ -1,7 +1,7 @@
 /*
  * Menu: Examples > Modeling > UML > List attribute with no type
  * License: EPL 1.0
- * Description : {This script lists the attribute anywhere in the current model which do not
+ * Description: {This script lists the attribute anywhere in the current model which do not
  * have a specified type. It illustrates how to obtain the top-level Model, how to navigate inside a whole model
  * (recursively) and detect elements which match some criterion, and how to
  * report results in the console.}
@@ -32,7 +32,7 @@ function findAttributes(elt) {
 	var result = [];
 	var children;
 
-	if (uml.isA(elt, "Property") && elt.getType() == null) {
+	if (uml.eInstanceOf(elt, "Property") && elt.getType() == null) {
 		result.push(elt);
 	}
 	children = elt.getOwnedElements();
@@ -51,7 +51,7 @@ function reportResult(attributes) {
 		print(" - " + attr.getClass_().getName() + "#"
 				+ attr.getName());
 	}
-	workbench.getActivePage().showView("org.eclipse.ui.views.ProblemView");
+	showView("org.eclipse.ui.views.ProblemView");
 }
 
 

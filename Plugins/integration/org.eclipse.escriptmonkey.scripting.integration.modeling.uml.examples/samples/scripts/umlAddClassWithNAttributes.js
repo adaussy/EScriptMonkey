@@ -26,10 +26,10 @@ function main() {
 	uml.runOperation(op, "Rename element");
 }
 
-function createClass(parentPackage,name){
-	 var klass = uml.getFactory().createClass();
+function createClassInPackage(parentPackage,name){
+	 output.console("Creating class "+name+" in "+parentPackage.getName());
+	 var klass = createClass(); 
 	 klass.setName(name);
-	// klass.setName(name);
 	 parentPackage.getPackagedElements().add(klass);
 	 return klass;
 }
@@ -39,7 +39,7 @@ function createClass(parentPackage,name){
 function run() {
 	var name, nbAttributes, prefix, newClass, attr;
 	
-	var parent = uml.getSelectionFromType("Package");
+	var parent = uml.getSelection("Package");
 	if (parent == null) {
 		output.error("The parent package of the new class must be selected.");
 		return;
@@ -48,7 +48,7 @@ function run() {
 	if (name != null) {
 		nbAttributes = input.ask("Number of attributes to create:");
 		prefix = input.ask("Prefix for the attributes names:");
-		newClass = createClass(parent,name);
+		newClass = createClassInPackage(parent,name);
 		for (i = 0; i < nbAttributes; i++) {
 			attr = uml.getFactory().createProperty();
 			attr.setName(prefix + i);
@@ -58,4 +58,5 @@ function run() {
 }
 uml = loadModule("UMLModule");
 input = loadModule("InputModule");
+output = loadModule("OutputModule");
 main()
