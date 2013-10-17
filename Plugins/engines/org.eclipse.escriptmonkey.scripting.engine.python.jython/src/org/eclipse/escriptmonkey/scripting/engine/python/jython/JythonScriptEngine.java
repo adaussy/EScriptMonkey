@@ -17,10 +17,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.eclipse.escriptmonkey.lang.python.Activator;
+import org.eclipse.escriptmonkey.lang.python.preferences.IPreferenceConstants;
 import org.eclipse.escriptmonkey.scripting.AbstractScriptEngine;
 import org.eclipse.escriptmonkey.scripting.IModifiableScriptEngine;
 import org.eclipse.escriptmonkey.scripting.Script;
-import org.eclipse.escriptmonkey.scripting.engine.python.jython.preferences.IPreferenceConstants;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.python.core.CompileMode;
 import org.python.core.CompilerFlags;

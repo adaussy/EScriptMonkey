@@ -25,22 +25,28 @@ import org.osgi.framework.BundleContext;
 import org.python.core.Py;
 import org.python.core.PySystemState;
 
-
+/**
+ * The activator class controls the plug-in life cycle
+ */
 public class Activator extends AbstractUIPlugin {
 
-	public static final String PLUGIN_ID = "org.eclipse.escriptmonkey.scripting.engine.python.jython";
+	// The plug-in ID
+	public static final String PLUGIN_ID = "org.eclipse.escriptmonkey.lang.python.jython"; //$NON-NLS-1$
 
-	private static Activator mInstance;
+	// The shared instance
+	private static Activator plugin;
 
-	public static Activator getDefault() {
-		return mInstance;
+	/**
+	 * The constructor
+	 */
+	public Activator() {
 	}
 
 	@Override
 	public void start(final BundleContext context) throws Exception {
 		super.start(context);
 
-		mInstance = this;
+		plugin = this;
 		//		Properties preProperties = System.getProperties();
 		Properties preProperties = PySystemState.getBaseProperties();
 
@@ -68,9 +74,13 @@ public class Activator extends AbstractUIPlugin {
 		}
 	}
 
+	public static Activator getDefault() {
+		return plugin;
+	}
+
 	@Override
 	public void stop(final BundleContext context) throws Exception {
-		mInstance = null;
+		plugin = null;
 
 		super.stop(context);
 	}

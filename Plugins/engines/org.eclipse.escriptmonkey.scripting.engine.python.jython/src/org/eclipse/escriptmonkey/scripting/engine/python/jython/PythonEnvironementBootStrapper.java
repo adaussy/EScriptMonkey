@@ -10,10 +10,10 @@
  *******************************************************************************/
 package org.eclipse.escriptmonkey.scripting.engine.python.jython;
 
+import org.eclipse.escriptmonkey.lang.python.debug.ITracingConstant;
 import org.eclipse.escriptmonkey.scripting.IScriptEngine;
 import org.eclipse.escriptmonkey.scripting.IScriptEngineLaunchExtension;
 import org.eclipse.escriptmonkey.scripting.debug.Tracer;
-import org.eclipse.escriptmonkey.scripting.engine.python.jython.debug.ITracingConstant;
 import org.eclipse.escriptmonkey.scripting.modules.EnvironmentModule;
 import org.eclipse.escriptmonkey.scripting.modules.IModuleWrapper;
 import org.eclipse.escriptmonkey.scripting.service.ScriptService;

@@ -7,6 +7,7 @@
  *
  * Contributors:
  *     Christian Pontesegger - initial API and implementation
+ *     Mathieu Velten - Bug correction
  *******************************************************************************/
 package org.eclipse.escriptmonkey.scripting.engine.javascript.rhino;
 
@@ -237,7 +238,7 @@ public class RhinoScriptEngine extends AbstractScriptEngine implements IDebugEng
 		final Scriptable scope = getScope();
 		if(scope != null) {
 
-			final Object jsOut = javaToJS(content, scope);
+			final Object jsOut = internaljavaToJS(content, scope);
 			scope.put(name, scope, jsOut);
 		} else
 			mBufferedVariables.put(name, content);
@@ -285,17 +286,21 @@ public class RhinoScriptEngine extends AbstractScriptEngine implements IDebugEng
 		throw new RuntimeException("Cannot retrieve variable, Scope not initialized");
 	}
 
-	/**
-	 * Method copied from {@link Context}.{@link #javaToJS(Object, Scriptable)} and slightly adapted to use associated context.
-	 */
-	private Object javaToJS(final Object value, final Scriptable scope) {
-		if((value instanceof String) || (value instanceof Number) || (value instanceof Boolean) || (value instanceof Scriptable)) {
-			return value;
+	private Object internaljavaToJS(final Object value, final Scriptable scope) {
+		Object result = null;
+		if(isPrimitiveType(value) || (value instanceof Scriptable)) {
+			result = value;
 		} else if(value instanceof Character) {
-			return String.valueOf(((Character)value).charValue());
+			result = String.valueOf(((Character)value).charValue());
 		} else {
-			return getContext().getWrapFactory().wrap(getContext(), scope, value, null);
+			result = getContext().getWrapFactory().wrap(getContext(), scope, value, null);
 		}
+		return result;
+
+	}
+
+	private boolean isPrimitiveType(Object value) {
+		return (value instanceof String) || (value instanceof Number) || (value instanceof Boolean);
 	}
 
 	public void setCreateLineNumberInformation(final boolean createLineNumberInformation) {

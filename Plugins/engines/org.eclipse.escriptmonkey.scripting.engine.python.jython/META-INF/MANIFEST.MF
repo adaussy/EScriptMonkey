@@ -1,21 +1,14 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: EScript - Jython engine
-Bundle-SymbolicName: org.eclipse.escriptmonkey.scripting.engine.python.jython;singleton:=true
+Bundle-Name: Jython Engine
+Bundle-SymbolicName: org.eclipse.escriptmonkey.lang.python.jython;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-Vendor: Eclipse
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Require-Bundle: org.eclipse.escriptmonkey.scripting;bundle-version="1.0.0",
- org.eclipse.escriptmonkey.scripting.storedscript;bundle-version="1.0.0",
- com.google.guava;bundle-version="11.0.2",
- org.eclipse.swt,
- org.eclipse.jface,
- org.eclipse.ui;bundle-version="3.105.0",
- org.eclipse.emf.ecore;bundle-version="2.9.0",
- org.jython;bundle-version="2.5.3"
 Bundle-Activator: org.eclipse.escriptmonkey.scripting.engine.python.jython.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.jython;bundle-version="2.5.3",
+ org.eclipse.escriptmonkey.scripting;bundle-version="1.0.0",
+ org.eclipse.escriptmonkey.lang.python;bundle-version="1.0.0",
+ org.eclipse.debug.ui;bundle-version="3.9.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
-Eclipse-BuddyPolicy: global
-Export-Package: org.eclipse.escriptmonkey.scripting.engine.python.jython,
- org.eclipse.escriptmonkey.scripting.engine.python.jython.preferences
-Bundle-ClassPath: .

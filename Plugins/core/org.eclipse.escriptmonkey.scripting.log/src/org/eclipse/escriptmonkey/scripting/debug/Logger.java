@@ -21,21 +21,43 @@ public class Logger {
 		logError(message, Activator.PLUGIN_ID);
 	}
 
+	public static void logError(String message, Throwable exception) {
+		logError(message, Activator.PLUGIN_ID, exception);
+	}
+
 	public static void logError(String message, String pluginID) {
 		Activator.getDefault().getLog().log(createErrorStatus(message, pluginID));
 	}
 
-	public static IStatus createErrorStatus(String message, String pluginID) {
-		return createStatus(Status.ERROR, pluginID, message);
+
+	public static void logError(String message, String pluginID, Throwable exception) {
+		Activator.getDefault().getLog().log(createErrorStatus(message, pluginID, exception));
 	}
 
-	public static IStatus createStatus(int statusError, String message, String pluginID) {
-		return new Status(statusError, pluginID, message);
+	public static IStatus createErrorStatus(String message, String pluginID, Throwable exception) {
+		return createStatus(Status.ERROR, pluginID, message, exception);
+	}
+
+	public static IStatus createErrorStatus(String message, String pluginID) {
+		return createStatus(Status.ERROR, pluginID, message, null);
+	}
+
+	public static IStatus createStatus(int statusError, String message, String pluginID, Throwable exception) {
+		if(exception != null) {
+			return new Status(statusError, pluginID, message, exception);
+		} else {
+			return new Status(statusError, pluginID, message);
+		}
 	}
 
 	public static IStatus createWarningStatus(String message, String pluginID) {
-		return createStatus(Status.WARNING, pluginID, message);
+		return createStatus(Status.WARNING, pluginID, message, null);
 	}
+
+	public static IStatus createWarningStatus(String message, String pluginID, Throwable exception) {
+		return createStatus(Status.WARNING, pluginID, message, exception);
+	}
+
 
 	public static void logWarning(String message) {
 		logWarning(message, Activator.PLUGIN_ID);

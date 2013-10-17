@@ -12,7 +12,7 @@
  */
 package org.eclipse.escriptmonkey.scripting.engine.python.jython.ui.preferences;
 
-import org.eclipse.escriptmonkey.scripting.engine.python.jython.preferences.IPreferenceConstants;
+import org.eclipse.escriptmonkey.lang.python.preferences.IPreferenceConstants;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.PathEditor;
 import org.eclipse.swt.widgets.Composite;
@@ -26,7 +26,7 @@ public class PythonLibraryPreferencePage extends FieldEditorPreferencePage imple
 
 	@Override
 	public void init(IWorkbench workbench) {
-		setPreferenceStore(org.eclipse.escriptmonkey.scripting.engine.python.jython.Activator.getDefault().getPreferenceStore());
+		setPreferenceStore(org.eclipse.escriptmonkey.lang.python.Activator.getDefault().getPreferenceStore());
 		setDescription("List of external library used for Jython Engine [Implementation no optimized for now]");
 
 	}
