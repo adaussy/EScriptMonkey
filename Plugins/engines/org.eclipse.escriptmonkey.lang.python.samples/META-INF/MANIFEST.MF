@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Python examples
-Bundle-SymbolicName: org.eclipse.eclipsemonkey.lang.python.examples;singleton:=true
+Bundle-SymbolicName: org.eclipse.escriptmonkey.lang.python.samples;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.eclipse.eclipsemonkey.lang.python.examples.Activator
 Require-Bundle: org.eclipse.ui,

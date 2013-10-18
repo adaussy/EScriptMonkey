@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<units size='1'>
-  <unit id='org.eclipse.eclipsemonkey.lang.javascript.examples' version='1.0.0.201309132121'>
-    <update id='org.eclipse.eclipsemonkey.lang.javascript.examples' range='[0.0.0,1.0.0.201309132121)' severity='0'/>
+<units size='2'>
+  <unit id='org.eclipse.eclipsemonkey.lang.javascript.examples' version='1.0.0.201310181406'>
+    <update id='org.eclipse.eclipsemonkey.lang.javascript.examples' range='[0.0.0,1.0.0.201310181406)' severity='0'/>
     <properties size='4'>
       <property name='org.eclipse.equinox.p2.name' value='JS Examples'/>
       <property name='maven-groupId' value='escriptmonkey'/>
@@ -9,8 +9,8 @@
       <property name='maven-version' value='1.0.0-SNAPSHOT'/>
     </properties>
     <provides size='3'>
-      <provided namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.eclipsemonkey.lang.javascript.examples' version='1.0.0.201309132121'/>
-      <provided namespace='osgi.bundle' name='org.eclipse.eclipsemonkey.lang.javascript.examples' version='1.0.0.201309132121'/>
+      <provided namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.eclipsemonkey.lang.javascript.examples' version='1.0.0.201310181406'/>
+      <provided namespace='osgi.bundle' name='org.eclipse.eclipsemonkey.lang.javascript.examples' version='1.0.0.201310181406'/>
       <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
     </provides>
     <requires size='6'>
@@ -22,13 +22,44 @@
       <required namespace='osgi.bundle' name='org.eclipse.escriptmonkey.scripting.javascript.rhino' range='1.0.0'/>
     </requires>
     <artifacts size='1'>
-      <artifact classifier='osgi.bundle' id='org.eclipse.eclipsemonkey.lang.javascript.examples' version='1.0.0.201309132121'/>
+      <artifact classifier='osgi.bundle' id='org.eclipse.eclipsemonkey.lang.javascript.examples' version='1.0.0.201310181406'/>
     </artifacts>
     <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
     <touchpointData size='1'>
       <instructions size='1'>
         <instruction key='manifest'>
-          Bundle-SymbolicName: org.eclipse.eclipsemonkey.lang.javascript.examples;singleton:=true&#xA;Bundle-Version: 1.0.0.201309132121&#xA;
+          Bundle-SymbolicName: org.eclipse.eclipsemonkey.lang.javascript.examples;singleton:=true&#xA;Bundle-Version: 1.0.0.201310181406&#xA;
+        </instruction>
+      </instructions>
+    </touchpointData>
+  </unit>
+  <unit id='org.eclipse.eclipsemonkey.lang.javascript.examples.source' version='1.0.0.201310181406' singleton='false'>
+    <update id='org.eclipse.eclipsemonkey.lang.javascript.examples.source' range='[0.0.0,1.0.0.201310181406)' severity='0'/>
+    <properties size='9'>
+      <property name='df_LT.bundleVendor' value='unknown'/>
+      <property name='df_LT.bundleName' value='JS Examples Source'/>
+      <property name='org.eclipse.equinox.p2.name' value='%bundleName'/>
+      <property name='org.eclipse.equinox.p2.provider' value='%bundleVendor'/>
+      <property name='org.eclipse.equinox.p2.bundle.localization' value='OSGI-INF/l10n/bundle-src'/>
+      <property name='maven-groupId' value='escriptmonkey'/>
+      <property name='maven-artifactId' value='org.eclipse.eclipsemonkey.lang.javascript.examples'/>
+      <property name='maven-version' value='1.0.0-SNAPSHOT'/>
+      <property name='maven-classifier' value='sources'/>
+    </properties>
+    <provides size='4'>
+      <provided namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.eclipsemonkey.lang.javascript.examples.source' version='1.0.0.201310181406'/>
+      <provided namespace='osgi.bundle' name='org.eclipse.eclipsemonkey.lang.javascript.examples.source' version='1.0.0.201310181406'/>
+      <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='source' version='1.0.0'/>
+      <provided namespace='org.eclipse.equinox.p2.localization' name='df_LT' version='1.0.0'/>
+    </provides>
+    <artifacts size='1'>
+      <artifact classifier='osgi.bundle' id='org.eclipse.eclipsemonkey.lang.javascript.examples.source' version='1.0.0.201310181406'/>
+    </artifacts>
+    <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+    <touchpointData size='1'>
+      <instructions size='1'>
+        <instruction key='manifest'>
+          Bundle-SymbolicName: org.eclipse.eclipsemonkey.lang.javascript.examples.source&#xA;Bundle-Version: 1.0.0.201310181406&#xA;
         </instruction>
       </instructions>
     </touchpointData>

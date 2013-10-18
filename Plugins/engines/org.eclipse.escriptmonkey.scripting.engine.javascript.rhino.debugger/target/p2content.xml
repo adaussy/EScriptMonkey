@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<units size='2'>
+  <unit id='org.eclipse.escriptmonkey.scripting.engine.javascript.rhino.debugger' version='1.0.0.201310181406'>
+    <update id='org.eclipse.escriptmonkey.scripting.engine.javascript.rhino.debugger' range='[0.0.0,1.0.0.201310181406)' severity='0'/>
+    <properties size='5'>
+      <property name='org.eclipse.equinox.p2.name' value='Rhino Debugger Support'/>
+      <property name='org.eclipse.equinox.p2.provider' value='eScriptMonkey'/>
+      <property name='maven-groupId' value='escriptmonkey'/>
+      <property name='maven-artifactId' value='org.eclipse.escriptmonkey.scripting.engine.javascript.rhino.debugger'/>
+      <property name='maven-version' value='1.0.0-SNAPSHOT'/>
+    </properties>
+    <provides size='5'>
+      <provided namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.escriptmonkey.scripting.engine.javascript.rhino.debugger' version='1.0.0.201310181406'/>
+      <provided namespace='osgi.bundle' name='org.eclipse.escriptmonkey.scripting.engine.javascript.rhino.debugger' version='1.0.0.201310181406'/>
+      <provided namespace='java.package' name='org.eclipse.escriptmonkey.scripting.engine.javascript.rhino.debugger' version='0.0.0'/>
+      <provided namespace='java.package' name='org.eclipse.escriptmonkey.scripting.engine.javascript.rhino.debugger.model' version='0.0.0'/>
+      <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+    </provides>
+    <requires size='10'>
+      <required namespace='osgi.bundle' name='org.eclipse.core.runtime' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.debug.core' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.mozilla.javascript' range='1.7.2'/>
+      <required namespace='osgi.bundle' name='org.eclipse.escriptmonkey.scripting.javascript.rhino' range='1.0.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.escriptmonkey.scripting' range='1.0.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.debug.ui' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.jface' range='3.9.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.ui.workbench' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.ui.ide' range='3.9.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.ui.editors' range='0.0.0'/>
+    </requires>
+    <artifacts size='1'>
+      <artifact classifier='osgi.bundle' id='org.eclipse.escriptmonkey.scripting.engine.javascript.rhino.debugger' version='1.0.0.201310181406'/>
+    </artifacts>
+    <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+    <touchpointData size='1'>
+      <instructions size='1'>
+        <instruction key='manifest'>
+          Bundle-SymbolicName: org.eclipse.escriptmonkey.scripting.engine.javascript.rhino.debugger;singleton:=true&#xA;Bundle-Version: 1.0.0.201310181406&#xA;
+        </instruction>
+      </instructions>
+    </touchpointData>
+  </unit>
+  <unit id='org.eclipse.escriptmonkey.scripting.engine.javascript.rhino.debugger.source' version='1.0.0.201310181406' singleton='false'>
+    <update id='org.eclipse.escriptmonkey.scripting.engine.javascript.rhino.debugger.source' range='[0.0.0,1.0.0.201310181406)' severity='0'/>
+    <properties size='9'>
+      <property name='df_LT.bundleVendor' value='eScriptMonkey'/>
+      <property name='df_LT.bundleName' value='Rhino Debugger Support Source'/>
+      <property name='org.eclipse.equinox.p2.name' value='%bundleName'/>
+      <property name='org.eclipse.equinox.p2.provider' value='%bundleVendor'/>
+      <property name='org.eclipse.equinox.p2.bundle.localization' value='OSGI-INF/l10n/bundle-src'/>
+      <property name='maven-groupId' value='escriptmonkey'/>
+      <property name='maven-artifactId' value='org.eclipse.escriptmonkey.scripting.engine.javascript.rhino.debugger'/>
+      <property name='maven-version' value='1.0.0-SNAPSHOT'/>
+      <property name='maven-classifier' value='sources'/>
+    </properties>
+    <provides size='4'>
+      <provided namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.escriptmonkey.scripting.engine.javascript.rhino.debugger.source' version='1.0.0.201310181406'/>
+      <provided namespace='osgi.bundle' name='org.eclipse.escriptmonkey.scripting.engine.javascript.rhino.debugger.source' version='1.0.0.201310181406'/>
+      <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='source' version='1.0.0'/>
+      <provided namespace='org.eclipse.equinox.p2.localization' name='df_LT' version='1.0.0'/>
+    </provides>
+    <artifacts size='1'>
+      <artifact classifier='osgi.bundle' id='org.eclipse.escriptmonkey.scripting.engine.javascript.rhino.debugger.source' version='1.0.0.201310181406'/>
+    </artifacts>
+    <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+    <touchpointData size='1'>
+      <instructions size='1'>
+        <instruction key='manifest'>
+          Bundle-SymbolicName: org.eclipse.escriptmonkey.scripting.engine.javascript.rhino.debugger.source&#xA;Bundle-Version: 1.0.0.201310181406&#xA;
+        </instruction>
+      </instructions>
+    </touchpointData>
+  </unit>
+</units>

@@ -1,31 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/org.eclipse.ease.core.feature_1.0.0.201310181123.jar" id="org.eclipse.ease.core.feature" version="1.0.0.201310181123">
+   <feature url="features/org.eclipse.ease.core.feature_1.0.0.qualifier.jar" id="org.eclipse.ease.core.feature" version="1.0.0.qualifier">
       <category name="Core"/>
    </feature>
-   <feature url="features/org.eclipse.ease.core.ui.feature_1.0.0.201310181123.jar" id="org.eclipse.ease.core.ui.feature" version="1.0.0.201310181123">
+   <feature url="features/org.eclipse.ease.core.ui.feature_1.0.0.qualifier.jar" id="org.eclipse.ease.core.ui.feature" version="1.0.0.qualifier">
       <category name="Core"/>
    </feature>
-   <feature url="features/org.eclipse.ease.debug.feature_1.0.0.201310181123.jar" id="org.eclipse.ease.debug.feature" version="1.0.0.201310181123">
-      <category name="Core"/>
+   <feature url="features/org.eclipse.ease.javascript.feature_1.0.0.qualifier.jar" id="org.eclipse.ease.javascript.feature" version="1.0.0.qualifier">
+      <category name="Lang"/>
    </feature>
-   <feature url="features/org.eclipse.ease.integration.modeling.feature_1.0.0.201310181123.jar" id="org.eclipse.ease.integration.modeling.feature" version="1.0.0.201310181123">
-      <category name="Core"/>
+   <feature url="features/org.eclipse.ease.python.feature_1.0.0.qualifier.jar" id="org.eclipse.ease.python.feature" version="1.0.0.qualifier">
+      <category name="Lang"/>
    </feature>
-   <feature url="features/org.eclipse.ease.integration.modeling.papyrus.feature_1.0.0.201310181123.jar" id="org.eclipse.ease.integration.modeling.papyrus.feature" version="1.0.0.201310181123">
-      <category name="Core"/>
+   <feature url="features/org.eclipse.ease.modules.feature_1.0.0.qualifier.jar" id="org.eclipse.ease.modules.feature" version="1.0.0.qualifier">
+      <category name="Modules"/>
    </feature>
-   <feature url="features/org.eclipse.ease.integration.modeling.uml.feature_1.0.0.201310181123.jar" id="org.eclipse.ease.integration.modeling.uml.feature" version="1.0.0.201310181123">
-      <category name="Core"/>
+   <feature url="features/org.eclipse.ease.integration.modeling.feature_1.0.0.qualifier.jar" id="org.eclipse.ease.integration.modeling.feature" version="1.0.0.qualifier">
+      <category name="Integration"/>
    </feature>
-   <feature url="features/org.eclipse.ease.javascript.feature_1.0.0.201310181123.jar" id="org.eclipse.ease.javascript.feature" version="1.0.0.201310181123">
-      <category name="Core"/>
+   <feature url="features/org.eclipse.ease.integration.modeling.papyrus.feature_1.0.0.qualifier.jar" id="org.eclipse.ease.integration.modeling.papyrus.feature" version="1.0.0.qualifier">
+      <category name="Integration"/>
    </feature>
-   <feature url="features/org.eclipse.ease.modules.feature_1.0.0.201310181123.jar" id="org.eclipse.ease.modules.feature" version="1.0.0.201310181123">
-      <category name="Core"/>
-   </feature>
-   <feature url="features/org.eclipse.ease.python.feature_1.0.0.201310181123.jar" id="org.eclipse.ease.python.feature" version="1.0.0.201310181123">
-      <category name="Core"/>
+   <feature url="features/org.eclipse.ease.integration.modeling.uml.feature_1.0.0.qualifier.jar" id="org.eclipse.ease.integration.modeling.uml.feature" version="1.0.0.qualifier">
+      <category name="Integration"/>
    </feature>
    <category-def name="Core" label="Core"/>
    <category-def name="Lang" label="Lang"/>

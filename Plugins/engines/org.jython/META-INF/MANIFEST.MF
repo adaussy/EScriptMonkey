@@ -4,7 +4,7 @@ Bundle-Name: Jython
 Bundle-SymbolicName: org.jython
 Bundle-Version: 2.7.0.b1
 Eclipse-BuddyPolicy: global
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.python,
  org.python.antlr,
  org.python.antlr.adapter,
