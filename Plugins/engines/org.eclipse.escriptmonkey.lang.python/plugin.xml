@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.escriptmonkey.scripting.language">
+      <scriptType
+            extension_file="py"
+            type="Python">
+      </scriptType>
+   </extension>
+   <extension
+         point="org.eclipse.escriptmonkey.scripting.storedscript.metadata">
+      <parser
+            id="org.eclipse.escriptmonkey.scripting.engine.python.parser"
+            parser_class="org.eclipse.escriptmonkey.lang.python.PythonHeaderParser">
+         <script_type
+               type="Python">
+         </script_type>
+      </parser>
+   </extension>
+
+</plugin>

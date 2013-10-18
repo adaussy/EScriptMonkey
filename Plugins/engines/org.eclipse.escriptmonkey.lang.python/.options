@@ -1,0 +1,2 @@
+org.eclipse.escriptmonkey.lang.python/debug=true
+org.eclipse.escriptmonkey.lang.python/debug/PythonBootStrapper=false
