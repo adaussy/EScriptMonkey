@@ -112,7 +112,7 @@ public class ScriptDynamicContribution {
 			if(!containItemMenu(menu, items)) {
 				items.add(menu);
 				EList<SubNode> children = parentNode.getChildren();
-				ArrayList<SubNode> sortedChildren = new ArrayList<>(children);
+				ArrayList<SubNode> sortedChildren = new ArrayList<SubNode>(children);
 				Collections.sort(sortedChildren, new Comparator<SubNode>() {
 
 					@Override

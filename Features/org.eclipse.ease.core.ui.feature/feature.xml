@@ -31,7 +31,7 @@ Contributors:
          version="0.0.0"
          unpack="false"/>
 
-   <!--<plugin
+   <plugin
          id="org.eclipse.escriptmonkey.scripting.e4.ui"
          download-size="0"
          install-size="0"
@@ -54,17 +54,10 @@ Contributors:
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.escriptmonkey.scripting.ui.expression.xtext.tests"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.eclipse.escriptmonkey.scripting.ui.expression.xtext.ui"
          download-size="0"
          install-size="0"
          version="0.0.0"
-         unpack="false"/>-->
+         unpack="false"/>
 
 </feature>
