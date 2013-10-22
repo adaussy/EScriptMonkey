@@ -35,11 +35,11 @@ public class Logger {
 	}
 
 	public static IStatus createErrorStatus(String message, String pluginID, Throwable exception) {
-		return createStatus(Status.ERROR, pluginID, message, exception);
+		return createStatus(Status.ERROR, message, pluginID, exception);
 	}
 
 	public static IStatus createErrorStatus(String message, String pluginID) {
-		return createStatus(Status.ERROR, pluginID, message, null);
+		return createStatus(Status.ERROR, message, pluginID, null);
 	}
 
 	public static IStatus createStatus(int statusError, String message, String pluginID, Throwable exception) {
@@ -51,11 +51,11 @@ public class Logger {
 	}
 
 	public static IStatus createWarningStatus(String message, String pluginID) {
-		return createStatus(Status.WARNING, pluginID, message, null);
+		return createStatus(Status.WARNING, message, pluginID, null);
 	}
 
 	public static IStatus createWarningStatus(String message, String pluginID, Throwable exception) {
-		return createStatus(Status.WARNING, pluginID, message, exception);
+		return createStatus(Status.WARNING, message, pluginID, exception);
 	}
 
 
