@@ -11,7 +11,7 @@
 package org.eclipse.escriptmonkey.scripting.engine.javascript.rhino.debugger.actions;
 
 import org.eclipse.debug.ui.IDebugView;
-import org.eclipse.escriptmonkey.scripting.debug.Activator;
+import org.eclipse.escriptmonkey.scripting.log.Activator;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.util.IPropertyChangeListener;

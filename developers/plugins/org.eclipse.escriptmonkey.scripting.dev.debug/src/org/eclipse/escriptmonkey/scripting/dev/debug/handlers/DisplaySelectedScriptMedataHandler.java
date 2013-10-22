@@ -18,7 +18,7 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.escriptmonkey.scripting.debug.Logger;
+import org.eclipse.escriptmonkey.scripting.log.Logger;
 import org.eclipse.escriptmonkey.scripting.storedscript.service.IStoredScriptService;
 import org.eclipse.escriptmonkey.scripting.storedscript.storedscript.IStoredScript;
 import org.eclipse.escriptmonkey.scripting.storedscript.storedscript.ScriptMetadata;

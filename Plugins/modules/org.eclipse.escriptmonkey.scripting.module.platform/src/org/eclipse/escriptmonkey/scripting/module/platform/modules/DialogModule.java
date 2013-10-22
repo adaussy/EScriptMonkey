@@ -11,7 +11,7 @@
 package org.eclipse.escriptmonkey.scripting.module.platform.modules;
 
 import org.eclipse.escriptmonkey.scripting.common.RunnableWithResult;
-import org.eclipse.escriptmonkey.scripting.debug.Logger;
+import org.eclipse.escriptmonkey.scripting.log.Logger;
 import org.eclipse.escriptmonkey.scripting.modules.AbstractScriptModule;
 import org.eclipse.escriptmonkey.scripting.modules.WrapToScript;
 import org.eclipse.jface.dialogs.ErrorDialog;

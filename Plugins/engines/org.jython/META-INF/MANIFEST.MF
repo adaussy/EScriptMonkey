@@ -1,9 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Jython
-Bundle-SymbolicName: org.jython
-Bundle-Version: 2.7.0.b1
+Bundle-SymbolicName: org.jython;singleton:=true
+Bundle-Version: 2.5.3.qualifier
 Eclipse-BuddyPolicy: global
+Eclipse-BundleShape: dir
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.python,
  org.python.antlr,

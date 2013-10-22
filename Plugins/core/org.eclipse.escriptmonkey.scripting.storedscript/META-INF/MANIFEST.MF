@@ -16,7 +16,8 @@ Require-Bundle: org.eclipse.ui,
  com.google.guava;bundle-version="10.0.1",
  org.eclipse.emf.ecore,
  org.eclipse.emf.edit,
- org.eclipse.emf.common.ui
+ org.eclipse.emf.common.ui,
+ org.eclipse.escriptmonkey.scripting.log;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.escriptmonkey.scripting.storedscript,

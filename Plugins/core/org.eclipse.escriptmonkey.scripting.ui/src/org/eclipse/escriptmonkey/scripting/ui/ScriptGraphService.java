@@ -22,7 +22,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.escriptmonkey.scripting.debug.Logger;
+import org.eclipse.escriptmonkey.scripting.log.Logger;
 import org.eclipse.escriptmonkey.scripting.storedscript.notification.IStoredScriptListener;
 import org.eclipse.escriptmonkey.scripting.storedscript.service.IStoredScriptService;
 import org.eclipse.escriptmonkey.scripting.storedscript.storedscript.IStoredScript;

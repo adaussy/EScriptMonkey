@@ -14,6 +14,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.emf.edit,
  org.eclipse.papyrus.infra.core;bundle-version="0.10.1",
  org.eclipse.papyrus.uml.tools,
- org.eclipse.escriptmonkey.scripting.integration.modeling.uml;bundle-version="1.0.0"
+ org.eclipse.escriptmonkey.scripting.integration.modeling.uml;bundle-version="1.0.0",
+ org.eclipse.escriptmonkey.scripting.log;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy

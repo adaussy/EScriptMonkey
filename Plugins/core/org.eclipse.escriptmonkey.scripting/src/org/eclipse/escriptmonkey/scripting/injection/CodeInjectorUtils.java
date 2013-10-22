@@ -23,7 +23,7 @@ import org.eclipse.escriptmonkey.scripting.IModifiableScriptEngine;
 import org.eclipse.escriptmonkey.scripting.IScriptEngine;
 import org.eclipse.escriptmonkey.scripting.Script;
 import org.eclipse.escriptmonkey.scripting.debug.ITracingConstant;
-import org.eclipse.escriptmonkey.scripting.debug.Tracer;
+import org.eclipse.escriptmonkey.scripting.log.Tracer;
 import org.eclipse.escriptmonkey.scripting.modules.BootStrapper;
 import org.eclipse.escriptmonkey.scripting.modules.EnvironmentModule;
 import org.eclipse.escriptmonkey.scripting.modules.IModuleWrapper;

@@ -13,9 +13,9 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-  	<relativePath>../../Releng/org.eclipse.escriptmonkey.scripting.releng</relativePath>
-  	<groupId>escriptmonkey</groupId>
-  	<artifactId>org.eclipse.escriptmonkey.scripting.releng</artifactId>
+  	<relativePath>../../Releng/org.eclipse.escriptmonkey.scripting.jython.releng</relativePath>
+  	<groupId>escriptmonkey_jython</groupId>
+  	<artifactId>org.eclipse.escriptmonkey.scripting.jython.releng</artifactId>
   	<version>1.0.0-SNAPSHOT</version>
   </parent>
   <artifactId>org.eclipse.ease.python.jython.feature</artifactId>

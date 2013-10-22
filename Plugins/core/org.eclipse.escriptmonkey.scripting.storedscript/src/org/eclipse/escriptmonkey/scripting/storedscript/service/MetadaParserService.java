@@ -24,7 +24,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.escriptmonkey.scripting.debug.Logger;
+import org.eclipse.escriptmonkey.scripting.log.Logger;
 import org.eclipse.escriptmonkey.scripting.storedscript.metada.IHeaderParser;
 import org.eclipse.escriptmonkey.scripting.storedscript.metada.IMetadataParser;
 import org.eclipse.escriptmonkey.scripting.storedscript.metada.Metadata;

@@ -15,7 +15,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.escriptmonkey.scripting.debug.Logger;
+import org.eclipse.escriptmonkey.scripting.log.Logger;
 import org.eclipse.escriptmonkey.scripting.storedscript.service.IStoredScriptService;
 import org.eclipse.escriptmonkey.scripting.ui.Activator;
 import org.eclipse.jface.action.Action;

@@ -12,7 +12,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.escriptmonkey.scripting.IExecutionListener;
 import org.eclipse.escriptmonkey.scripting.IScriptEngine;
 import org.eclipse.escriptmonkey.scripting.Script;
-import org.eclipse.escriptmonkey.scripting.debug.Logger;
+import org.eclipse.escriptmonkey.scripting.log.Logger;
 
 
 public class EffectiveScriptGenerator implements IExecutionListener {

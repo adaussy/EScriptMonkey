@@ -34,7 +34,7 @@ import org.eclipse.escriptmonkey.scripting.ExitException;
 import org.eclipse.escriptmonkey.scripting.IModifiableScriptEngine;
 import org.eclipse.escriptmonkey.scripting.Script;
 import org.eclipse.escriptmonkey.scripting.debug.ITracingConstant;
-import org.eclipse.escriptmonkey.scripting.debug.Tracer;
+import org.eclipse.escriptmonkey.scripting.log.Tracer;
 import org.eclipse.escriptmonkey.scripting.service.ScriptService;
 import org.eclipse.swt.widgets.Display;
 

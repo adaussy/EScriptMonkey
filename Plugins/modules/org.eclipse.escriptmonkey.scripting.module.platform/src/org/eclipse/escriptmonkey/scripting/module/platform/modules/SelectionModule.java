@@ -14,7 +14,7 @@ import org.eclipse.core.expressions.IIterable;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IAdapterManager;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.escriptmonkey.scripting.debug.Logger;
+import org.eclipse.escriptmonkey.scripting.log.Logger;
 import org.eclipse.escriptmonkey.scripting.modules.AbstractScriptModule;
 import org.eclipse.escriptmonkey.scripting.modules.WrapToScript;
 import org.eclipse.jface.viewers.ISelection;

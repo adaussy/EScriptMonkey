@@ -20,7 +20,7 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.eclipse.escriptmonkey.scripting.Activator;
-import org.eclipse.escriptmonkey.scripting.debug.Logger;
+import org.eclipse.escriptmonkey.scripting.log.Logger;
 import org.eclipse.escriptmonkey.scripting.modules.AbstractModuleWrapper;
 import org.eclipse.escriptmonkey.scripting.modules.EnvironmentModule;
 import org.eclipse.escriptmonkey.scripting.modules.OptionalParameter;

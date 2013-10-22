@@ -21,7 +21,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.eclipse.escriptmonkey.scripting.debug.Logger;
+import org.eclipse.escriptmonkey.scripting.log.Logger;
 import org.eclipse.escriptmonkey.scripting.service.ScriptService;
 import org.eclipse.escriptmonkey.scripting.storedscript.service.MetadaParserService;
 import org.eclipse.escriptmonkey.scripting.storedscript.storedscript.IStoredScript;

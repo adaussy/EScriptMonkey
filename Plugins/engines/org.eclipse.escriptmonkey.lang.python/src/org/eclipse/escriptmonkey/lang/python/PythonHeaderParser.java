@@ -15,7 +15,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.escriptmonkey.scripting.debug.Logger;
+import org.eclipse.escriptmonkey.scripting.log.Logger;
 import org.eclipse.escriptmonkey.scripting.storedscript.metada.AbstractFileHeaderParser;
 import org.eclipse.escriptmonkey.scripting.storedscript.storedscript.IStoredScript;
 
