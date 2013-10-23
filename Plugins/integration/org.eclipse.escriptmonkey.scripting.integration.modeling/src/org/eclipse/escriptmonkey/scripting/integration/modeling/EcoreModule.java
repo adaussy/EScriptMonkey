@@ -240,7 +240,7 @@ public class EcoreModule extends AbstractScriptModule {
 			IPath containerPath = (IPath)result[0];
 			container = URI.createPlatformResourceURI(containerPath.toString(), true);
 		} else {
-			container = URI.createURI(containerURI);
+			container = URI.createFileURI(containerURI);
 		}
 		if(fileName == null) {
 			//Launch input dialog
