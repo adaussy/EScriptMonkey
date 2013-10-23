@@ -21,12 +21,12 @@ import org.eclipse.ease.discovery.ui.wizards.DiscoveryComponent;
 /**
  * Handler for the EASE discovery action
  */
-public class PapyrusDiscoveryHandler extends AbstractHandler {
+public class EaseDiscoveryHandler extends AbstractHandler {
 
 	/**
 	 * The constructor.
 	 */
-	public PapyrusDiscoveryHandler() {
+	public EaseDiscoveryHandler() {
 	}
 
 	/**

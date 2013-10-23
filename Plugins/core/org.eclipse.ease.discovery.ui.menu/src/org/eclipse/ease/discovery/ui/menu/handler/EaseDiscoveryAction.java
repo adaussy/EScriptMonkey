@@ -16,11 +16,11 @@ import org.eclipse.jface.action.Action;
 /**
  * Action used for discovery 
  */
-public class PapyrusDiscoveryAction extends Action {
+public class EaseDiscoveryAction extends Action {
 	/**
 	 * The constructor.
 	 */
-	public PapyrusDiscoveryAction() {
+	public EaseDiscoveryAction() {
 	}
 
 	/**

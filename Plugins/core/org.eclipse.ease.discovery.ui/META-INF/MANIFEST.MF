@@ -22,10 +22,10 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.edit.ui;visibility:=reexport,
  org.eclipse.ui,
  org.eclipse.ui.forms,
- org.eclipse.ease.discovery;bundle-version="0.10.1",
+ org.eclipse.ease.discovery,
  org.eclipse.escriptmonkey.scripting.log;bundle-version="1.0.0"
 Bundle-Vendor: %providerName
-Bundle-Version: 0.10.1.qualifier
+Bundle-Version: 1.0.0.qualifier
 Bundle-ManifestVersion: 2
 Bundle-Activator: org.eclipse.ease.discovery.ui.Activator
 Bundle-SymbolicName: org.eclipse.ease.discovery.ui;singleton:=true

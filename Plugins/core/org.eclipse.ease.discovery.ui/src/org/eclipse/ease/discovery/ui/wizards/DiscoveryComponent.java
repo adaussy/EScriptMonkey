@@ -33,7 +33,7 @@ import org.eclipse.ui.PlatformUI;
 public class DiscoveryComponent {
 
 	/** URI of the model where all extra component features to be installed are referenced */
-	public static final String DISCOVERY_EASE_URI = "platform:/plugin/org.eclipse.ease.discovery.ui/Category.xmi";
+	public static final String DISCOVERY_EASE_URI = "http://aofr34851/ease/builds/Category.xmi";
 
 	public static final Object execute() {
 		final IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();

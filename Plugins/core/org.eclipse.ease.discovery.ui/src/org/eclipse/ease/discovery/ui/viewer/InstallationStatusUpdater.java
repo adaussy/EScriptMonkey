@@ -38,41 +38,39 @@ public class InstallationStatusUpdater {
 
 	public void update(IProgressMonitor monitor) throws InterruptedException {
 		Set<String> installedFeatures = new HashSet<String>();
-		IBundleGroupProvider[] bundleGroupProviders = Platform
-				.getBundleGroupProviders();
-		for (IBundleGroupProvider provider : bundleGroupProviders) {
-			if (monitor.isCanceled()) {
+		IBundleGroupProvider[] bundleGroupProviders = Platform.getBundleGroupProviders();
+
+		for(IBundleGroupProvider provider : bundleGroupProviders) {
+			if(monitor.isCanceled()) {
 				throw new InterruptedException();
 			}
 			IBundleGroup[] bundleGroups = provider.getBundleGroups();
-			for (IBundleGroup group : bundleGroups) {
+			System.out.println("Provider, " + provider.getName() + " has a group size of " + bundleGroups.length);
+
+			for(IBundleGroup group : bundleGroups) {
+				System.out.println(group.getIdentifier());
 				installedFeatures.add(group.getIdentifier());
 			}
 		}
-		Iterator<InstallableComponent> it = discovery
-				.getAllInstallableComponents().iterator();
-		while (it.hasNext()) {
+		Iterator<InstallableComponent> it = discovery.getAllInstallableComponents().iterator();
+		while(it.hasNext()) {
 			InstallableComponent comp = it.next();
-			if (allFeaturesAreAlreadyInstalled(installedFeatures, comp)
-					|| oneOfTheseIsAlreadyInstalled(comp.getHiddingFeatureID(),
-							installedFeatures)) {
+			if(allFeaturesAreAlreadyInstalled(installedFeatures, comp) || oneOfTheseIsAlreadyInstalled(comp.getHiddingFeatureID(), installedFeatures)) {
 				comp.setInstalled(true);
 			}
 		}
 	}
 
-	private boolean oneOfTheseIsAlreadyInstalled(
-			EList<String> hiddingFeatureID, Set<String> installedFeatures) {
+	private boolean oneOfTheseIsAlreadyInstalled(EList<String> hiddingFeatureID, Set<String> installedFeatures) {
 		boolean oneIsInstalled = false;
 		Iterator<String> it = hiddingFeatureID.iterator();
-		while (it.hasNext() && !oneIsInstalled) {
+		while(it.hasNext() && !oneIsInstalled) {
 			oneIsInstalled = (installedFeatures.contains(it.next()));
 		}
 		return oneIsInstalled;
 	}
 
-	private boolean allFeaturesAreAlreadyInstalled(
-			Set<String> installedFeatures, InstallableComponent comp) {
+	private boolean allFeaturesAreAlreadyInstalled(Set<String> installedFeatures, InstallableComponent comp) {
 		return installedFeatures.containsAll(comp.getId());
 	}
 }
