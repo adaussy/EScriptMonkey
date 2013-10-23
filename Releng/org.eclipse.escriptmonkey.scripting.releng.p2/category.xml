@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-<feature url="features/org.eclipse.ease.core.feature_1.0.0.qualifier.jar" id="org.eclipse.ease.core.feature" version="1.0.0.qualifier">
+   <feature url="features/org.eclipse.ease.core.feature_1.0.0.qualifier.jar" id="org.eclipse.ease.core.feature" version="1.0.0.qualifier">
       <category name="Core"/>
    </feature>
    <feature url="features/org.eclipse.ease.core.ui.feature_1.0.0.qualifier.jar" id="org.eclipse.ease.core.ui.feature" version="1.0.0.qualifier">
+      <category name="Core"/>
+   </feature>
+    <feature url="features/org.eclipse.ease.discovery.feature_1.0.0.qualifier.jar" id="org.eclipse.ease.discovery.feature" version="1.0.0.qualifier">
       <category name="Core"/>
    </feature>
    <feature url="features/org.eclipse.ease.javascript.feature_1.0.0.qualifier.jar" id="org.eclipse.ease.javascript.feature" version="1.0.0.qualifier">

@@ -2,7 +2,8 @@
 <feature
       id="org.eclipse.ease.integration.modeling.uml.feature"
       label="EASE UML Integration"
-      version="1.0.0.qualifier">
+      version="1.0.0.qualifier"
+      plugin="org.eclipse.escriptmonkey.scripting">
 
    <description>
       EASE components use to integrate EASE into UML.

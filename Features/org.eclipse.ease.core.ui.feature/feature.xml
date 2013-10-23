@@ -2,7 +2,8 @@
 <feature
       id="org.eclipse.ease.core.ui.feature"
       label="EASE core UI feature"
-      version="1.0.0.qualifier">
+      version="1.0.0.qualifier"
+      plugin="org.eclipse.escriptmonkey.scripting">
 
    <description>
       All the EASE component for User Interface integration
@@ -23,7 +24,7 @@ Contributors:
    <license url="%licenseURL">
       %license
    </license>
-   
+
    <plugin
          id="org.eclipse.escriptmonkey.scripting.ui"
          download-size="0"
@@ -37,7 +38,6 @@ Contributors:
          install-size="0"
          version="0.0.0"
          unpack="false"/>
-
 
    <plugin
          id="org.eclipse.escriptmonkey.scripting.ui.expression"

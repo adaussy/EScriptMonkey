@@ -125,6 +125,17 @@
 		<module>
 			../../Plugins/core/org.eclipse.escriptmonkey.scripting.storedscript
 		</module>
+			<!--  Discovery -->
+			<module>
+				../../Plugins/core/org.eclipse.ease.discovery.ui.menu
+			</module>
+			<module>
+				../../Plugins/core/org.eclipse.ease.discovery.ui
+			</module>
+			<module>
+				../../Plugins/core/org.eclipse.ease.discovery
+			</module>
+			
 			<!-- UI -->
 			<module>
 				../../Plugins/core/org.eclipse.escriptmonkey.scripting.ui
@@ -227,6 +238,9 @@
 		</module>
 		<module>
 			../../Features/org.eclipse.ease.python.feature
+		</module>
+		<module>
+			../../Features/org.eclipse.ease.discovery.feature
 		</module>
 		
 		<!-- Update site -->

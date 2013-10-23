@@ -2,7 +2,8 @@
 <feature
       id="org.eclipse.ease.integration.modeling.feature"
       label="EASE modeling feature"
-      version="1.0.0.qualifier">
+      version="1.0.0.qualifier"
+      plugin="org.eclipse.escriptmonkey.scripting">
 
    <description url="http://www.example.com/description">
       EASE components use to integrate EASE into Eclipse Modeling.

@@ -2,7 +2,8 @@
 <feature
       id="org.eclipse.ease.javascript.feature"
       label="EASE Javascript feature"
-      version="1.0.0.qualifier">
+      version="1.0.0.qualifier"
+      plugin="org.eclipse.escriptmonkey.scripting">
 
    <description url="http://www.example.com/description">
       All EASE component mandatory to devellop Javascript scripts.
