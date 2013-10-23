@@ -10,7 +10,11 @@
       description="All available engine">
     <components
         name="Rhino"
-        description="This the Rhino engines use to run Javascript script">
+        provider="E4"
+        description="This the Rhino engines use to run Javascript script"
+        license="EPL"
+        incubation="true">
+      <sitesURLS>https://github.com/adaussy/EScriptMonkey/tree/gh-pages/ease_update_site</sitesURLS>
       <id>org.eclipse.ease.javascript.feature</id>
     </components>
   </categories>
