@@ -1,6 +1,0 @@
-scripts/Find_System_Prints.js
-scripts/Hello__Ward.js
-scripts/Hello__Bjorn.js
-scripts/Script__Create_new_script_project.js
-scripts/Editors__Comment_Lines.js
-scripts/Editors__Replace_Selection_with_Date.js

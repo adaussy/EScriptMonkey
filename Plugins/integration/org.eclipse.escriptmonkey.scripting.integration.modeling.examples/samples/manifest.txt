@@ -1,4 +1,0 @@
-scripts/DisplaySelectedGMFSemanticObject.py
-scripts/SimpleEcoreAPI.py
-scripts/ReferencingObject.py
-scripts/CreateResource.py

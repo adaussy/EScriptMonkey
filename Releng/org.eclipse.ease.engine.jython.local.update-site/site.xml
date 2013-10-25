@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<site>
-   <feature url="features/org.eclipse.ease.python.jython.feature_1.0.0.201310171503.jar" id="org.eclipse.ease.python.jython.feature" version="1.0.0.201310171503">
-      <category name="Jython"/>
-   </feature>
-   <category-def name="Jython" label="Jython"/>
-</site>

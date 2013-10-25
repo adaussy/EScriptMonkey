@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+ <extension
+         point="org.eclipse.ease.language">
+      <engine
+            class="org.eclipse.ease.lang.python.jython.JythonScriptEngine"
+            id="org.eclipse.ease.python.jython"
+            name="Jython">
+         <supportedScriptType
+               type="Python">
+         </supportedScriptType>
+      </engine>
+            <launchExtension
+            class="org.eclipse.ease.lang.python.jython.PythonEnvironementBootStrapper"
+            engineID="org.eclipse.ease.python.jython">
+      </launchExtension>
+      <moduleWrapper
+            class="org.eclipse.ease.lang.python.jython.PythonModuleWrapper"
+            engineID="org.eclipse.ease.python.jython">
+      </moduleWrapper>
+   </extension>
+</plugin>

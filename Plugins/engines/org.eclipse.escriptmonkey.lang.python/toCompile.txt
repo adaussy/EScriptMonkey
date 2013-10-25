@@ -1,2 +1,0 @@
-Add the jar jython-standalone-2.5.4-rc1.jar into the plugin.
-This is not a permanent solution
