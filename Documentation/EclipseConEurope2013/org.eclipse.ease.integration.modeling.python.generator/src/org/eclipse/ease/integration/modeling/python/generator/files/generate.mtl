@@ -34,12 +34,14 @@ def init[eClass.name/]([generateParameterSignature(genClass.ecoreClass)/]):
 	[/if]
 	[/for]
 	[for (feature : GenFeature | genClass.genFeatures)]
+	[if (not feature.ecoreFeature.derived)]
 	if not [feature.ecoreFeature.name/] is None:
 	[if (feature.getEcoreFeature().many)]
 		for a in [feature.ecoreFeature.name/]:
 			eObject.get[feature.getAccessorName()/]().add(a)
 	[else]
 		eObject.set[feature.getAccessorName()/]([feature.getEcoreFeature().name/])
+	[/if]
 	[/if]
 	[/for]
 [/let]

@@ -6,8 +6,7 @@
 
 from java.lang import Runnable
 
- 
- 
+  
 # Init Book
 # @generated 
 def initBook(eObject,publicationDate=None,copies=None,borrowers=None,title=None,pages=None,category=None,author=None):
@@ -26,21 +25,9 @@ def initLibrary(eObject,address=None,name=None,stock=None,branches=None,parentBr
     initAddressable(eObject,address)
     if not name is None:
         eObject.setName(name)
-    if not writers is None:
-        for a in writers:
-            eObject.getWriters().add(a)
-    if not employees is None:
-        for a in employees:
-            eObject.getEmployees().add(a)
-    if not borrowers is None:
-        for a in borrowers:
-            eObject.getBorrowers().add(a)
     if not stock is None:
         for a in stock:
             eObject.getStock().add(a)
-    if not books is None:
-        for a in books:
-            eObject.getBooks().add(a)
     if not branches is None:
         for a in branches:
             eObject.getBranches().add(a)
@@ -640,7 +627,6 @@ writersFirstName = ["MANLY WADE",
 
 loadModule("EcoreModule")
 input = loadModule("InputModule")
-loadModule("WorkbenchModule")
 output = loadModule("OutputModule")
 initEPackage("http:///org/eclipse/emf/examples/library/extlibrary.ecore/1.0.0")
 # Get the selected EObject
@@ -650,10 +636,11 @@ newResource = createResource(name="lib_V2.extlibrary")
 print "Resource has been created at "+newResource.getURI().toString()
 print "Creating new library"
 lib = createLibrary()
+initLibrary(lib,name="My new Library")
 newResource.getContents().add(lib)
 
 #Fill the model
-print lib
+print lib.getName()+" has been created"
 for lastNameIte, firstNameIte in zip(writersLastName, writersFirstName):
     print "Creating new writer "+lastNameIte+" "+firstNameIte
     author = createWriter()
