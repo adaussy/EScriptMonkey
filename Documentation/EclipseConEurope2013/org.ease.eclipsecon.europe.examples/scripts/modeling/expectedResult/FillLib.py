@@ -1,6 +1,6 @@
 #
  # Menu: EclipseCon > Modeling > Fill library
- # Description: Put a descript here
+ # Description: Create dynamically an Library from User Input
  # EnableWhen::[And {
  # With selection {
  #        Iterable {

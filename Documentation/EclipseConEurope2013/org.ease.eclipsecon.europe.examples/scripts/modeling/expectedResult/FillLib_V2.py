@@ -1,16 +1,7 @@
 #
  # Menu: EclipseCon > Modeling > Fill library V2
- # Description: Put a descript here
- # EnableWhen::[And {
- # With selection {
- #        Iterable {
- #            AdaptTo "org.eclipse.emf.ecore.EObject"{
- #                InstanceOf "org.eclipse.emf.examples.extlibrary.Library"
- #            }
- #        }
- #    }
- #}]::
- 
+ # Description: Create a new library fill with Authors
+ # Thread: UI
 
 
 from java.lang import Runnable
@@ -653,19 +644,26 @@ loadModule("WorkbenchModule")
 output = loadModule("OutputModule")
 initEPackage("http:///org/eclipse/emf/examples/library/extlibrary.ecore/1.0.0")
 # Get the selected EObject
-lib = getSelection("Library")
+ #Create resource semi automatically
+print "Creating new resource"
+newResource = createResource(name="lib_V2.extlibrary")
+print "Resource has been created at "+newResource.getURI().toString()
+print "Creating new library"
+lib = createLibrary()
+newResource.getContents().add(lib)
 
 #Fill the model
 print lib
 for lastNameIte, firstNameIte in zip(writersLastName, writersFirstName):
-    print lastNameIte, firstNameIte
+    print "Creating new writer "+lastNameIte+" "+firstNameIte
     author = createWriter()
     initWriter(author,lastName=lastNameIte,firstName=firstNameIte)
     lib.getWriters().add(author)
 
 
-
+save(lib)
 #Write the result in a file
+print "Generating results"
 content = "Library: \n"
 for author in lib.getWriters():
     content +=author.getName()+"\n"
