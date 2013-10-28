@@ -11,12 +11,14 @@
  *******************************************************************************/
 package org.eclipse.ease.lang.python.jython;
 
+import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.ease.AbstractScriptEngine;
 import org.eclipse.ease.IModifiableScriptEngine;
 import org.eclipse.ease.Script;
@@ -80,7 +82,7 @@ public class JythonScriptEngine extends AbstractScriptEngine implements IModifia
 		mEngine.getSystemState().__setattr__("_jy_interpreter", Py.java2py(mEngine));
 		//		imp.load("site");
 		mEngine.getSystemState().path.insert(0, Py.EmptyString);
-
+		
 		setOutputStream(getOutputStream());
 		setInputStream(getInputStream());
 		setErrorStream(getErrorStream());
@@ -113,11 +115,30 @@ public class JythonScriptEngine extends AbstractScriptEngine implements IModifia
 	@Override
 	protected Object execute(final Script script, final Object reference, final String fileName) throws Exception {
 		mResult = Py.None;
+
 		PyObject code = Py.compile_command_flags(script.getCode(), "(none)", CompileMode.exec, new CompilerFlags(), true);
 		if(code == Py.None)
 			throw new RuntimeException("Could not compile code");
+		Object file = script.getFile();
+		File f = null;
+		if(file instanceof IFile) {
+			f = ((IFile)file).getLocation().toFile();
+		} else if(file instanceof File) {
+			f = ((File)file);
 
+		}
+		PyString newString = null;
+		if(f != null) {
+			String absolutePath = f.getAbsolutePath();
+			this.setVariable("__File__", absolutePath);
+			String containerPart = f.getParent();
+			newString = Py.newString(containerPart);
+			Py.getSystemState().path.insert(0, newString);
+		}
 		Py.exec(code, mEngine.getLocals(), null);
+		if(newString != null) {
+			Py.getSystemState().path.remove(newString);
+		}
 		return toJava(mResult);
 	}
 
