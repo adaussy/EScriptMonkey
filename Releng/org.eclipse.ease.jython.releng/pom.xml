@@ -17,6 +17,10 @@
 			<layout>p2</layout>
 			<url>http://download.eclipse.org/releases/kepler/</url>
 		</repository>
+		<repository>
+			<id>EASE Core</id>
+			<url>http://download.eclipse.org/e4/updates/ease/eclipse-e4-ease-nightly/</url>
+		</repository>
 	</repositories>
 
 	<build>
@@ -114,10 +118,10 @@
 			../../Plugins/engines/org.jython
 		</module>
 		<module>
-			../../Plugins/engines/org.eclipse.escriptmonkey.lang.python.jython
+			../../Plugins/engines/org.eclipse.ease.lang.python.jython
 		</module>
 		<module>
-			../../Plugins/engines/org.eclipse.escriptmonkey.lang.python.jython.ui
+			../../Plugins/engines/org.eclipse.ease.lang.python.jython.ui
 		</module>
 		<!-- Features -->
 		<module>

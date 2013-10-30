@@ -3,10 +3,10 @@
   <artifactId>org.jython</artifactId>
   <packaging>eclipse-plugin</packaging>
   <parent>
-  	<groupId>org.eclipse.ease</groupId>
-  	<artifactId>org.eclipse.escriptmonkey.scripting.releng</artifactId>
+  	<groupId>escriptmonkey_jython</groupId>
+  	<artifactId>org.eclipse.ease.jython.releng</artifactId>
   	<version>0.1.0-SNAPSHOT</version>
-  	<relativePath>../../../Releng/org.eclipse.escriptmonkey.scripting.releng</relativePath>
+  	<relativePath>../../../Releng/org.eclipse.ease.jython.releng</relativePath>
   </parent>
   <version>2.5.3-SNAPSHOT</version>
 </project>
