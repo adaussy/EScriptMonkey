@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.escriptmonkey.scripting.language">
+      <engine
+            class="com.codeandme.scripting.groovy.GroovyScriptEngine"
+            id="com.codeandme.scripting.groovy"
+            name="Groovy">
+      </engine>
+      <moduleWrapper
+            class="com.codeandme.scripting.groovy.GroovyWrapper"
+            engineID="com.codeandme.scripting.groovy">
+      </moduleWrapper>
+      <scriptType
+            extension_file="groovy"
+            type=" Groovy">
+      </scriptType>
+      <launchExtension
+            class="org.eclipse.escriptmonkey.scripting.modules.BootStrapper"
+            engineID="com.codeandme.scripting.groovy">
+      </launchExtension>
+   </extension>
+
+</plugin>

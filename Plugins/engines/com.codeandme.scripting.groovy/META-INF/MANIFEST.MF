@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Groovy Interpreter
+Bundle-SymbolicName: com.codeandme.scripting.groovy;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: Code & me
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: org.groovy;bundle-version="2.1.6",
+ org.eclipse.escriptmonkey.scripting
