@@ -2,14 +2,14 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Jython Engine
 Bundle-SymbolicName: org.eclipse.ease.lang.python.jython;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 0.1.0.qualifier
 Bundle-Activator: org.eclipse.ease.lang.python.jython.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.jython,
- org.eclipse.ease;bundle-version="1.0.0",
- org.eclipse.ease.lang.python;bundle-version="1.0.0",
+ org.eclipse.ease,
+ org.eclipse.ease.lang.python,
  org.eclipse.debug.ui;bundle-version="3.9.0",
- org.eclipse.ease.log;bundle-version="1.0.0"
+ org.eclipse.ease.log
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy

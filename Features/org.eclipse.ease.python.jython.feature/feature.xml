@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.ease.python.jython.feature"
       label="EASE Jython Integration"
-      version="1.0.0.qualifier"
+      version="0.1.0.qualifier"
       plugin="org.jython">
 
    <description>
@@ -26,23 +26,23 @@
    </license>
 
    <plugin
-         id="org.eclipse.escriptmonkey.lang.python.jython"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.escriptmonkey.lang.python.jython.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.jython"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
+
+   <plugin
+         id="org.eclipse.ease.lang.python.jython"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ease.lang.python.jython.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
 
 </feature>

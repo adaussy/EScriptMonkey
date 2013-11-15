@@ -22,8 +22,7 @@ import java.util.regex.Pattern;
 import org.eclipse.ease.Activator;
 import org.eclipse.ease.log.Logger;
 import org.eclipse.ease.modules.AbstractModuleWrapper;
-import org.eclipse.ease.modules.EnvironmentModule;
-import org.eclipse.ease.modules.OptionalParameter;
+import org.eclipse.ease.modules.ScriptParameter;
 
 
 public class PythonModuleWrapper extends AbstractModuleWrapper {
@@ -113,8 +112,8 @@ public class PythonModuleWrapper extends AbstractModuleWrapper {
 			parametersSignature.append(parameterName);
 			if(annots.length > 0) {
 				for(Annotation a : annots) {
-					if(a instanceof OptionalParameter) {
-						parametersSignature.append(setOptionalParameterValue(type, (OptionalParameter)a));
+					if(a instanceof ScriptParameter) {
+						parametersSignature.append(setOptionalParameterValue(type, (ScriptParameter)a));
 					}
 				}
 			}
@@ -151,8 +150,8 @@ public class PythonModuleWrapper extends AbstractModuleWrapper {
 	 * @param type
 	 * @param a
 	 */
-	protected CharSequence setOptionalParameterValue(Class<?> type, OptionalParameter a) {
-		Object defaultValue = OptionalParameter.OptionalParameterHelper.getDefaultValue(a, type);
+	protected CharSequence setOptionalParameterValue(Class<?> type, ScriptParameter a) {
+		Object defaultValue = ScriptParameter.OptionalParameterHelper.getDefaultValue(a, type);
 		StringBuilder parametersSignature = new StringBuilder();
 		parametersSignature.append("=");
 		if(defaultValue != null) {
@@ -173,10 +172,6 @@ public class PythonModuleWrapper extends AbstractModuleWrapper {
 		return getSaveName(name) + " =" + field.getDeclaringClass().getName() + "." + field.getName() + ";\n";
 	}
 
-	@Override
-	public String getEnvironmentModuleName() {
-		return EnvironmentModule.getRegisteredModuleName(EnvironmentModule.ENVIRONMENT_MODULE_NAME);
-	}
 
 	@Override
 	public String getVariableDefinition(String name, String content) {

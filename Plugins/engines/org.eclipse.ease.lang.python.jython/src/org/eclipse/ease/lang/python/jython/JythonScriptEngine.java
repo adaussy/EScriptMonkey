@@ -17,10 +17,10 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.ease.AbstractScriptEngine;
-import org.eclipse.ease.IModifiableScriptEngine;
 import org.eclipse.ease.Script;
 import org.eclipse.ease.lang.python.preferences.IPreferenceConstants;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -39,7 +39,7 @@ import org.python.core.PyObjectDerived;
 import org.python.core.PyString;
 import org.python.util.InteractiveInterpreter;
 
-public class JythonScriptEngine extends AbstractScriptEngine implements IModifiableScriptEngine {
+public class JythonScriptEngine extends AbstractScriptEngine {
 
 	private InteractiveInterpreter mEngine;
 
@@ -82,7 +82,7 @@ public class JythonScriptEngine extends AbstractScriptEngine implements IModifia
 		mEngine.getSystemState().__setattr__("_jy_interpreter", Py.java2py(mEngine));
 		//		imp.load("site");
 		mEngine.getSystemState().path.insert(0, Py.EmptyString);
-		
+
 		setOutputStream(getOutputStream());
 		setInputStream(getInputStream());
 		setErrorStream(getErrorStream());
@@ -204,6 +204,48 @@ public class JythonScriptEngine extends AbstractScriptEngine implements IModifia
 		return mEngine.get(name);
 	}
 
+	@Override
+	public boolean hasVariable(String name) {
+		return getVariable(name) != null;
+	}
+
+	@Override
+	public String getSaveVariableName(String name) {
+		return getSaveName(name);
+	}
+
+	static String getSaveName(final String identifier) {
+		// check if name is already valid
+		if(isSaveName(identifier))
+			return identifier;
+
+		// not valid, convert string to valid format
+		final StringBuilder buffer = new StringBuilder(identifier.replaceAll("[^a-zA-Z0-9]", "_"));
+
+		// remove '_' at the beginning
+		while((buffer.length() > 0) && (buffer.charAt(0) == '_'))
+			buffer.deleteCharAt(0);
+
+		// remove trailing '_'
+		while((buffer.length() > 0) && (buffer.charAt(buffer.length() - 1) == '_'))
+			buffer.deleteCharAt(buffer.length() - 1);
+
+		// check for valid first character
+		if(buffer.length() > 0) {
+			final char start = buffer.charAt(0);
+			if((start < 65) || ((start > 90) && (start < 97)) || (start > 122))
+				buffer.insert(0, '_');
+		} else
+			// buffer is empty
+			buffer.insert(0, '_');
+
+		return buffer.toString();
+	}
+
+	static boolean isSaveName(final String identifier) {
+		return Pattern.matches("[a-zA-Z_$][a-zA-Z0-9_$]*", identifier);
+	}
+
 	protected Collection<String> getPythonLibraries() {
 		List<String> result = new ArrayList<String>();
 		IPreferenceStore preferences = Activator.getDefault().getPreferenceStore();
@@ -214,5 +256,7 @@ public class JythonScriptEngine extends AbstractScriptEngine implements IModifia
 		}
 		return result;
 	}
+
+
 
 }
