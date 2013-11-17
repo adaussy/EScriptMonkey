@@ -17,10 +17,10 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.ease.AbstractScriptEngine;
-import org.eclipse.ease.IModifiableScriptEngine;
 import org.eclipse.ease.Script;
 import org.eclipse.ease.lang.python.preferences.IPreferenceConstants;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -39,7 +39,7 @@ import org.python.core.PyObjectDerived;
 import org.python.core.PyString;
 import org.python.util.InteractiveInterpreter;
 
-public class JythonScriptEngine extends AbstractScriptEngine implements IModifiableScriptEngine {
+public class JythonScriptEngine extends AbstractScriptEngine {
 
 	private InteractiveInterpreter mEngine;
 
@@ -80,22 +80,21 @@ public class JythonScriptEngine extends AbstractScriptEngine implements IModifia
 		mEngine.getSystemState().__dict__.__setitem__("displayhook", displayHook);
 
 		mEngine.getSystemState().__setattr__("_jy_interpreter", Py.java2py(mEngine));
-		//		imp.load("site");
+		// imp.load("site");
 		mEngine.getSystemState().path.insert(0, Py.EmptyString);
-		
+
 		setOutputStream(getOutputStream());
 		setInputStream(getInputStream());
 		setErrorStream(getErrorStream());
 
 		/*
-		 * Not optimized for now.
-		 * This should done at a Python System level
+		 * Not optimized for now. This should done at a Python System level
 		 */
-		for(String libraryPath : getPythonLibraries()) {
-			if((libraryPath != null) && !libraryPath.isEmpty()) {
+		for (String libraryPath : getPythonLibraries()) {
+			if ((libraryPath != null) && !libraryPath.isEmpty()) {
 				PyString element = new PyString(libraryPath);
 				PyList systemPath = mEngine.getSystemState().path;
-				if(!systemPath.contains(element)) {
+				if (!systemPath.contains(element)) {
 					systemPath.add(0, element);
 				}
 			}
@@ -117,18 +116,18 @@ public class JythonScriptEngine extends AbstractScriptEngine implements IModifia
 		mResult = Py.None;
 
 		PyObject code = Py.compile_command_flags(script.getCode(), "(none)", CompileMode.exec, new CompilerFlags(), true);
-		if(code == Py.None)
+		if (code == Py.None)
 			throw new RuntimeException("Could not compile code");
 		Object file = script.getFile();
 		File f = null;
-		if(file instanceof IFile) {
-			f = ((IFile)file).getLocation().toFile();
-		} else if(file instanceof File) {
-			f = ((File)file);
+		if (file instanceof IFile) {
+			f = ((IFile) file).getLocation().toFile();
+		} else if (file instanceof File) {
+			f = ((File) file);
 
 		}
 		PyString newString = null;
-		if(f != null) {
+		if (f != null) {
 			String absolutePath = f.getAbsolutePath();
 			this.setVariable("__File__", absolutePath);
 			String containerPart = f.getParent();
@@ -136,36 +135,36 @@ public class JythonScriptEngine extends AbstractScriptEngine implements IModifia
 			Py.getSystemState().path.insert(0, newString);
 		}
 		Py.exec(code, mEngine.getLocals(), null);
-		if(newString != null) {
+		if (newString != null) {
 			Py.getSystemState().path.remove(newString);
 		}
 		return toJava(mResult);
 	}
 
 	private static Object toJava(final PyObject result) {
-		if(result instanceof PyNone)
+		if (result instanceof PyNone)
 			return null;
 
-		if(result instanceof PyObjectDerived)
+		if (result instanceof PyObjectDerived)
 			return result.__tojava__(Object.class);
 
-		if(result instanceof PyBoolean)
-			return ((PyBoolean)result).getBooleanValue();
+		if (result instanceof PyBoolean)
+			return ((PyBoolean) result).getBooleanValue();
 
-		if(result instanceof PyInteger)
-			return ((PyInteger)result).getValue();
+		if (result instanceof PyInteger)
+			return ((PyInteger) result).getValue();
 
-		if(result instanceof PyFloat)
-			return ((PyFloat)result).getValue();
+		if (result instanceof PyFloat)
+			return ((PyFloat) result).getValue();
 
-		if(result instanceof PyLong)
-			return ((PyLong)result).getValue();
+		if (result instanceof PyLong)
+			return ((PyLong) result).getValue();
 
-		if(result instanceof PyString)
-			return ((PyString)result).getString();
+		if (result instanceof PyString)
+			return ((PyString) result).getString();
 
-		if(result instanceof PyInteger)
-			return ((PyInteger)result).getValue();
+		if (result instanceof PyInteger)
+			return ((PyInteger) result).getValue();
 
 		return result;
 	}
@@ -174,7 +173,7 @@ public class JythonScriptEngine extends AbstractScriptEngine implements IModifia
 	public void setOutputStream(final OutputStream outputStream) {
 		super.setOutputStream(outputStream);
 
-		if(mEngine != null)
+		if (mEngine != null)
 			mEngine.setOut(getOutputStream());
 	}
 
@@ -182,7 +181,7 @@ public class JythonScriptEngine extends AbstractScriptEngine implements IModifia
 	public void setInputStream(final InputStream inputStream) {
 		super.setInputStream(inputStream);
 
-		if(mEngine != null)
+		if (mEngine != null)
 			mEngine.setIn(getInputStream());
 	}
 
@@ -190,7 +189,7 @@ public class JythonScriptEngine extends AbstractScriptEngine implements IModifia
 	public void setErrorStream(final OutputStream errorStream) {
 		super.setErrorStream(errorStream);
 
-		if(mEngine != null)
+		if (mEngine != null)
 			mEngine.setErr(getErrorStream());
 	}
 
@@ -209,10 +208,51 @@ public class JythonScriptEngine extends AbstractScriptEngine implements IModifia
 		IPreferenceStore preferences = Activator.getDefault().getPreferenceStore();
 		String libraries = preferences.getString(IPreferenceConstants.PYTHON_LIBRARIES);
 		String[] libs = libraries.split(";");
-		for(String lib : libs) {
+		for (String lib : libs) {
 			result.add(lib);
 		}
 		return result;
 	}
 
+	@Override
+	public boolean hasVariable(String name) {
+		return mEngine.get(name) == null;
+	}
+
+	@Override
+	public String getSaveVariableName(String name) {
+		return getSaveName(name);
+	}
+
+	public static String getSaveName(final String identifier) {
+		// check if name is already valid
+		if (isSaveName(identifier))
+			return identifier;
+
+		// not valid, convert string to valid format
+		final StringBuilder buffer = new StringBuilder(identifier.replaceAll("[^a-zA-Z0-9]", "_"));
+
+		// remove '_' at the beginning
+		while ((buffer.length() > 0) && (buffer.charAt(0) == '_'))
+			buffer.deleteCharAt(0);
+
+		// remove trailing '_'
+		while ((buffer.length() > 0) && (buffer.charAt(buffer.length() - 1) == '_'))
+			buffer.deleteCharAt(buffer.length() - 1);
+
+		// check for valid first character
+		if (buffer.length() > 0) {
+			final char start = buffer.charAt(0);
+			if ((start < 65) || ((start > 90) && (start < 97)) || (start > 122))
+				buffer.insert(0, '_');
+		} else
+			// buffer is empty
+			buffer.insert(0, '_');
+
+		return buffer.toString();
+	}
+
+	public static boolean isSaveName(final String identifier) {
+		return Pattern.matches("[a-zA-Z_$][a-zA-Z0-9_$]*", identifier);
+	}
 }
