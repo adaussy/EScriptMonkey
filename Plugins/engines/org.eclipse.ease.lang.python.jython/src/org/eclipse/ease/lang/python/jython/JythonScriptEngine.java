@@ -80,7 +80,7 @@ public class JythonScriptEngine extends AbstractScriptEngine {
 		mEngine.getSystemState().__dict__.__setitem__("displayhook", displayHook);
 
 		mEngine.getSystemState().__setattr__("_jy_interpreter", Py.java2py(mEngine));
-		//		imp.load("site");
+		// imp.load("site");
 		mEngine.getSystemState().path.insert(0, Py.EmptyString);
 
 		setOutputStream(getOutputStream());
@@ -88,8 +88,7 @@ public class JythonScriptEngine extends AbstractScriptEngine {
 		setErrorStream(getErrorStream());
 
 		/*
-		 * Not optimized for now.
-		 * This should done at a Python System level
+		 * Not optimized for now. This should done at a Python System level
 		 */
 		for(String libraryPath : getPythonLibraries()) {
 			if((libraryPath != null) && !libraryPath.isEmpty()) {
@@ -204,9 +203,20 @@ public class JythonScriptEngine extends AbstractScriptEngine {
 		return mEngine.get(name);
 	}
 
+	protected Collection<String> getPythonLibraries() {
+		List<String> result = new ArrayList<String>();
+		IPreferenceStore preferences = Activator.getDefault().getPreferenceStore();
+		String libraries = preferences.getString(IPreferenceConstants.PYTHON_LIBRARIES);
+		String[] libs = libraries.split(";");
+		for(String lib : libs) {
+			result.add(lib);
+		}
+		return result;
+	}
+
 	@Override
 	public boolean hasVariable(String name) {
-		return getVariable(name) != null;
+		return mEngine.get(name) != null;
 	}
 
 	@Override
@@ -214,7 +224,7 @@ public class JythonScriptEngine extends AbstractScriptEngine {
 		return getSaveName(name);
 	}
 
-	static String getSaveName(final String identifier) {
+	public static String getSaveName(final String identifier) {
 		// check if name is already valid
 		if(isSaveName(identifier))
 			return identifier;
@@ -242,21 +252,7 @@ public class JythonScriptEngine extends AbstractScriptEngine {
 		return buffer.toString();
 	}
 
-	static boolean isSaveName(final String identifier) {
+	public static boolean isSaveName(final String identifier) {
 		return Pattern.matches("[a-zA-Z_$][a-zA-Z0-9_$]*", identifier);
 	}
-
-	protected Collection<String> getPythonLibraries() {
-		List<String> result = new ArrayList<String>();
-		IPreferenceStore preferences = Activator.getDefault().getPreferenceStore();
-		String libraries = preferences.getString(IPreferenceConstants.PYTHON_LIBRARIES);
-		String[] libs = libraries.split(";");
-		for(String lib : libs) {
-			result.add(lib);
-		}
-		return result;
-	}
-
-
-
 }
