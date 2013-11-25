@@ -30,7 +30,7 @@
             delegate="org.eclipse.ease.lang.python.jython.ui.launching.Launcher"
             id="org.eclipse.escriptmonkey.launchConfigurationType.jython"
             modes="run"
-            name="EScript Jython"
+            name="EASE Jython"
             sourceLocatorId="org.eclipse.escriptmonkey.sourceLocator.generic">
       </launchConfigurationType>
    </extension>
@@ -40,7 +40,7 @@
             class="org.eclipse.ease.lang.python.jython.ui.launching.Launcher"
             description="Run a Python file"
             id="org.eclipse.escriptmonkey.launchShortcut.jython"
-            label="EScript Jython"
+            label="EASE Jython"
             modes="run">
          <contextualLaunch>
             <enablement>
