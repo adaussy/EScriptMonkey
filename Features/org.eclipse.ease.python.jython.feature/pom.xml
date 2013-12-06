@@ -16,10 +16,12 @@
   	<relativePath>../../Releng/org.eclipse.ease.jython.releng</relativePath>
   	<groupId>escriptmonkey_jython</groupId>
   	<artifactId>org.eclipse.ease.jython.releng</artifactId>
-  	<version>0.1.0-SNAPSHOT</version>
+  	<version>0.1.1-SNAPSHOT</version>
   </parent>
   <artifactId>org.eclipse.ease.python.jython.feature</artifactId>
   <packaging>eclipse-feature</packaging>
 
   <name>EASE Jython Integration</name>
+  <version>0.1.1-SNAPSHOT</version>
+  <groupId>org.eclipse.ease</groupId>
 </project> 

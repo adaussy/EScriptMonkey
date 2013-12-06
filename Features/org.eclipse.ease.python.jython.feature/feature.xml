@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.ease.python.jython.feature"
       label="EASE Jython Integration"
-      version="0.1.0.qualifier"
+      version="0.1.1.qualifier"
       plugin="org.jython">
 
    <description>
