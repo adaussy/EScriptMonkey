@@ -12,7 +12,6 @@
 package org.eclipse.ease.lang.python.jython;
 
 import java.io.File;
-import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -34,23 +33,23 @@ public class JythonPackageManager extends SysPackageManager {
 
 		// create fully qualified name
 		StringBuilder buffer = new StringBuilder();
-		if ((pkg != null) && (!pkg.isEmpty()))
+		if((pkg != null) && (!pkg.isEmpty()))
 			buffer.append(pkg);
 
-		if ((name != null) && (!name.isEmpty())) {
-			if (buffer.length() > 0)
+		if((name != null) && (!name.isEmpty())) {
+			if(buffer.length() > 0)
 				buffer.append('.');
 
 			buffer.append(name);
 		}
 		String qualifiedName = buffer.toString();
 
-		if (isPythonLib(qualifiedName)) {
+		if(isPythonLib(qualifiedName)) {
 			mLookupCache.put(qualifiedName, false);
 			return false;
 		}
 
-		if (mLookupCache.containsKey(qualifiedName))
+		if(mLookupCache.containsKey(qualifiedName))
 			return mLookupCache.get(qualifiedName);
 
 		// not from python, might be something from java
@@ -93,24 +92,27 @@ public class JythonPackageManager extends SysPackageManager {
 	private boolean isPythonLib(final String qualifiedName) {
 
 		try {
-			if (qualifiedName != null && qualifiedName.contains("extlibraryinitHelper"))
+			if(qualifiedName != null && qualifiedName.contains("extlibraryinitHelper"))
 				return true;
 		} catch (Exception e) {
 		}
 
 		// FIXME _ might be part of a java class/package !!!!
 		// but "import json" also tries to locate _json, how to deal with that???
-		if ((qualifiedName.startsWith("_")) && !(qualifiedName.startsWith("org.jython")))
+		if((qualifiedName.startsWith("_")) && !(qualifiedName.startsWith("org.jython")))
 			return true;
-
-		for (File folder : Activator.getLibraryFolders()) {
-			Path path = folder.toPath();
-			File resolvedFolder = path.resolve(qualifiedName.replaceAll("\\.", "/")).toFile();
-			File resolvedLib = path.resolve(qualifiedName.replaceAll("\\.", "/") + ".py").toFile();
-			if (resolvedFolder.exists())
+		/*
+		 * 
+		 * Code this with 1.6 library
+		 */
+		for(File folder : Activator.getLibraryFolders()) {
+			String path = folder.getPath();
+			File resolvedFolder = new File(path + qualifiedName.replaceAll("\\.", "/"));
+			File resolvedLib = new File(path + qualifiedName.replaceAll("\\.", "/") + ".py");
+			if(resolvedFolder.exists())
 				return true;
 
-			if (resolvedLib.exists())
+			if(resolvedLib.exists())
 				return true;
 		}
 

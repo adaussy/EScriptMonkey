@@ -86,12 +86,9 @@ public class Activator extends AbstractUIPlugin {
 
 	public static List<File> getLibraryFolders() {
 		ArrayList<File> folders = new ArrayList<File>();
-
-		File rootFolder = new File(getPluginRootDir());
-		java.nio.file.Path path = rootFolder.toPath();
-		File libFolder = path.resolve("Lib").toFile();
-		if(libFolder.exists())
-			folders.add(libFolder);
+		File rootFolder = new File(getPluginRootDir() + "/Lib");
+		if(rootFolder.exists())
+			folders.add(rootFolder);
 
 		return folders;
 	}

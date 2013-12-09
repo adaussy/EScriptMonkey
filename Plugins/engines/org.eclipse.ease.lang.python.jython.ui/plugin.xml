@@ -6,7 +6,7 @@
       <page
             category="org.eclipse.ease.preferences.global"
             class="org.eclipse.ease.lang.python.jython.ui.preferences.PythonLibraryPreferencePage"
-            id="org.eclipse.escriptmonkey.lang.python.ui.libraryPrefPage"
+            id="org.eclipse.ease.lang.python.ui.libraryPrefPage"
             name="Jython external library">
       </page>
    </extension>
@@ -14,8 +14,8 @@
          point="org.eclipse.debug.ui.launchConfigurationTabGroups">
       <launchConfigurationTabGroup
             class="org.eclipse.ease.lang.python.jython.ui.launching.LaunchConfigurationTabGroup"
-            id="org.eclipse.escriptmonkey.launchConfigurationTabGroup.jython"
-            type="org.eclipse.escriptmonkey.launchConfigurationType.jython">
+            id="org.eclipse.ease.launchConfigurationTabGroup.jython"
+            type="org.eclipse.ease.launchConfigurationType.jython">
          <launchMode
                mode="run">
          </launchMode>
@@ -28,10 +28,10 @@
          point="org.eclipse.debug.core.launchConfigurationTypes">
       <launchConfigurationType
             delegate="org.eclipse.ease.lang.python.jython.ui.launching.Launcher"
-            id="org.eclipse.escriptmonkey.launchConfigurationType.jython"
+            id="org.eclipse.ease.launchConfigurationType.jython"
             modes="run"
             name="EASE Jython"
-            sourceLocatorId="org.eclipse.escriptmonkey.sourceLocator.generic">
+            sourceLocatorId="org.eclipse.ease.sourceLocator.generic">
       </launchConfigurationType>
    </extension>
    <extension
@@ -39,7 +39,7 @@
       <shortcut
             class="org.eclipse.ease.lang.python.jython.ui.launching.Launcher"
             description="Run a Python file"
-            id="org.eclipse.escriptmonkey.launchShortcut.jython"
+            id="org.eclipse.ease.launchShortcut.jython"
             label="EASE Jython"
             modes="run">
          <contextualLaunch>

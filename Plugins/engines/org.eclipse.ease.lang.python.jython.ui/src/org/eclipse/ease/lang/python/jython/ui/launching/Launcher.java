@@ -31,7 +31,7 @@ public class Launcher extends AbstractLaunchDelegate {
 
 	@Override
 	protected String getLaunchConfigurationType() {
-		return "org.eclipse.escriptmonkey.launchConfigurationType.jython";
+		return "org.eclipse.ease.launchConfigurationType.jython";
 	}
 
 	@Override

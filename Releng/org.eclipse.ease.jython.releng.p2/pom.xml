@@ -3,7 +3,7 @@
   <artifactId>org.eclipse.ease.jython.releng.p2</artifactId>
   <packaging>eclipse-repository</packaging>
    <parent>
-  	<groupId>escriptmonkey_jython</groupId>
+  	<groupId>ease_jython</groupId>
   	<artifactId>org.eclipse.ease.jython.releng</artifactId>
   	<version>0.1.1-SNAPSHOT</version>
   	<relativePath>../org.eclipse.ease.jython.releng</relativePath>
