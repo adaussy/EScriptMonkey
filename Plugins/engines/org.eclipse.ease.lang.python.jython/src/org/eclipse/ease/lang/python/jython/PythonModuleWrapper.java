@@ -20,7 +20,7 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.eclipse.ease.Activator;
-import org.eclipse.ease.log.Logger;
+import org.eclipse.ease.Logger;
 import org.eclipse.ease.modules.AbstractModuleWrapper;
 import org.eclipse.ease.modules.ScriptParameter;
 

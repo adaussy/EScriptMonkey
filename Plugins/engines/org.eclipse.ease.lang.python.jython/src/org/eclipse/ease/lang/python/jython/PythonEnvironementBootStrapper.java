@@ -12,8 +12,8 @@ package org.eclipse.ease.lang.python.jython;
 
 import org.eclipse.ease.IScriptEngine;
 import org.eclipse.ease.IScriptEngineLaunchExtension;
+import org.eclipse.ease.debug.Tracer;
 import org.eclipse.ease.lang.python.debug.ITracingConstant;
-import org.eclipse.ease.log.Tracer;
 import org.eclipse.ease.modules.EnvironmentModule;
 import org.eclipse.ease.modules.IModuleWrapper;
 import org.eclipse.ease.service.ScriptService;
@@ -31,7 +31,7 @@ public class PythonEnvironementBootStrapper implements IScriptEngineLaunchExtens
 			stringBuilder.append("import ").append(EnvironmentModule.class.getCanonicalName()).append("\n");
 			stringBuilder.append("ENV").append(" = ").append(wrapper.classInstantiation(EnvironmentModule.class, new String[0])).append("\n");
 			stringBuilder.append("ENV.loadModule(\"");
-			stringBuilder.append(EnvironmentModule.ENVIRONMENT_MODULE_NAME);
+			stringBuilder.append(EnvironmentModule.MODULE_NAME);
 			stringBuilder.append("\")");
 			if(ITracingConstant.PYTHON_BOOT_STRAPPER_TRACING) {
 				Tracer.logInfo("[Python bootstapper]Injecting code:\n" + stringBuilder.toString());
