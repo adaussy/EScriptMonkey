@@ -13,7 +13,7 @@ package org.eclipse.ease.lang.python.jython.ui.launching;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.ease.IScriptEngine;
-import org.eclipse.ease.IScriptService;
+import org.eclipse.ease.service.IScriptService;
 import org.eclipse.ease.ui.launching.AbstractLaunchDelegate;
 import org.eclipse.ui.PlatformUI;
 
@@ -24,7 +24,7 @@ public class Launcher extends AbstractLaunchDelegate {
 
 	@Override
 	protected IScriptEngine getScriptEngine(final ILaunchConfiguration configuration, final String mode) {
-		final IScriptService scriptService = (IScriptService)PlatformUI.getWorkbench().getService(IScriptService.class);
+		final IScriptService scriptService = (IScriptService) PlatformUI.getWorkbench().getService(IScriptService.class);
 
 		return scriptService.createEngineByID("org.eclipse.ease.python.jython");
 	}

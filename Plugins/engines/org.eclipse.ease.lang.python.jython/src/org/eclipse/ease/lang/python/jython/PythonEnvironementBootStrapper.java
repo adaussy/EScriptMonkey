@@ -16,7 +16,8 @@ import org.eclipse.ease.debug.Tracer;
 import org.eclipse.ease.lang.python.debug.ITracingConstant;
 import org.eclipse.ease.modules.EnvironmentModule;
 import org.eclipse.ease.modules.IModuleWrapper;
-import org.eclipse.ease.service.ScriptService;
+import org.eclipse.ease.service.IScriptService;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * The load Environment method into script
@@ -25,7 +26,7 @@ public class PythonEnvironementBootStrapper implements IScriptEngineLaunchExtens
 
 	@Override
 	public void createEngine(final IScriptEngine engine) {
-		IModuleWrapper wrapper = getWrapper(engine.getID());
+		IModuleWrapper wrapper = getWrapper(engine.getDescription().getID());
 		if (wrapper != null) {
 			StringBuilder stringBuilder = new StringBuilder();
 			stringBuilder.append("import ").append(EnvironmentModule.class.getCanonicalName()).append("\n");
@@ -44,6 +45,7 @@ public class PythonEnvironementBootStrapper implements IScriptEngineLaunchExtens
 	}
 
 	public static IModuleWrapper getWrapper(final String engineID) {
-		return ScriptService.getInstance().getModuleWrapper(engineID);
+		final IScriptService scriptService = (IScriptService) PlatformUI.getWorkbench().getService(IScriptService.class);
+		return scriptService.getModuleWrapper(engineID);
 	}
 }

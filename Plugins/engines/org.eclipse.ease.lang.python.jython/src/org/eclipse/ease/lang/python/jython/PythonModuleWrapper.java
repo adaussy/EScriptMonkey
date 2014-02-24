@@ -199,15 +199,15 @@ public class PythonModuleWrapper extends AbstractModuleWrapper {
 	}
 
 	public boolean isCorrectMethodName(String methodName) {
-		return JythonScriptEngine.isSaveName(methodName) && !forbidenKeywork.contains(methodName);
+		return JythonScriptEngine.isSaveName(methodName) && !FORBIDDEN_KEYWORDS.contains(methodName);
 	}
 
-	public static List<String> forbidenKeywork = new ArrayList<String>();
+	public static List<String> FORBIDDEN_KEYWORDS = new ArrayList<String>();
 
 	static {
-		forbidenKeywork.add("print");
-		forbidenKeywork.add("for");
-		forbidenKeywork.add("while");
+		FORBIDDEN_KEYWORDS.add("print");
+		FORBIDDEN_KEYWORDS.add("for");
+		FORBIDDEN_KEYWORDS.add("while");
 		// Complete this list
 	}
 

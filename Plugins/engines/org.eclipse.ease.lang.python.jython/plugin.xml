@@ -6,10 +6,10 @@
       <engine
             class="org.eclipse.ease.lang.python.jython.JythonScriptEngine"
             id="org.eclipse.ease.python.jython"
-            name="Jython">
-         <supportedScriptType
-               type="Python">
-         </supportedScriptType>
+            name="Python (Jython)">
+         <binding
+               scriptType="Python">
+         </binding>
       </engine>
             <launchExtension
             class="org.eclipse.ease.lang.python.jython.PythonEnvironementBootStrapper"
