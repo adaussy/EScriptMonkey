@@ -6,4 +6,4 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: Code & me
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.groovy;bundle-version="2.1.6",
- org.eclipse.escriptmonkey.scripting
+ org.eclipse.ease;bundle-version="0.1.1"

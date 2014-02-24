@@ -6,13 +6,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 
-import org.eclipse.escriptmonkey.scripting.AbstractScriptEngine;
-import org.eclipse.escriptmonkey.scripting.IModifiableScriptEngine;
-import org.eclipse.escriptmonkey.scripting.Script;
+import org.eclipse.ease.AbstractScriptEngine;
+import org.eclipse.ease.Script;
 
-public class GroovyScriptEngine extends AbstractScriptEngine implements IModifiableScriptEngine {
+public class GroovyScriptEngine extends AbstractScriptEngine {
 
-	private GroovyShell mEngine;
+	private GroovyShell fEngine;
 
 	public GroovyScriptEngine() {
 		super("Groovy");
@@ -26,7 +25,7 @@ public class GroovyScriptEngine extends AbstractScriptEngine implements IModifia
 
 	@Override
 	protected boolean setupEngine() {
-		mEngine = new GroovyShell();
+		fEngine = new GroovyShell();
 
 		setOutputStream(getOutputStream());
 		setErrorStream(getErrorStream());
@@ -38,8 +37,8 @@ public class GroovyScriptEngine extends AbstractScriptEngine implements IModifia
 	public void setOutputStream(final OutputStream outputStream) {
 		super.setOutputStream(outputStream);
 
-		if(mEngine != null)
-			mEngine.setProperty("out", getOutputStream());
+		if (fEngine != null)
+			fEngine.setProperty("out", getOutputStream());
 
 	}
 
@@ -47,8 +46,8 @@ public class GroovyScriptEngine extends AbstractScriptEngine implements IModifia
 	public void setErrorStream(final OutputStream errorStream) {
 		super.setOutputStream(errorStream);
 
-		if(mEngine != null)
-			mEngine.setProperty("err", getErrorStream());
+		if (fEngine != null)
+			fEngine.setProperty("err", getErrorStream());
 	}
 
 	@Override
@@ -63,18 +62,18 @@ public class GroovyScriptEngine extends AbstractScriptEngine implements IModifia
 		Object result = null;
 		try {
 			reader = new InputStreamReader(script.getCodeStream());
-			if((fileName == null) || (fileName.isEmpty()))
-				result = mEngine.evaluate(reader);
+			if ((fileName == null) || (fileName.isEmpty()))
+				result = fEngine.evaluate(reader);
 
 			else
-				result = mEngine.evaluate(reader, fileName);
+				result = fEngine.evaluate(reader, fileName);
 
 		} catch (Exception e) {
 			throw e;
 		} finally {
 			// gracefully close reader
 			try {
-				if(reader != null)
+				if (reader != null)
 					reader.close();
 			} catch (IOException e) {
 			}
@@ -85,12 +84,22 @@ public class GroovyScriptEngine extends AbstractScriptEngine implements IModifia
 
 	@Override
 	public void setVariable(final String name, final Object content) {
-		mEngine.setVariable(name, content);
+		fEngine.setVariable(name, content);
 	}
 
 	@Override
 	public Object getVariable(final String name) {
-		return mEngine.getVariable(name);
+		return fEngine.getVariable(name);
 	}
 
+	@Override
+	public boolean hasVariable(String name) {
+		return false;
+	}
+
+	@Override
+	public String getSaveVariableName(String name) {
+		// FIXME to be implemented
+		return name;
+	}
 }
