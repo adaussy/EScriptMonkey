@@ -215,7 +215,7 @@ public class JythonScriptEngine extends AbstractScriptEngine {
 	}
 
 	@Override
-	public boolean hasVariable(String name) {
+	public boolean hasVariable(final String name) {
 		return mEngine.get(name) != null;
 	}
 
@@ -240,7 +240,7 @@ public class JythonScriptEngine extends AbstractScriptEngine {
 	}
 
 	@Override
-	public String getSaveVariableName(String name) {
+	public String getSaveVariableName(final String name) {
 		return getSaveName(name);
 	}
 
@@ -274,5 +274,15 @@ public class JythonScriptEngine extends AbstractScriptEngine {
 
 	public static boolean isSaveName(final String identifier) {
 		return Pattern.matches("[a-zA-Z_$][a-zA-Z0-9_$]*", identifier);
+	}
+
+	@Override
+	public Object removeVariable(final String name) {
+		throw new RuntimeException("not supported");
+	}
+
+	@Override
+	public Map<String, Object> getVariables() {
+		throw new RuntimeException("not supported");
 	}
 }
