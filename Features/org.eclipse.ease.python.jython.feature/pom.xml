@@ -13,7 +13,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-  	<relativePath>../org.eclipse.ease.jython.releng</relativePath>
+  	<relativePath>../../Releng/org.eclipse.ease.jython.releng</relativePath>
   	<groupId>ease_jython</groupId>
   	<artifactId>org.eclipse.ease.jython.releng</artifactId>
   	<version>0.1.1-SNAPSHOT</version>

@@ -25,6 +25,12 @@
 			<url>https://repo.eclipse.org/content/repositories/eclipse/</url>
 		</repository>
 		<repository>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
 			<id>EASE</id>
 			<layout>p2</layout>
 			<url>http://download.eclipse.org/e4/updates/ease/eclipse-e4-ease-nightly/</url>
@@ -53,13 +59,16 @@
 
 		<!-- Update site -->
 		<module>
-			../org.eclipse.ease.jython.releng.p2
+			../../Plugins/engines/org.eclipse.ease.lang.python.jython
 		</module>
-
-		<module>../org.eclipse.ease.lang.python.jython</module>
-		<module>../org.eclipse.ease.lang.python.jython.ui</module>
-		<module>../org.jython</module>
-		<module>../org.eclipse.ease.python.jython.feature</module>
+		<module>
+			../../Plugins/engines/org.eclipse.ease.lang.python.jython.ui
+		</module>
+		<module>
+			../../Features/org.eclipse.ease.python.jython.feature
+		</module>
+		<module>../../Plugins/engines/org.jython</module>
+		<module>../org.eclipse.ease.jython.releng.p2</module>
 	</modules>
 
 </project>  

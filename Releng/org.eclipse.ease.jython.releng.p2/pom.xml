@@ -9,5 +9,4 @@
   	<relativePath>../org.eclipse.ease.jython.releng</relativePath>
   </parent>
    <groupId>org.eclipse.ease</groupId>
-   <version>0.1.1-SNAPSHOT</version>
 </project>
