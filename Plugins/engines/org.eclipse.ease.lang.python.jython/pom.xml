@@ -6,6 +6,6 @@
   	<groupId>ease_jython</groupId>
   	<artifactId>org.eclipse.ease.jython.releng</artifactId>
   	<version>0.1.1-SNAPSHOT</version>
-  	<relativePath>../../../Releng/org.eclipse.ease.jython.releng</relativePath>
+  	<relativePath>../org.eclipse.ease.jython.releng</relativePath>
   </parent>
 </project>

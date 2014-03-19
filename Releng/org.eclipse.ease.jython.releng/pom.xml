@@ -49,25 +49,17 @@
 		<!-- PLugins -->
 		<!-- Lang -->
 		<!-- Python -->
-		<module>
-			../../Plugins/engines/org.jython
-		</module>
-		<module>
-			../../Plugins/engines/org.eclipse.ease.lang.python.jython
-		</module>
-		<module>
-			../../Plugins/engines/org.eclipse.ease.lang.python.jython.ui
-		</module>
 		<!-- Features -->
-		<module>
-			../../Features/org.eclipse.ease.python.jython.feature
-		</module>
 
 		<!-- Update site -->
 		<module>
 			../org.eclipse.ease.jython.releng.p2
 		</module>
 
+		<module>../org.eclipse.ease.lang.python.jython</module>
+		<module>../org.eclipse.ease.lang.python.jython.ui</module>
+		<module>../org.jython</module>
+		<module>../org.eclipse.ease.python.jython.feature</module>
 	</modules>
 
 </project>  

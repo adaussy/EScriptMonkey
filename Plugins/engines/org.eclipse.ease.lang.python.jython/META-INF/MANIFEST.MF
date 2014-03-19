@@ -9,7 +9,7 @@ Require-Bundle: org.eclipse.ui,
  org.jython,
  org.eclipse.ease,
  org.eclipse.ease.lang.python,
- org.eclipse.debug.ui;bundle-version="3.9.0"
+ org.eclipse.debug.ui;bundle-version="3.7.102"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Eclipse-BuddyPolicy: global

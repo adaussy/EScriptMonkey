@@ -12,40 +12,22 @@ package org.eclipse.ease.lang.python.jython;
 
 import org.eclipse.ease.IScriptEngine;
 import org.eclipse.ease.IScriptEngineLaunchExtension;
-import org.eclipse.ease.debug.Tracer;
-import org.eclipse.ease.lang.python.debug.ITracingConstant;
-import org.eclipse.ease.modules.EnvironmentModule;
-import org.eclipse.ease.modules.IModuleWrapper;
-import org.eclipse.ease.service.IScriptService;
-import org.eclipse.ui.PlatformUI;
 
 /**
- * The load Environment method into script
+ * Python loader. Loads initial environment module.
  */
 public class PythonEnvironementBootStrapper implements IScriptEngineLaunchExtension {
 
 	@Override
 	public void createEngine(final IScriptEngine engine) {
-		IModuleWrapper wrapper = getWrapper(engine.getDescription().getID());
-		if (wrapper != null) {
-			StringBuilder stringBuilder = new StringBuilder();
-			stringBuilder.append("import ").append(EnvironmentModule.class.getCanonicalName()).append("\n");
-			stringBuilder.append("ENV").append(" = ").append(wrapper.classInstantiation(EnvironmentModule.class, new String[0])).append("\n");
-			stringBuilder.append("ENV.loadModule(\"");
-			stringBuilder.append(EnvironmentModule.MODULE_NAME);
-			stringBuilder.append("\")");
-			if (ITracingConstant.PYTHON_BOOT_STRAPPER_TRACING) {
-				Tracer.logInfo("[Python bootstapper]Injecting code:\n" + stringBuilder.toString());
-			}
-			engine.executeAsync(stringBuilder.toString());
-		}
 
-		// register java top level package
+		// load environment module
+		engine.executeAsync("from org.eclipse.ease.modules import EnvironmentModule");
+		engine.executeAsync("EnvironmentModule().loadModule(\"/System/Environment\")");
+
+		// register top level packages
 		engine.executeAsync("import java");
-	}
-
-	public static IModuleWrapper getWrapper(final String engineID) {
-		final IScriptService scriptService = (IScriptService) PlatformUI.getWorkbench().getService(IScriptService.class);
-		return scriptService.getModuleWrapper(engineID);
+		engine.executeAsync("import org");
+		engine.executeAsync("import com");
 	}
 }
