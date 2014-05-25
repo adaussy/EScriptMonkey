@@ -14,6 +14,7 @@ package org.eclipse.ease.lang.python.jython;
 import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -139,7 +140,7 @@ public class JythonScriptEngine extends AbstractScriptEngine {
 		PyString newString = null;
 		if (f != null) {
 			String absolutePath = f.getAbsolutePath();
-			this.setVariable("__File__", absolutePath);
+			setVariable("__File__", absolutePath);
 			String containerPart = f.getParent();
 			newString = Py.newString(containerPart);
 			Py.getSystemState().path.insert(0, newString);
@@ -284,5 +285,11 @@ public class JythonScriptEngine extends AbstractScriptEngine {
 	@Override
 	public Map<String, Object> getVariables() {
 		throw new RuntimeException("not supported");
+	}
+
+	@Override
+	public void registerJar(final URL url) {
+		// FIXME implement jar classloader
+		throw new RuntimeException("Registering JARs is not supported for python");
 	}
 }

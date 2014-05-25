@@ -15,82 +15,104 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.eclipse.ease.Activator;
 import org.eclipse.ease.Logger;
 import org.eclipse.ease.modules.AbstractModuleWrapper;
+import org.eclipse.ease.modules.IEnvironment;
+import org.eclipse.ease.modules.IScriptFunctionModifier;
 
 public class PythonModuleWrapper extends AbstractModuleWrapper {
 
 	public static List<String> RESERVED_KEYWORDS = new ArrayList<String>();
 
 	static {
-		RESERVED_KEYWORDS.add("print");
+		RESERVED_KEYWORDS.add("and");
+		RESERVED_KEYWORDS.add("as");
+		RESERVED_KEYWORDS.add("assert");
+		RESERVED_KEYWORDS.add("break");
+		RESERVED_KEYWORDS.add("class");
+		RESERVED_KEYWORDS.add("continue");
+		RESERVED_KEYWORDS.add("def");
+		RESERVED_KEYWORDS.add("del");
+		RESERVED_KEYWORDS.add("elif");
+		RESERVED_KEYWORDS.add("else");
+		RESERVED_KEYWORDS.add("except");
+		RESERVED_KEYWORDS.add("exec");
+		RESERVED_KEYWORDS.add("finally");
 		RESERVED_KEYWORDS.add("for");
+		RESERVED_KEYWORDS.add("from");
+		RESERVED_KEYWORDS.add("global");
+		RESERVED_KEYWORDS.add("if");
+		RESERVED_KEYWORDS.add("import");
+		RESERVED_KEYWORDS.add("in");
+		RESERVED_KEYWORDS.add("is");
+		RESERVED_KEYWORDS.add("lambda");
+		RESERVED_KEYWORDS.add("not");
+		RESERVED_KEYWORDS.add("or");
+		RESERVED_KEYWORDS.add("pass");
+		RESERVED_KEYWORDS.add("print");
+		RESERVED_KEYWORDS.add("raise");
+		RESERVED_KEYWORDS.add("return");
+		RESERVED_KEYWORDS.add("try");
 		RESERVED_KEYWORDS.add("while");
-		// TODO Complete this list
+		RESERVED_KEYWORDS.add("with");
+		RESERVED_KEYWORDS.add("yield");
 	}
 
 	@Override
-	public String createFunctionWrapper(final String moduleVariable, final Method method, final Set<String> functionNames, final String resultName,
-			final String preExecutionCode, final String postExecutionCode) {
+	public String createFunctionWrapper(final IEnvironment environment, final String moduleVariable, final Method method) {
 
-		StringBuilder javaScriptCode = new StringBuilder();
+		StringBuilder pythonCode = new StringBuilder();
 
 		// parse parameters
 		List<Parameter> parameters = parseParameters(method);
 
 		// build parameter string
-		StringBuilder functionSignature = new StringBuilder();
-		StringBuilder callSignature = new StringBuilder();
+		StringBuilder methodSignature = new StringBuilder();
+		StringBuilder methodCall = new StringBuilder();
 		for (Parameter parameter : parameters) {
-			functionSignature.append(", ").append(parameter.getName());
-			callSignature.append(", ").append(parameter.getName());
+			methodSignature.append(", ").append(parameter.getName());
+			methodCall.append(", ").append(parameter.getName());
 			if (parameter.isOptional())
-				functionSignature.append(" = ").append(getDefaultValue(parameter));
+				methodSignature.append(" = ").append(getDefaultValue(parameter));
 		}
 
-		if (functionSignature.length() > 2)
-			functionSignature.delete(0, 2);
-
-		if (callSignature.length() > 2)
-			callSignature.delete(0, 2);
+		if (methodSignature.length() > 2) {
+			methodSignature.delete(0, 2);
+			methodCall.delete(0, 2);
+		}
 
 		StringBuilder body = new StringBuilder();
 
 		// insert hooked pre execution code
-		// TODO make sure code is correctly aligned
-		if (preExecutionCode != null)
-			body.append(preExecutionCode);
+		body.append(getPreExecutionCode(environment, method));
 
 		// insert method call
-		body.append("\t").append(resultName).append(" = ").append(moduleVariable).append('.').append(method.getName()).append('(');
-		body.append(callSignature);
+		body.append('\t').append(IScriptFunctionModifier.RESULT_NAME).append(" = ").append(moduleVariable).append('.').append(method.getName()).append('(');
+		body.append(methodCall);
 		body.append(")\n");
 
 		// insert hooked post execution code
-		// TODO make sure code is correctly aligned
-		if (postExecutionCode != null)
-			body.append(postExecutionCode);
+		body.append(getPostExecutionCode(environment, method));
 
 		// insert return statement
-		body.append("\treturn ").append(resultName).append("\n");
+		body.append("\treturn ").append(IScriptFunctionModifier.RESULT_NAME).append('\n');
 
 		// build function declarations
-		for (String name : functionNames) {
-			if (!isCorrectMethodName(name)) {
+		for (String name : getMethodNames(method)) {
+			if (!isValidMethodName(name)) {
 				Logger.logError("The method name \"" + name + "\" from the module \"" + moduleVariable + "\" can not be wrapped because it's name is reserved",
 						Activator.PLUGIN_ID);
 
 			} else if (!name.isEmpty()) {
-				javaScriptCode.append("def ").append(name).append("(").append(functionSignature).append("):\n");
-				javaScriptCode.append(body);
-				javaScriptCode.append("\n");
+				pythonCode.append("def ").append(name).append('(').append(methodSignature).append("):\n");
+				pythonCode.append(body);
+				pythonCode.append('\n');
 			}
 		}
 
-		return javaScriptCode.toString();
+		return pythonCode.toString();
 	}
 
 	@Override
@@ -99,43 +121,36 @@ public class PythonModuleWrapper extends AbstractModuleWrapper {
 	}
 
 	@Override
-	public String getConstantDefinition(final String name, final Field field) {
-		return JythonScriptEngine.getSaveName(name) + " =" + field.getDeclaringClass().getName() + "." + field.getName() + ";\n";
-	}
-
-	@Override
-	public String getVariableDefinition(final String name, final String content) {
-		return JythonScriptEngine.getSaveName(name) + " = " + content + "\n";
-	}
-
-	@Override
 	public String classInstantiation(final Class<?> clazz, final String[] parameters) {
 		StringBuilder code = new StringBuilder();
 		code.append(clazz.getCanonicalName());
-		code.append("(");
+		code.append('(');
 
 		if (parameters != null) {
 			for (String parameter : parameters) {
-				code.append('"');
 				code.append(parameter);
-				code.append('"');
 				code.append(", ");
 			}
 			if (parameters.length > 0)
-				code.replace(code.length() - 2, code.length(), "");
+				code.delete(code.length() - 2, code.length());
 		}
 
-		code.append(")");
+		code.append(')');
 
 		return code.toString();
 	}
 
-	public boolean isCorrectMethodName(final String methodName) {
+	public boolean isValidMethodName(final String methodName) {
 		return JythonScriptEngine.isSaveName(methodName) && !RESERVED_KEYWORDS.contains(methodName);
 	}
 
 	@Override
 	protected String getNullString() {
 		return "None";
+	}
+
+	@Override
+	public String createStaticFieldWrapper(final IEnvironment environment, final Field field) {
+		return JythonScriptEngine.getSaveName(field.getName()) + " = " + field.getDeclaringClass().getName() + '.' + field.getName() + '\n';
 	}
 }
