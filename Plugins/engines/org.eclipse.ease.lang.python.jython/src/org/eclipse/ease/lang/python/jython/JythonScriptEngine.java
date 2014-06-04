@@ -15,18 +15,22 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.ease.AbstractScriptEngine;
 import org.eclipse.ease.Script;
 import org.eclipse.ease.lang.python.preferences.IPreferenceConstants;
+import org.eclipse.ease.tools.RunnableWithResult;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.swt.widgets.Display;
 import org.python.core.CompileMode;
 import org.python.core.CompilerFlags;
 import org.python.core.Py;
@@ -123,7 +127,38 @@ public class JythonScriptEngine extends AbstractScriptEngine {
 	}
 
 	@Override
-	protected Object execute(final Script script, final Object reference, final String fileName) throws Exception {
+	protected Object execute(final Script script, final Object reference, final String fileName, final boolean uiThread) throws Exception {
+		if (uiThread) {
+			// run in UI thread
+			RunnableWithResult<Entry<Object, Exception>> runnable = new RunnableWithResult<Entry<Object, Exception>>() {
+
+				@Override
+				public void run() {
+
+					// call execute again, now from correct thread
+					try {
+						setResult(new AbstractMap.SimpleEntry<Object, Exception>(internalExecute(script, reference, fileName), null));
+					} catch (Exception e) {
+						setResult(new AbstractMap.SimpleEntry<Object, Exception>(null, e));
+					}
+				}
+			};
+
+			Display.getDefault().syncExec(runnable);
+
+			// evaluate result
+			Entry<Object, Exception> result = runnable.getResult();
+			if (result.getValue() != null)
+				throw (result.getValue());
+
+			return result.getKey();
+
+		} else
+			// run in engine thread
+			return internalExecute(script, reference, fileName);
+	}
+
+	private Object internalExecute(final Script script, final Object reference, final String fileName) throws Exception {
 		mResult = Py.None;
 
 		PyObject code = Py.compile_command_flags(script.getCode(), "(none)", CompileMode.exec, new CompilerFlags(), true);
