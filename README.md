@@ -1,6 +1,7 @@
-From EScriptMonkey to EASE (Eclipse Advance Scripting Environment)...
+From EScriptMonkey to EASE (Eclipse Advanced Scripting Environment)...
 =============
 
-All the core of the project has been migrated to http://git.eclipse.org/c/e4/org.eclipse.e4.scripting.git.
-Only the Jython part is still in this repository. (Due to license incompatibilities).
+This is a legacy project.
+The core functionality has been migrated to eclipse https://eclipse.org/ease
+Jython and other engines moved to https://github.com/eclipse-ease-addons
 
